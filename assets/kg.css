@@ -1,0 +1,17 @@
+/* KalaGhar feature styles (works alongside Tailwind) */
+:root { --kg-halo: #fffbeb; }
+.dark { --kg-halo: #1f2937; }
+
+.kg-pin:focus { outline: none; }
+.kg-pin:focus circle:nth-child(2),
+.kg-pin:hover circle:nth-child(2) { r: 9; }
+.kg-pin circle { transition: r .15s ease; }
+
+.kg-modal { animation: kgFade .15s ease-out; }
+@keyframes kgFade { from { opacity: 0; } to { opacity: 1; } }
+
+#kgZoom img { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+    .kg-modal, .kg-pin circle, #kgZoom img { animation: none; transition: none; }
+}

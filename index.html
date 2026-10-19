@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KalaGhar (कलाघर) — buy authentic handmade crafts directly from Nepali artisans: Himalayan pashmina, Palpali Dhaka, Patan bronze, lokta paper, singing bowls, thangka and more. Worldwide shipping.">
+    <meta property="og:title" content="KalaGhar — Authentic Nepali Artisan Marketplace">
+    <meta property="og:description" content="Handmade in Nepal, shipped worldwide. Buy directly from verified artisans and cooperatives.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#b91c1c">
+    <link rel="stylesheet" href="assets/kg.css">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
@@ -1020,7 +1026,7 @@
         document.querySelectorAll('.check-mark-en').forEach(function (el) { el.classList.toggle('hidden', currentLang !== 'en'); });
         document.querySelectorAll('.check-mark-ne').forEach(function (el) { el.classList.toggle('hidden', currentLang !== 'ne'); });
         document.querySelectorAll('.lang-option').forEach(function (el) { el.classList.remove('selected'); });
-        const selected = document.querySelector('.lang-option[onclick*="\'" + currentLang + "\'"]');
+        const selected = document.querySelector('.lang-option[onclick*="' + "'" + currentLang + "'" + '"]');
         if (selected) selected.classList.add('selected');
 
         try { localStorage.setItem('kg-lang', currentLang); } catch (e) {}
@@ -1534,4 +1540,19 @@
     document.addEventListener('DOMContentLoaded', function () {
         var saved = null;
         try { saved = localStorage.getItem('kg-lang'); } catch (e) {}
-        applyLang(saved === '
+        applyLang(saved === 'ne' ? 'ne' : 'en');
+        setThemeIcon();
+    });
+    </script>
+
+    <!-- KalaGhar feature modules -->
+    <script src="assets/config.js"></script>
+    <script src="assets/kg-core.js"></script>
+    <script src="assets/kg-shop.js"></script>
+    <script src="assets/kg-checkout.js"></script>
+    <script src="assets/kg-discover.js"></script>
+    <script src="assets/kg-seller.js"></script>
+    <script src="assets/kg-admin.js"></script>
+    <script src="assets/kg-init.js"></script>
+</body>
+</html>
