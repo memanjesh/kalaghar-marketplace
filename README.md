@@ -37,7 +37,9 @@ An Etsy-style marketplace for handmade crafts from Nepal: buyers shop by craft o
 - Real orders with refunds and payout release, artisan approval and verification, licence checks
 - Complaints and protection cases, wholesale and workshop inquiries, translation queue
 - Coupons, payouts to transfer, festival override, printable tourist QR codes, launch checklist
-- Repository-backed Site Content editor for the header, footer and dispatch banner
+- Repository-backed Site Content editor for announcements, featured header navigation, footer sections, payment methods, legal links, and the dispatch banner
+- Category manager for adding, renaming, hiding, and safely deleting storefront categories
+- Responsive country, language, and currency preferences with matching regional flags
 
 **Legal pages** (`pages/`) — Terms, Privacy, Return & Refund, Delivery, Purchase Protection, Export Hub, plus the footer business details and complaint form required by the E-Commerce Act 2081. Have a lawyer in Nepal review them before launch.
 
@@ -71,7 +73,7 @@ Any static server works, e.g. `python3 -m http.server` in this folder, then open
 
 ## Site-content admin
 
-The public page loads `content/site-content.json`, so the editable content has a safe static fallback and remains fast on GitHub Pages. The admin flow verifies the supplied token directly with GitHub, confirms write access to `memanjesh/kalaghar-marketplace`, then updates only that JSON file through GitHub's Contents API. Every publish creates an auditable commit and triggers the normal GitHub Pages deployment.
+The public page loads `content/site-content.json`, so editable content and categories have a safe static fallback and remain fast on GitHub Pages. The admin flow verifies the supplied token directly with GitHub, confirms write access to `memanjesh/kalaghar-marketplace`, then updates only that JSON file through GitHub's Contents API. Every publish creates an auditable commit and triggers the normal GitHub Pages deployment.
 
 For the narrowest access, create a fine-grained token with:
 

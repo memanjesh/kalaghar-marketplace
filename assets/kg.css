@@ -65,6 +65,21 @@
 /* Page sections always span the full width (the page body is a flex column) */
 body > section, body > footer, body > main, body > header { width: 100%; }
 
+/* Small-phone header: preserve every core action without clipping the bag. */
+@media (max-width: 420px) {
+    .kg-header-row { padding-left: 8px !important; padding-right: 8px !important; gap: 0 !important; }
+    .kg-header-brand { gap: 6px !important; }
+    .kg-header-brand .kg-logo-mark { width: 32px !important; height: 32px !important; border-radius: 10px !important; }
+    .kg-header-brand [data-kg-content="header-brand"] { font-size: 21px !important; }
+    .kg-header-actions { gap: 0 !important; }
+    .kg-header-language { width: 36px; padding-left: 8px !important; padding-right: 8px !important; justify-content: center; }
+    .kg-header-language #langLabel { display: none; }
+}
+
+@media (max-width: 350px) {
+    #langDropdownWrap { display: none; }
+}
+
 /* Footer contact block */
 .kg-contact-panel { margin-top: 28px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, .13); }
 .kg-contact { min-width: 0; display: flex; align-items: center; gap: 10px; padding: 2px 0; color: rgba(255, 255, 255, .9); }
@@ -74,11 +89,23 @@ a.kg-contact:hover .kg-cicon { background: rgba(255, 255, 255, .18); }
 .kg-clabel { display: block; font-size: 10px; font-weight: 700; letter-spacing: .12em; color: rgba(255, 255, 255, .7); }
 .kg-contact-value { display: block; white-space: nowrap; font-size: 12px; line-height: 1.45; }
 
+/* Footer utility bar: ownership left, payments center, navigation right. */
+.kg-footer-bottom { background: rgba(19, 7, 8, .24); border-top: 1px solid rgba(255, 255, 255, .1); }
+.kg-footer-bottom-grid { display: grid; grid-template-columns: minmax(240px, 1fr) auto minmax(300px, 1fr); align-items: center; gap: 28px; }
+.kg-footer-copyright { justify-self: start; color: rgba(255, 255, 255, .78); font-size: 12px; line-height: 1.5; }
+.kg-footer-actions { justify-self: end; display: grid; justify-items: end; gap: 10px; }
+.kg-footer-utility-links { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 18px; font-weight: 600; }
+.kg-footer-preferences { display: flex; align-items: center; justify-content: flex-end; gap: 7px; }
+.kg-locale-button { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 6px 11px; border: 1px solid rgba(255, 255, 255, .18); border-radius: 9999px; color: rgba(255, 255, 255, .92); background: rgba(255, 255, 255, .06); font-size: 11px; font-weight: 650; transition: background .15s, border-color .15s; }
+.kg-locale-button:hover { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .32); }
+.kg-theme-button { width: 34px; height: 34px; flex: none; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, .18); border-radius: 9999px; color: #fff; background: rgba(255, 255, 255, .06); transition: background .15s, transform .15s; }
+.kg-theme-button:hover { background: rgba(255, 255, 255, .14); transform: translateY(-1px); }
+
 /* Equal-size, edge-free payment badges */
-.kg-payment-row { display: flex; align-items: center; gap: 12px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, .1); }
+.kg-payment-row { justify-self: center; display: grid; justify-items: center; gap: 8px; }
 .kg-payment-label { flex: none; color: rgba(255, 255, 255, .76); font-size: 10px; line-height: 1; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-.kg-payment-methods { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.kg-payment-tile { width: 56px; height: 24px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; border: 0; border-radius: 6px; color: rgba(255, 255, 255, .94); font-size: 8.5px; line-height: 1; font-weight: 800; letter-spacing: -.01em; background: rgba(255, 255, 255, .085); }
+.kg-payment-methods { display: flex; flex-wrap: nowrap; align-items: center; justify-content: center; gap: 5px; }
+.kg-payment-tile { width: 44px; height: 20px; display: inline-flex; align-items: center; justify-content: center; gap: 2px; border: 0; border-radius: 5px; color: rgba(255, 255, 255, .94); font-size: 7.5px; line-height: 1; font-weight: 800; letter-spacing: -.015em; background: rgba(255, 255, 255, .075); }
 .kg-payment-tile .fa-brands { font-size: 15px; line-height: 1; }
 .kg-pay-visa { color: #dbeafe; }
 .kg-pay-mastercard .fa-brands { color: #fdba74; }
@@ -95,13 +122,25 @@ a.kg-contact:hover .kg-cicon { background: rgba(255, 255, 255, .18); }
 
 @media (max-width: 420px) {
     .kg-contact-value { white-space: normal; overflow-wrap: anywhere; }
-    .kg-payment-row { align-items: flex-start; flex-direction: column; gap: 9px; }
-    .kg-payment-tile { width: 52px; height: 23px; }
+    .kg-payment-tile { width: 40px; height: 20px; }
+}
+
+@media (max-width: 1023px) {
+    .kg-footer-bottom-grid { grid-template-columns: 1fr; justify-items: center; gap: 18px; padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+    .kg-footer-copyright, .kg-footer-actions, .kg-payment-row { justify-self: center; }
+    .kg-footer-actions { justify-items: center; }
+    .kg-footer-utility-links, .kg-footer-preferences { justify-content: center; }
+    #kgFloat.kg-float-in-footer { display: none; }
+}
+
+@media (max-width: 560px) {
+    .kg-payment-methods { flex-wrap: wrap; max-width: 310px; }
+    .kg-footer-copyright { text-align: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .kg-social { transition: none; }
-    .kg-social:hover { transform: none; }
+    .kg-social, .kg-theme-button, .kg-locale-button { transition: none; }
+    .kg-social:hover, .kg-theme-button:hover { transform: none; }
 }
 
 /* Footer repeats the support actions; hide floating buttons to keep it clear. */

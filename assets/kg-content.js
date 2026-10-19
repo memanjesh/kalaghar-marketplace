@@ -8,19 +8,49 @@
     const CONTENT_PATH = 'content/site-content.json';
     const API = 'https://api.github.com/repos/' + REPOSITORY;
     const DEFAULT_CONTENT = {
-        version: 1,
+        version: 2,
         header: {
             brand: { text: 'KalaGhar', color: '#111827', fontSize: 26, visible: true },
             items: [
                 { id: 'artisan-impact', text: '✨ Empowering 1,200+ Nepali Artisans & Rural Cooperatives', color: '#ffffff', fontSize: 12, visible: true },
                 { id: 'free-shipping', text: '✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery', color: '#ffffff', fontSize: 12, visible: true },
                 { id: 'authentic-craft', text: '📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa', color: '#ffffff', fontSize: 12, visible: true }
+            ],
+            featuredLinks: [
+                { id: 'gifts', text: 'Gifts', action: 'gift', target: '', icon: 'fa-gift', color: '#1f2937', fontSize: 15, visible: true },
+                { id: 'festival-gifts', text: 'Dashain Gifts', action: 'section', target: 'festival', icon: '', color: '#1f2937', fontSize: 15, visible: true },
+                { id: 'pashmina', text: 'Himalayan Pashmina & Wool', action: 'category', target: 'pashmina', icon: '', color: '#1f2937', fontSize: 15, visible: true },
+                { id: 'home-favorites', text: 'Home Favorites', action: 'category', target: 'homedecor', icon: '', color: '#1f2937', fontSize: 15, visible: true },
+                { id: 'fashion-finds', text: 'Fashion Finds', action: 'category', target: 'clothes', icon: '', color: '#1f2937', fontSize: 15, visible: true },
+                { id: 'singing-bowls', text: 'Singing Bowls', action: 'category', target: 'singingbowl', icon: '', color: '#1f2937', fontSize: 15, visible: true },
+                { id: 'thangka-paubha', text: 'Thangka & Paubha', action: 'category', target: 'thangka', icon: '', color: '#1f2937', fontSize: 15, visible: true },
+                { id: 'send-gift-home', text: 'Send a Gift Home', action: 'section', target: 'send-home', icon: '', color: '#1f2937', fontSize: 15, visible: true }
             ]
         },
         dispatch: {
             visible: true,
             backgroundColor: '#ffffff',
             items: [{ id: 'kathmandu-dispatch', text: 'Order today for dispatch from Kathmandu within 1–2 business days.', color: '#4b5563', fontSize: 12, visible: true }]
+        },
+        catalog: {
+            categories: [
+                { id: 'pashmina', en: 'Himalayan Pashmina & Wool', ne: 'हिमाली पश्मिना र ऊन', icon: 'fa-mitten', visible: true },
+                { id: 'dhaka', en: 'Palpali Dhaka', ne: 'पाल्पाली ढाका', icon: 'fa-shirt', visible: true },
+                { id: 'lokta', en: 'Lokta Paper', ne: 'लोक्ता कागज', icon: 'fa-book', visible: true },
+                { id: 'metal', en: 'Patan Statues', ne: 'पाटनका मूर्ति', icon: 'fa-om', visible: true },
+                { id: 'singingbowl', en: 'Singing Bowls', ne: 'सिङ्गिङ बोल', icon: 'fa-bell', visible: true },
+                { id: 'thangka', en: 'Thangka & Paubha', ne: 'थाङ्का र पौभा', icon: 'fa-palette', visible: true },
+                { id: 'felt', en: 'Felt Crafts', ne: 'फेल्ट शिल्प', icon: 'fa-circle', visible: true },
+                { id: 'tea', en: 'Tea & Spices', ne: 'चिया र मसला', icon: 'fa-mug-hot', visible: true },
+                { id: 'beads', en: 'Beads, Pote & Jewelry', ne: 'पोते, मोती र गहना', icon: 'fa-gem', visible: true },
+                { id: 'wood', en: 'Wood Carving', ne: 'काष्ठकला', icon: 'fa-tree', visible: true },
+                { id: 'rugs', en: 'Rugs & Carpets', ne: 'राडी र गलैंचा', icon: 'fa-rug', visible: true },
+                { id: 'shoes', en: 'Shoes', ne: 'जुत्ता', icon: 'fa-shoe-prints', visible: true },
+                { id: 'bags', en: 'Bags', ne: 'झोला', icon: 'fa-bag-shopping', visible: true },
+                { id: 'homedecor', en: 'Home Decor', ne: 'घर सजावट', icon: 'fa-couch', visible: true },
+                { id: 'clothes', en: 'Clothes', ne: 'लुगा', icon: 'fa-vest', visible: true },
+                { id: 'accessories', en: 'Accessories', ne: 'सामग्री', icon: 'fa-glasses', visible: true }
+            ]
         },
         footer: {
             about: { text: 'Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.', color: '#ffffff', fontSize: 14, visible: true },
@@ -31,7 +61,26 @@
                 { id: 'returns', text: 'Return & Refund Policy', href: 'pages/returns.html', color: '#ffffff', fontSize: 14, visible: true },
                 { id: 'purchase-protection', text: 'Purchase Protection', href: 'pages/purchase-protection.html', color: '#ffffff', fontSize: 14, visible: true },
                 { id: 'complaint', text: 'File a Complaint', href: '#complaint', color: '#ffffff', fontSize: 14, visible: true }
-            ]
+            ],
+            bottom: {
+                copyright: { text: '© 2026 KalaGhar Marketplace. All rights reserved.', color: '#ffffff', fontSize: 12, visible: true },
+                paymentLabel: { text: 'We accept', color: '#ffffff', fontSize: 10, visible: true },
+                payments: [
+                    { id: 'visa', text: 'Visa', visible: true },
+                    { id: 'mastercard', text: 'Mastercard', visible: true },
+                    { id: 'esewa', text: 'eSewa', visible: true },
+                    { id: 'khalti', text: 'Khalti', visible: true },
+                    { id: 'fonepay', text: 'fonepay', visible: true },
+                    { id: 'connectips', text: 'connectIPS', visible: true },
+                    { id: 'cash', text: 'Cash', visible: true }
+                ],
+                links: [
+                    { id: 'terms', text: 'Terms', href: 'pages/terms.html', color: '#ffffff', fontSize: 12, visible: true },
+                    { id: 'privacy', text: 'Privacy', href: 'pages/privacy.html', color: '#ffffff', fontSize: 12, visible: true },
+                    { id: 'sitemap', text: 'Sitemap', href: 'sitemap.xml', color: '#ffffff', fontSize: 12, visible: true },
+                    { id: 'admin', text: 'Admin', href: '#admin', color: '#ffffff', fontSize: 12, visible: true }
+                ]
+            }
         }
     };
 
@@ -72,15 +121,51 @@
         if (withHref) result.href = cleanHref(source.href);
         return result;
     }
+    function cleanPayment(item, index) {
+        const source = item && typeof item === 'object' ? item : {};
+        return {
+            id: cleanId(source.id, 'payment', index),
+            text: cleanText(source.text, 40),
+            visible: source.visible !== false
+        };
+    }
+    function cleanCategory(item, index) {
+        const source = item && typeof item === 'object' ? item : {};
+        return {
+            id: cleanId(source.id, 'category', index),
+            en: cleanText(source.en, 80),
+            ne: cleanText(source.ne, 80),
+            icon: /^fa-[a-z0-9-]+$/i.test(String(source.icon || '')) ? source.icon : 'fa-border-all',
+            visible: source.visible !== false
+        };
+    }
+    function cleanFeatured(item, index) {
+        const source = item && typeof item === 'object' ? item : {};
+        const actions = ['gift', 'category', 'section', 'link'];
+        return {
+            id: cleanId(source.id, 'featured', index),
+            text: cleanText(source.text, 80),
+            action: actions.indexOf(source.action) > -1 ? source.action : 'section',
+            target: cleanText(source.target, 160),
+            icon: /^fa-[a-z0-9-]+$/i.test(String(source.icon || '')) ? source.icon : '',
+            color: cleanColor(source.color, '#1f2937'),
+            fontSize: cleanSize(source.fontSize, 15),
+            visible: source.visible !== false
+        };
+    }
     function sanitize(raw) {
         const source = raw && typeof raw === 'object' ? raw : {};
         const header = source.header && typeof source.header === 'object' ? source.header : {};
         const dispatch = source.dispatch && typeof source.dispatch === 'object' ? source.dispatch : {};
+        const catalog = source.catalog && typeof source.catalog === 'object' ? source.catalog : {};
         const footer = source.footer && typeof source.footer === 'object' ? source.footer : {};
+        const bottom = footer.bottom && typeof footer.bottom === 'object' ? footer.bottom : {};
         const brandSource = header.brand && typeof header.brand === 'object' ? header.brand : {};
         const aboutSource = footer.about && typeof footer.about === 'object' ? footer.about : {};
+        const copyrightSource = bottom.copyright && typeof bottom.copyright === 'object' ? bottom.copyright : {};
+        const paymentLabelSource = bottom.paymentLabel && typeof bottom.paymentLabel === 'object' ? bottom.paymentLabel : {};
         return {
-            version: 1,
+            version: 2,
             header: {
                 brand: {
                     text: cleanText(brandSource.text || DEFAULT_CONTENT.header.brand.text, 60),
@@ -88,12 +173,16 @@
                     fontSize: cleanSize(brandSource.fontSize, DEFAULT_CONTENT.header.brand.fontSize),
                     visible: brandSource.visible !== false
                 },
-                items: (Array.isArray(header.items) ? header.items : DEFAULT_CONTENT.header.items).slice(0, 12).map(function (item, index) { return cleanItem(item, index, 'header', false); })
+                items: (Array.isArray(header.items) ? header.items : DEFAULT_CONTENT.header.items).slice(0, 12).map(function (item, index) { return cleanItem(item, index, 'header', false); }),
+                featuredLinks: (Array.isArray(header.featuredLinks) ? header.featuredLinks : DEFAULT_CONTENT.header.featuredLinks).slice(0, 16).map(cleanFeatured).filter(function (item) { return item.text; })
             },
             dispatch: {
                 visible: dispatch.visible !== false,
                 backgroundColor: cleanColor(dispatch.backgroundColor, DEFAULT_CONTENT.dispatch.backgroundColor),
                 items: (Array.isArray(dispatch.items) ? dispatch.items : DEFAULT_CONTENT.dispatch.items).slice(0, 8).map(function (item, index) { return cleanItem(item, index, 'dispatch', false); })
+            },
+            catalog: {
+                categories: (Array.isArray(catalog.categories) ? catalog.categories : DEFAULT_CONTENT.catalog.categories).slice(0, 40).map(cleanCategory).filter(function (item) { return item.en; })
             },
             footer: {
                 about: {
@@ -102,7 +191,23 @@
                     fontSize: cleanSize(aboutSource.fontSize, DEFAULT_CONTENT.footer.about.fontSize),
                     visible: aboutSource.visible !== false
                 },
-                items: (Array.isArray(footer.items) ? footer.items : DEFAULT_CONTENT.footer.items).slice(0, 16).map(function (item, index) { return cleanItem(item, index, 'footer', true); })
+                items: (Array.isArray(footer.items) ? footer.items : DEFAULT_CONTENT.footer.items).slice(0, 16).map(function (item, index) { return cleanItem(item, index, 'footer', true); }),
+                bottom: {
+                    copyright: {
+                        text: cleanText(copyrightSource.text || DEFAULT_CONTENT.footer.bottom.copyright.text, 160),
+                        color: cleanColor(copyrightSource.color, DEFAULT_CONTENT.footer.bottom.copyright.color),
+                        fontSize: cleanSize(copyrightSource.fontSize, DEFAULT_CONTENT.footer.bottom.copyright.fontSize),
+                        visible: copyrightSource.visible !== false
+                    },
+                    paymentLabel: {
+                        text: cleanText(paymentLabelSource.text || DEFAULT_CONTENT.footer.bottom.paymentLabel.text, 60),
+                        color: cleanColor(paymentLabelSource.color, DEFAULT_CONTENT.footer.bottom.paymentLabel.color),
+                        fontSize: cleanSize(paymentLabelSource.fontSize, DEFAULT_CONTENT.footer.bottom.paymentLabel.fontSize),
+                        visible: paymentLabelSource.visible !== false
+                    },
+                    payments: (Array.isArray(bottom.payments) ? bottom.payments : DEFAULT_CONTENT.footer.bottom.payments).slice(0, 12).map(cleanPayment),
+                    links: (Array.isArray(bottom.links) ? bottom.links : DEFAULT_CONTENT.footer.bottom.links).slice(0, 10).map(function (item, index) { return cleanItem(item, index, 'legal', true); })
+                }
             }
         };
     }
@@ -115,6 +220,7 @@
     }
     function apply(next) {
         content = sanitize(next);
+        if (window.KG && typeof window.KG.setCategories === 'function') window.KG.setCategories(content.catalog.categories);
         document.querySelectorAll('[data-kg-content="header-brand"]').forEach(function (el) { styleText(el, content.header.brand); });
 
         const announcements = document.getElementById('kgAnnouncementTrack');
@@ -128,6 +234,27 @@
                 announcements.appendChild(span);
             });
             announcements.closest('[data-kg-section="announcement"]').hidden = visibleItems.length === 0;
+        }
+
+        const featured = document.getElementById('kgFeatured');
+        if (featured) {
+            featured.replaceChildren();
+            content.header.featuredLinks.filter(function (item) { return item.visible; }).forEach(function (item) {
+                const li = document.createElement('li'), button = document.createElement('button');
+                button.type = 'button'; button.className = 'kg-feat'; button.dataset.featuredAction = item.action;
+                if (item.color.toLowerCase() !== '#1f2937') button.style.color = item.color;
+                button.style.fontSize = item.fontSize + 'px';
+                if (item.icon) { const icon = document.createElement('i'); icon.className = 'fa-solid ' + item.icon + ' mr-1.5'; icon.setAttribute('aria-hidden', 'true'); button.appendChild(icon); }
+                button.appendChild(document.createTextNode(item.text));
+                button.addEventListener('click', function () {
+                    if (item.action === 'gift' && window.KG && KG.openGiftMode) return KG.openGiftMode();
+                    if (item.action === 'category' && window.KG && KG.goCategory) return KG.goCategory(item.target);
+                    if (item.action === 'section') { const section = document.getElementById(item.target.replace(/^#/, '')); if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+                    if (item.action === 'link') window.location.href = cleanHref(item.target);
+                });
+                li.appendChild(button); featured.appendChild(li);
+            });
+            if (window.KG && typeof KG.alignFeatured === 'function') KG.alignFeatured();
         }
 
         const dispatch = document.getElementById('kgDispatchNotice');
@@ -156,6 +283,39 @@
                 const link = document.createElement('a');
                 link.className = 'kg-flink'; link.href = cleanHref(item.href); link.rel = 'noopener';
                 styleText(link, item); li.appendChild(link); footerLinks.appendChild(li);
+            });
+        }
+        const copyright = document.getElementById('kgFooterCopyright');
+        if (copyright) styleText(copyright, content.footer.bottom.copyright);
+        const paymentLabel = document.getElementById('kgPaymentLabel');
+        if (paymentLabel) styleText(paymentLabel, content.footer.bottom.paymentLabel);
+        const paymentMethods = document.getElementById('kgPaymentMethods');
+        if (paymentMethods) {
+            paymentMethods.replaceChildren();
+            content.footer.bottom.payments.filter(function (item) { return item.visible && item.text; }).forEach(function (item) {
+                const tile = document.createElement('span');
+                tile.className = 'kg-payment-tile kg-pay-' + cleanId(item.id, 'payment', 0);
+                tile.title = item.text;
+                if (item.id === 'visa' || item.id === 'mastercard') {
+                    const icon = document.createElement('i');
+                    icon.className = 'fa-brands fa-cc-' + item.id; icon.setAttribute('aria-hidden', 'true'); tile.appendChild(icon);
+                    const hidden = document.createElement('span'); hidden.className = 'sr-only'; hidden.textContent = item.text; tile.appendChild(hidden);
+                } else {
+                    if (item.id === 'cash') { const icon = document.createElement('i'); icon.className = 'fa-solid fa-money-bill-1'; icon.setAttribute('aria-hidden', 'true'); tile.appendChild(icon); }
+                    tile.appendChild(document.createTextNode(item.text));
+                }
+                paymentMethods.appendChild(tile);
+            });
+        }
+        const paymentRow = document.getElementById('kgPaymentRow');
+        if (paymentRow) paymentRow.hidden = content.footer.bottom.paymentLabel.visible === false && !content.footer.bottom.payments.some(function (item) { return item.visible; });
+        const legalLinks = document.getElementById('kgFooterUtilityLinks');
+        if (legalLinks) {
+            legalLinks.replaceChildren();
+            content.footer.bottom.links.filter(function (item) { return item.visible; }).forEach(function (item) {
+                const link = document.createElement('a'); link.className = 'kg-flink'; link.href = cleanHref(item.href); link.rel = 'noopener'; styleText(link, item);
+                if (item.id === 'admin' || item.href === '#admin') link.addEventListener('click', function (event) { event.preventDefault(); if (window.openAdminPanel) window.openAdminPanel(); });
+                legalLinks.appendChild(link);
             });
         }
         window.dispatchEvent(new CustomEvent('kg:content-applied', { detail: clone(content) }));

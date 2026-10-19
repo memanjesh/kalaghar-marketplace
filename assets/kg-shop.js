@@ -370,6 +370,7 @@
     /* ---------------------------- categories bar ---------------------------- */
     /* ---------------------------- Etsy-style Categories menu ---------------------------- */
     const CAT_ICONS = { pashmina: 'fa-mitten', dhaka: 'fa-shirt', lokta: 'fa-book', metal: 'fa-om', singingbowl: 'fa-bell', thangka: 'fa-palette', felt: 'fa-circle', tea: 'fa-mug-hot', beads: 'fa-gem', wood: 'fa-tree', rugs: 'fa-rug', shoes: 'fa-shoe-prints', bags: 'fa-bag-shopping', homedecor: 'fa-couch', clothes: 'fa-vest', accessories: 'fa-glasses' };
+    function visibleCategories() { return typeof KG.visibleCategories === 'function' ? KG.visibleCategories() : KG.CATEGORIES.filter(function (category) { return category.visible !== false; }); }
     KG.goCategory = function (id) { KG.closeCatMenu(); KG.closeModal('kgCatDrawer'); KG.activeRegion = null; filterCategory(id); document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
     function catPreview(id) {
         const list = KG.products().filter(function (p) { return id === 'all' || p.category === id; }).slice(0, 6);
@@ -383,10 +384,10 @@
     function buildCatMenu() {
         const panel = document.getElementById('kgCatPanel'), btn = document.getElementById('kgCatBtn');
         if (!panel || !btn) return;
-        const cats = [{ id: 'all', en: 'All Crafts', ne: 'सबै शिल्प' }].concat(KG.CATEGORIES);
+        const cats = [{ id: 'all', en: 'All Crafts', ne: 'सबै शिल्प' }].concat(visibleCategories());
         panel.innerHTML = '<div class="max-w-[1440px] mx-auto px-4 lg:px-8"><div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 flex overflow-hidden max-h-[70vh]">' +
             '<ul class="w-72 shrink-0 border-r border-gray-100 dark:border-gray-800 py-2 overflow-y-auto">' + cats.map(function (c) {
-                return '<li><button type="button" role="menuitem" data-cat="' + c.id + '" class="kg-catitem w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left text-gray-800 dark:text-gray-100"><i class="fa-solid ' + (CAT_ICONS[c.id] || 'fa-border-all') + ' w-4 text-center text-gray-500"></i><span class="flex-1">' + esc(KG.tx(c.en, c.ne)) + '</span><i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i></button></li>';
+                return '<li><button type="button" role="menuitem" data-cat="' + c.id + '" class="kg-catitem w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left text-gray-800 dark:text-gray-100"><i class="fa-solid ' + (c.icon || CAT_ICONS[c.id] || 'fa-border-all') + ' w-4 text-center text-gray-500"></i><span class="flex-1">' + esc(KG.tx(c.en, c.ne)) + '</span><i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i></button></li>';
             }).join('') + '</ul><div id="kgCatPreview" class="flex-1 p-6 overflow-y-auto"></div></div></div>';
         const show = function (id) {
             panel.querySelectorAll('.kg-catitem').forEach(function (b) { b.classList.toggle('kg-catitem-on', b.dataset.cat === id); });
@@ -404,11 +405,32 @@
         if (panel) panel.classList.add('hidden'); if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.classList.remove('bg-gray-100', 'dark:bg-gray-800'); }
     };
     function openCatDrawer() {
-        const cats = [{ id: 'all', en: 'All Crafts', ne: 'सबै शिल्प' }].concat(KG.CATEGORIES);
+        const cats = [{ id: 'all', en: 'All Crafts', ne: 'सबै शिल्प' }].concat(visibleCategories());
         KG.modal('kgCatDrawer', KG.tx('Categories', 'वर्गहरू'), '<ul class="-mx-5 -my-2">' + cats.map(function (c) {
-            return '<li><button type="button" onclick="KG.goCategory(\'' + c.id + '\')" class="w-full flex items-center gap-3 px-5 py-3 text-left text-sm border-b border-gray-100 dark:border-gray-800 hover:bg-amber-50 dark:hover:bg-gray-800"><i class="fa-solid ' + (CAT_ICONS[c.id] || 'fa-border-all') + ' w-5 text-center text-red-700 dark:text-amber-300"></i><span class="flex-1 font-medium">' + esc(KG.tx(c.en, c.ne)) + '</span><i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button></li>';
+            return '<li><button type="button" onclick="KG.goCategory(\'' + c.id + '\')" class="w-full flex items-center gap-3 px-5 py-3 text-left text-sm border-b border-gray-100 dark:border-gray-800 hover:bg-amber-50 dark:hover:bg-gray-800"><i class="fa-solid ' + (c.icon || CAT_ICONS[c.id] || 'fa-border-all') + ' w-5 text-center text-red-700 dark:text-amber-300"></i><span class="flex-1 font-medium">' + esc(KG.tx(c.en, c.ne)) + '</span><i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button></li>';
         }).join('') + '</ul>', 'md');
     }
+    function renderCategoryTiles() {
+        const host = document.getElementById('kgCategoryTiles'); if (!host) return;
+        host.innerHTML = visibleCategories().map(function (category) {
+            const products = KG.products().filter(function (product) { return product.category === category.id; });
+            const image = products.length ? products[0].image : KG.placeholder(category.en, '#7c2d12', '#d97706', '✦');
+            return '<button type="button" onclick="KG.goCategory(\'' + category.id + '\')" class="kg-cattile group flex flex-col items-center text-center">' +
+                '<span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition"><img src="' + esc(image) + '" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300"></span>' +
+                '<span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300">' + esc(KG.tx(category.en, category.ne)) + '</span>' +
+                '<span class="text-[11px] text-gray-500 dark:text-gray-400">' + products.length + ' ' + KG.tx(products.length === 1 ? 'item' : 'items', 'वस्तु') + '</span></button>';
+        }).join('');
+    }
+    KG.refreshCategoryUI = function () {
+        renderCategoryTiles();
+        const panel = document.getElementById('kgCatPanel'); if (panel && !panel.classList.contains('hidden')) buildCatMenu();
+        const pf = document.getElementById('pfCategory');
+        if (pf) {
+            const selected = pf.value;
+            pf.innerHTML = visibleCategories().map(function (category) { return '<option value="' + esc(category.id) + '">' + esc(category.en) + '</option>'; }).join('');
+            if (visibleCategories().some(function (category) { return category.id === selected; })) pf.value = selected;
+        }
+    };
     function wireCatMenu() {
         const panel = document.getElementById('kgCatPanel'), btn = document.getElementById('kgCatBtn');
         if (!panel || !btn || btn.dataset.kg) return;
@@ -463,22 +485,44 @@
     };
 
     /* ---------------------------- language / currency (footer, like Etsy) ---------------------------- */
+    const LOCALES = [
+        { code: 'NP', en: 'Nepal', ne: 'नेपाल', currency: 'NPR' },
+        { code: 'US', en: 'United States', ne: 'संयुक्त राज्य', currency: 'USD' },
+        { code: 'GB', en: 'United Kingdom', ne: 'बेलायत', currency: 'GBP' },
+        { code: 'AU', en: 'Australia', ne: 'अस्ट्रेलिया', currency: 'AUD' },
+        { code: 'IN', en: 'India', ne: 'भारत', currency: 'INR' },
+        { code: 'JP', en: 'Japan', ne: 'जापान', currency: 'JPY' },
+        { code: 'DE', en: 'Germany', ne: 'जर्मनी', currency: 'EUR' },
+        { code: 'FR', en: 'France', ne: 'फ्रान्स', currency: 'EUR' }
+    ];
+    function currentLocale() {
+        const code = KG.store.get('kg-country', 'NP');
+        return LOCALES.find(function (item) { return item.code === code; }) || LOCALES[0];
+    }
     KG.updateLocaleLabel = function () {
-        const el = document.getElementById('kgLocaleLabel');
-        if (el) el.textContent = KG.tx('Nepal', 'नेपाल') + ' | ' + (KG.lang() === 'ne' ? 'नेपाली' : 'English') + ' | ' + KG.cur;
+        const locale = currentLocale();
+        const el = document.getElementById('kgLocaleLabel'), flag = document.getElementById('kgLocaleFlag');
+        if (el) el.textContent = (KG.lang() === 'ne' ? locale.ne : locale.en) + ' · ' + (KG.lang() === 'ne' ? 'नेपाली' : 'English') + ' · ' + KG.cur;
+        if (flag) flag.src = 'https://flagcdn.com/24x18/' + locale.code.toLowerCase() + '.png';
     };
     KG.openLocale = function () {
         const body = KG.modal('kgLocale', KG.tx('Update your settings', 'सेटिङ अद्यावधिक'),
             '<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">' + KG.tx('Set where you live, what language you speak and the currency you use.', 'भाषा र मुद्रा छान्नुहोस्।') + '</p>' +
-            '<div class="space-y-4"><div><label class="' + ui.label + '" for="lc-lang">' + KG.tx('Language', 'भाषा') + '</label><select id="lc-lang" class="' + ui.input + '"><option value="en">English</option><option value="ne">नेपाली (Nepali)</option></select></div>' +
+            '<div class="space-y-4"><div><label class="' + ui.label + '" for="lc-country">' + KG.tx('Country or region', 'देश वा क्षेत्र') + '</label><select id="lc-country" class="' + ui.input + '">' + LOCALES.map(function (item) { return '<option value="' + item.code + '">' + (KG.lang() === 'ne' ? item.ne : item.en) + '</option>'; }).join('') + '</select></div>' +
+            '<div><label class="' + ui.label + '" for="lc-lang">' + KG.tx('Language', 'भाषा') + '</label><select id="lc-lang" class="' + ui.input + '"><option value="en">English</option><option value="ne">नेपाली (Nepali)</option></select></div>' +
             '<div><label class="' + ui.label + '" for="lc-cur">' + KG.tx('Currency', 'मुद्रा') + '</label><select id="lc-cur" class="' + ui.input + '">' + Object.keys(C.currency.fallbackRates).map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join('') + '</select></div>' +
             '<p class="' + ui.muted + '">' + KG.tx('Prices are charged in NPR. Other currencies are estimates.', 'मूल्य NPR मा लिइन्छ। अन्य मुद्रा अनुमान मात्र हुन्।') + '</p>' +
             '<div class="flex gap-2 justify-end"><button type="button" data-close class="' + ui.btn2 + '">' + KG.tx('Cancel', 'रद्द') + '</button><button type="button" id="lc-save" class="' + ui.btn + '">' + KG.tx('Save', 'सुरक्षित') + '</button></div></div>');
+        body.querySelector('#lc-country').value = currentLocale().code;
         body.querySelector('#lc-lang').value = KG.lang(); body.querySelector('#lc-cur').value = KG.cur;
+        body.querySelector('#lc-country').addEventListener('change', function (event) {
+            const selected = LOCALES.find(function (item) { return item.code === event.target.value; });
+            if (selected) body.querySelector('#lc-cur').value = selected.currency;
+        });
         body.querySelector('#lc-save').addEventListener('click', function () {
-            const l = body.querySelector('#lc-lang').value, c = body.querySelector('#lc-cur').value;
+            const country = body.querySelector('#lc-country').value, l = body.querySelector('#lc-lang').value, c = body.querySelector('#lc-cur').value;
             KG.closeModal('kgLocale');
-            KG.cur = c; KG.store.set('kg-currency', c);
+            KG.store.set('kg-country', country); KG.setCurrency(c);
             if (typeof selectLang === 'function') selectLang(l); else applyLang(l);
             calcShipping(); KG.updateLocaleLabel();
         });
@@ -488,7 +532,7 @@
         upgradeHeader(); wireCatMenu(); upgradeShippingCalculator(); KG.watchFloat();
         KG.alignFeatured(); setTimeout(KG.alignFeatured, 600); if (document.fonts) document.fonts.ready.then(KG.alignFeatured);
         const pf = document.getElementById('pfCategory');
-        if (pf && !pf.dataset.kg) { pf.dataset.kg = '1'; KG.CATEGORIES.filter(function (c) { return c.isNew; }).forEach(function (c) { pf.insertAdjacentHTML('beforeend', '<option value="' + c.id + '">' + esc(c.en) + '</option>'); }); }
+        if (pf) KG.refreshCategoryUI();
         KG.updateFavCount();
         renderProducts(); calcShipping();
     };

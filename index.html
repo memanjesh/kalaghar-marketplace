@@ -8,7 +8,7 @@
     <meta property="og:description" content="Handmade in Nepal, shipped worldwide. Buy directly from verified artisans and cooperatives.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#b91c1c">
-    <link rel="stylesheet" href="assets/kg.css?v=20261019j">
+    <link rel="stylesheet" href="assets/kg.css?v=20261019m">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
@@ -87,7 +87,7 @@
 
     <!-- HEADER (Etsy layout) -->
     <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40 transition-colors">
-        <div class="max-w-[1440px] mx-auto px-4 lg:px-8 h-[72px] flex items-center gap-2 md:gap-4">
+        <div class="kg-header-row max-w-[1440px] mx-auto px-4 lg:px-8 h-[72px] flex items-center gap-2 md:gap-4">
             <!-- Categories (left of logo on phones, right of it on larger screens) -->
             <div class="relative order-first md:order-2 shrink-0" id="kgCatMenuWrap">
                 <button id="kgCatBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="kgCatPanel"
@@ -97,7 +97,7 @@
             </div>
 
             <!-- Logo -->
-            <a href="#" class="order-1 flex items-center gap-2 shrink-0" aria-label="KalaGhar home">
+            <a href="#" class="kg-header-brand order-1 flex items-center gap-2 shrink-0" aria-label="KalaGhar home">
                 <span class="kg-logo-mark kg-grad w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-lg font-nepali shadow-sm" aria-hidden="true">क</span>
                 <span data-kg-content="header-brand" class="text-[26px] font-extrabold tracking-tight text-gray-900 dark:text-white leading-none">KalaGhar</span>
             </a>
@@ -114,11 +114,11 @@
             </form>
 
             <!-- Right-side actions -->
-            <div class="order-4 ml-auto md:ml-0 flex items-center gap-0.5 sm:gap-1 shrink-0">
+            <div class="kg-header-actions order-4 ml-auto md:ml-0 flex items-center gap-0.5 sm:gap-1 shrink-0">
                 <button type="button" onclick="document.getElementById('kgMobileSearch').classList.toggle('hidden');document.getElementById('kgMobileSearchInput').focus()" aria-label="Search" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"><i class="fa-solid fa-magnifying-glass"></i></button>
 
                 <div class="relative" id="langDropdownWrap">
-                    <button onclick="toggleLangDropdown()" type="button" aria-haspopup="true" aria-label="Change language" class="flex items-center gap-1.5 h-10 px-2.5 rounded-full text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                    <button onclick="toggleLangDropdown()" type="button" aria-haspopup="true" aria-label="Change language" class="kg-header-language flex items-center gap-1.5 h-10 px-2.5 rounded-full text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                         <img id="currentLangFlag" src="https://flagcdn.com/24x18/us.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
                         <span id="langLabel">ENG</span>
                     </button>
@@ -143,7 +143,6 @@
                 <a href="#" class="relative w-10 h-10 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition" title="Bag"><i class="fa-solid fa-bag-shopping text-lg"></i>
                     <span id="cartCounter" class="absolute top-0.5 right-0.5 kg-grad text-white text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-bold">0</span>
                 </a>
-                <button id="themeToggle" type="button" class="hidden" aria-hidden="true" tabindex="-1"><i id="themeIcon"></i></button>
             </div>
         </div>
 
@@ -273,7 +272,7 @@
             </div>
             <button type="button" onclick="KG.goCategory('all')" class="text-sm font-semibold text-red-700 dark:text-amber-300 hover:underline" data-i18n="viewAll">View All →</button>
         </div>
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
+        <div id="kgCategoryTiles" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
             <button type="button" onclick="KG.goCategory('pashmina')" class="kg-cattile group flex flex-col items-center text-center">
                 <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
                     <img src="https://images.pexels.com/photos/11733651/pexels-photo-11733651.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
@@ -567,34 +566,41 @@
                     </ul>
                 </div>
             </div>
-            <div class="kg-payment-row max-w-7xl mx-auto px-4 sm:px-6 pb-7">
-                <span class="kg-payment-label" data-i18n="weAccept">WE ACCEPT:</span>
-                <div class="kg-payment-methods" aria-label="Accepted payment methods">
-                    <span class="kg-payment-tile kg-pay-visa" title="Visa"><i class="fa-brands fa-cc-visa" aria-hidden="true"></i><span class="sr-only">Visa</span></span>
-                    <span class="kg-payment-tile kg-pay-mastercard" title="Mastercard"><i class="fa-brands fa-cc-mastercard" aria-hidden="true"></i><span class="sr-only">Mastercard</span></span>
-                    <span class="kg-payment-tile kg-pay-esewa">eSewa</span>
-                    <span class="kg-payment-tile kg-pay-khalti">Khalti</span>
-                    <span class="kg-payment-tile kg-pay-fonepay">fonepay</span>
-                    <span class="kg-payment-tile kg-pay-connectips">connectIPS</span>
-                    <span class="kg-payment-tile kg-pay-cash"><i class="fa-solid fa-money-bill-1" aria-hidden="true"></i>Cash</span>
-                </div>
-            </div>
             <div id="kgBizSlot"></div>
 
             <!-- Bottom bar -->
-            <div class="bg-black/15">
-                <div class="max-w-7xl mx-auto px-4 pt-4 pb-24 md:pb-4 md:pr-60 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
-                    <button type="button" onclick="KG.openLocale()" class="flex items-center gap-2 rounded-full border border-white/25 hover:bg-white/10 px-3 py-1.5 text-white">
-                        <img src="https://flagcdn.com/24x18/np.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
-                        <span id="kgLocaleLabel">Nepal | English | NPR</span>
-                    </button>
-                    <span class="text-white/80" data-i18n="fRights">&copy; 2026 KalaGhar Marketplace. All rights reserved.</span>
-                    <div class="flex flex-wrap gap-4 font-medium">
-                        <a href="pages/terms.html" class="kg-flink" data-i18n="terms">Terms</a>
-                        <a href="pages/privacy.html" class="kg-flink" data-i18n="privacy">Privacy</a>
-                        <a href="sitemap.xml" class="kg-flink" data-i18n="sitemap">Sitemap</a>
-                        <button type="button" onclick="toggleTheme()" class="kg-flink" aria-label="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
-                        <a href="#" onclick="openAdminPanel(); return false;" class="kg-flink font-bold" data-i18n="admin">Admin</a>
+            <div class="kg-footer-bottom">
+                <div class="kg-footer-bottom-grid max-w-7xl mx-auto px-4 sm:px-6 py-5 md:py-6">
+                    <span id="kgFooterCopyright" class="kg-footer-copyright">&copy; 2026 KalaGhar Marketplace. All rights reserved.</span>
+
+                    <div id="kgPaymentRow" class="kg-payment-row">
+                        <span id="kgPaymentLabel" class="kg-payment-label">We accept</span>
+                        <div id="kgPaymentMethods" class="kg-payment-methods" aria-label="Accepted payment methods">
+                            <span class="kg-payment-tile kg-pay-visa" title="Visa"><i class="fa-brands fa-cc-visa" aria-hidden="true"></i><span class="sr-only">Visa</span></span>
+                            <span class="kg-payment-tile kg-pay-mastercard" title="Mastercard"><i class="fa-brands fa-cc-mastercard" aria-hidden="true"></i><span class="sr-only">Mastercard</span></span>
+                            <span class="kg-payment-tile kg-pay-esewa">eSewa</span>
+                            <span class="kg-payment-tile kg-pay-khalti">Khalti</span>
+                            <span class="kg-payment-tile kg-pay-fonepay">fonepay</span>
+                            <span class="kg-payment-tile kg-pay-connectips">connectIPS</span>
+                            <span class="kg-payment-tile kg-pay-cash"><i class="fa-solid fa-money-bill-1" aria-hidden="true"></i>Cash</span>
+                        </div>
+                    </div>
+
+                    <div class="kg-footer-actions">
+                        <div id="kgFooterUtilityLinks" class="kg-footer-utility-links">
+                            <a href="pages/terms.html" class="kg-flink">Terms</a>
+                            <a href="pages/privacy.html" class="kg-flink">Privacy</a>
+                            <a href="sitemap.xml" class="kg-flink">Sitemap</a>
+                            <a href="#admin" onclick="openAdminPanel(); return false;" class="kg-flink font-bold">Admin</a>
+                        </div>
+                        <div class="kg-footer-preferences">
+                            <button type="button" onclick="KG.openLocale()" class="kg-locale-button" aria-label="Change country, language and currency">
+                                <img id="kgLocaleFlag" src="https://flagcdn.com/24x18/np.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
+                                <span id="kgLocaleLabel">Nepal <span aria-hidden="true">&middot;</span> English <span aria-hidden="true">&middot;</span> NPR</span>
+                                <i class="fa-solid fa-chevron-down text-[8px] opacity-70" aria-hidden="true"></i>
+                            </button>
+                            <button id="themeToggle" type="button" onclick="toggleTheme()" class="kg-theme-button" aria-label="Toggle dark mode" title="Toggle theme"><i id="themeIcon" class="fa-solid fa-moon"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1633,13 +1639,13 @@
 
     <!-- KalaGhar feature modules -->
     <script src="assets/config.js?v=20261019i"></script>
-    <script src="assets/kg-content.js?v=20261019a"></script>
-    <script src="assets/kg-core.js?v=20261019i"></script>
-    <script src="assets/kg-shop.js?v=20261019j"></script>
+    <script src="assets/kg-content.js?v=20261019m"></script>
+    <script src="assets/kg-core.js?v=20261019m"></script>
+    <script src="assets/kg-shop.js?v=20261019m"></script>
     <script src="assets/kg-checkout.js?v=20261019i"></script>
-    <script src="assets/kg-discover.js?v=20261019j"></script>
-    <script src="assets/kg-seller.js?v=20261019i"></script>
-    <script src="assets/kg-admin.js?v=20261019j"></script>
-    <script src="assets/kg-init.js?v=20261019i"></script>
+    <script src="assets/kg-discover.js?v=20261019m"></script>
+    <script src="assets/kg-seller.js?v=20261019m"></script>
+    <script src="assets/kg-admin.js?v=20261019m"></script>
+    <script src="assets/kg-init.js?v=20261019m"></script>
 </body>
 </html>

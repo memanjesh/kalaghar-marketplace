@@ -23,6 +23,11 @@ test('editable content hooks and accessible animation are present', function () 
     assert.match(html, /id="kgAnnouncementTrack"/);
     assert.match(html, /id="kgDispatchNotice"/);
     assert.match(html, /id="kgFooterHelpLinks"/);
+    assert.match(html, /id="kgFooterCopyright"/);
+    assert.match(html, /id="kgPaymentMethods"/);
+    assert.match(html, /id="kgFooterUtilityLinks"/);
+    assert.match(html, /id="kgLocaleFlag"/);
+    assert.match(html, /id="kgCategoryTiles"/);
     assert.match(html, /prefers-reduced-motion:\s*reduce/);
     assert.match(html, />FAQ<\/a>/);
     assert.equal((html.match(/class="kg-payment-tile/g) || []).length, 7);
@@ -33,4 +38,16 @@ test('content file is valid and includes visible defaults', function () {
     assert.equal(content.header.items.length >= 1, true);
     assert.equal(content.dispatch.visible, true);
     assert.equal(content.footer.items[0].text, 'FAQ');
+    assert.equal(content.header.featuredLinks.length, 8);
+    assert.equal(content.catalog.categories.length, 16);
+    assert.equal(content.footer.bottom.links.some(function (link) { return link.id === 'admin'; }), true);
+});
+
+test('mobile layout includes scrollable navigation and edge-safe footer rules', function () {
+    const css = fs.readFileSync(path.join(root, 'assets', 'kg.css'), 'utf8');
+    const admin = fs.readFileSync(path.join(root, 'assets', 'kg-admin.js'), 'utf8');
+    assert.match(css, /@media \(max-width: 1023px\)/);
+    assert.match(css, /\.kg-footer-bottom-grid/);
+    assert.match(html, /kg-catnav overflow-x-auto/);
+    assert.match(admin, /tabBar\.classList\.add\('overflow-x-auto'\)/);
 });

@@ -187,7 +187,7 @@
                 '<div><label class="' + ui.label + '" for="ws-company">' + KG.tx('Business name', 'व्यवसाय') + '</label><input id="ws-company" required class="' + ui.input + '"></div>' +
                 '<div><label class="' + ui.label + '" for="ws-email">' + KG.tx('Email', 'इमेल') + '</label><input id="ws-email" type="email" required class="' + ui.input + '"></div>' +
                 '<div><label class="' + ui.label + '" for="ws-country">' + KG.tx('Country', 'देश') + '</label><input id="ws-country" required class="' + ui.input + '"></div>' +
-                '<div><label class="' + ui.label + '" for="ws-cat">' + KG.tx('Products', 'उत्पादन') + '</label><select id="ws-cat" class="' + ui.input + '">' + KG.CATEGORIES.map(function (c) { return '<option value="' + c.id + '">' + esc(c.en) + '</option>'; }).join('') + '</select></div>' +
+                '<div><label class="' + ui.label + '" for="ws-cat">' + KG.tx('Products', 'उत्पादन') + '</label><select id="ws-cat" class="' + ui.input + '">' + KG.visibleCategories().map(function (c) { return '<option value="' + c.id + '">' + esc(c.en) + '</option>'; }).join('') + '</select></div>' +
                 '<div><label class="' + ui.label + '" for="ws-qty">' + KG.tx('Quantity', 'परिमाण') + '</label><input id="ws-qty" type="number" min="10" value="50" required class="' + ui.input + '"></div></div>' +
                 '<div><label class="' + ui.label + '" for="ws-msg">' + KG.tx('Details', 'विवरण') + '</label><textarea id="ws-msg" rows="3" class="' + ui.input + '" placeholder="' + KG.tx('Colours, timeline, packaging, budget…', 'रङ, समय, प्याकेजिङ, बजेट…') + '"></textarea></div>' +
                 '<button class="' + ui.btn + ' w-full">' + KG.tx('Request a quote', 'कोटेसन माग्नुहोस्') + '</button></form>' +
@@ -276,7 +276,7 @@
         const m = document.getElementById('artisanModal'); if (!m) return;
         const form = m.querySelector('form');
         const sel = form.querySelector('select');
-        sel.innerHTML = '<option value="">Select…</option>' + KG.CATEGORIES.map(function (c) { return '<option value="' + c.id + '">' + esc(c.en) + '</option>'; }).join('');
+        sel.innerHTML = '<option value="">Select…</option>' + KG.visibleCategories().map(function (c) { return '<option value="' + c.id + '">' + esc(c.en) + '</option>'; }).join('');
         const emailWrap = form.querySelector('input[type=email]').parentNode;
         emailWrap.insertAdjacentHTML('afterend',
             '<div class="grid grid-cols-2 gap-3"><div><label class="' + ui.label + '" for="ap-region">' + KG.tx('Region', 'क्षेत्र') + '</label><select id="ap-region" class="' + ui.input + '">' + KG.REGIONS.map(function (r) { return '<option value="' + r.id + '">' + esc(r.en) + '</option>'; }).join('') + '<option value="other">Other</option></select></div>' +

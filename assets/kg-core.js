@@ -161,6 +161,18 @@
         { id: 'clothes',    en: 'Clothes',                  ne: 'लुगा' },
         { id: 'accessories',en: 'Accessories',              ne: 'सामग्री' }
     ];
+    KG.CATEGORIES.forEach(function (category) {
+        category.visible = category.visible !== false;
+        if (!category.icon) category.icon = 'fa-border-all';
+    });
+    KG.visibleCategories = function () { return KG.CATEGORIES.filter(function (category) { return category.visible !== false; }); };
+    KG.setCategories = function (categories) {
+        if (!Array.isArray(categories) || !categories.length) return;
+        KG.CATEGORIES.splice.apply(KG.CATEGORIES, [0, KG.CATEGORIES.length].concat(categories.map(function (category) {
+            return { id: category.id, en: category.en, ne: category.ne || category.en, icon: category.icon || 'fa-border-all', visible: category.visible !== false };
+        })));
+        if (typeof KG.refreshCategoryUI === 'function') KG.refreshCategoryUI();
+    };
     KG.catName = function (id) { const c = KG.CATEGORIES.find(function (x) { return x.id === id; }); return c ? KG.tx(c.en, c.ne) : id; };
 
     /* ---------------------------- regions ---------------------------- */

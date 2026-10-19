@@ -12,7 +12,7 @@
     const td = function (h, cls) { return '<td class="p-3 align-top ' + (cls || '') + '">' + h + '</td>'; };
 
     const NEW_TABS = [
-        ['content', 'Site content'], ['complaints', 'Complaints'], ['inquiries', 'Inquiries'], ['translations', 'Translations'],
+        ['content', 'Site content'], ['categories', 'Categories'], ['complaints', 'Complaints'], ['inquiries', 'Inquiries'], ['translations', 'Translations'],
         ['coupons', 'Coupons'], ['payouts', 'Payouts'], ['qr', 'QR codes'], ['launch', 'Launch checklist']
     ];
     function addTabs() {
@@ -47,6 +47,28 @@
             '<div class="grid grid-cols-2 gap-3"><div><label class="' + ui.label + '">Text color</label><input type="color" data-field="color" value="' + esc(item.color) + '" class="w-full h-10 rounded border border-gray-300 dark:border-gray-700 bg-transparent p-1"></div>' +
             '<div><label class="' + ui.label + '">Size (px)</label><input type="number" min="10" max="48" data-field="fontSize" value="' + Number(item.fontSize || 14) + '" class="' + ui.input + '"></div></div></div>';
     }
+    function styledTextCard(section, title, item, maxLength) {
+        return '<div class="rounded-xl border border-gray-200 dark:border-gray-700 p-3 space-y-3" data-content-card data-section="' + section + '">' +
+            '<div class="flex items-center justify-between gap-3"><strong class="text-sm">' + title + '</strong><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-field="visible"' + (item.visible ? ' checked' : '') + '> Show</label></div>' +
+            '<input maxlength="' + (maxLength || 160) + '" data-field="text" value="' + esc(item.text) + '" class="' + ui.input + '">' +
+            '<div class="grid grid-cols-2 gap-3"><div><label class="' + ui.label + '">Text color</label><input type="color" data-field="color" value="' + esc(item.color) + '" class="w-full h-10 rounded border border-gray-300 dark:border-gray-700 bg-transparent p-1"></div>' +
+            '<div><label class="' + ui.label + '">Size (px)</label><input type="number" min="10" max="48" data-field="fontSize" value="' + Number(item.fontSize || 12) + '" class="' + ui.input + '"></div></div></div>';
+    }
+    function paymentCard(item, index) {
+        return '<div class="rounded-xl border border-gray-200 dark:border-gray-700 p-3" data-content-card data-section="payment" data-index="' + index + '">' +
+            '<div class="flex items-center gap-3"><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-field="visible"' + (item.visible ? ' checked' : '') + '> Show</label>' +
+            '<input maxlength="40" aria-label="Payment method name" data-field="text" value="' + esc(item.text) + '" class="' + ui.input + ' flex-1">' +
+            '<button type="button" data-action="remove" class="text-xs font-semibold text-red-700 dark:text-red-400" aria-label="Remove payment method"><i class="fa-solid fa-trash"></i></button></div></div>';
+    }
+    function featuredLinkCard(item, index) {
+        const option = function (value, label) { return '<option value="' + value + '"' + (item.action === value ? ' selected' : '') + '>' + label + '</option>'; };
+        return '<div class="rounded-xl border border-gray-200 dark:border-gray-700 p-3 space-y-3" data-content-card data-section="featured" data-index="' + index + '">' +
+            '<div class="flex items-center justify-between gap-3"><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-field="visible"' + (item.visible ? ' checked' : '') + '> Show</label><button type="button" data-action="remove" class="text-xs font-semibold text-red-700 dark:text-red-400"><i class="fa-solid fa-trash mr-1"></i>Remove</button></div>' +
+            '<div><label class="' + ui.label + '">Label</label><input maxlength="80" data-field="text" value="' + esc(item.text) + '" class="' + ui.input + '"></div>' +
+            '<div class="grid sm:grid-cols-2 gap-3"><div><label class="' + ui.label + '">Action</label><select data-field="action" class="' + ui.input + '">' + option('gift', 'Open Gift Mode') + option('category', 'Open category') + option('section', 'Scroll to section') + option('link', 'Open link') + '</select></div>' +
+            '<div><label class="' + ui.label + '">Target</label><input maxlength="160" data-field="target" value="' + esc(item.target) + '" class="' + ui.input + '" placeholder="pashmina, send-home, or URL"></div></div>' +
+            '<div class="grid grid-cols-3 gap-3"><div><label class="' + ui.label + '">Icon</label><input maxlength="40" data-field="icon" value="' + esc(item.icon) + '" class="' + ui.input + '" placeholder="fa-gift"></div><div><label class="' + ui.label + '">Color</label><input type="color" data-field="color" value="' + esc(item.color) + '" class="w-full h-10 rounded border p-1"></div><div><label class="' + ui.label + '">Size</label><input type="number" min="10" max="48" data-field="fontSize" value="' + Number(item.fontSize || 15) + '" class="' + ui.input + '"></div></div></div>';
+    }
     function renderContentEditor(el) {
         const d = contentDraft;
         const card = 'bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5';
@@ -55,11 +77,17 @@
             '<div class="grid xl:grid-cols-2 gap-4">' +
             '<section class="' + card + '"><h4 class="font-bold mb-1">Header</h4><p class="text-xs text-gray-500 mb-4">Brand and announcement-bar messages.</p>' +
                 '<div data-content-card data-section="brand" class="rounded-xl bg-gray-50 dark:bg-gray-800/50 p-3 mb-3 space-y-3"><div class="flex items-center justify-between"><strong class="text-sm">Brand name</strong><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-field="visible"' + (d.header.brand.visible ? ' checked' : '') + '> Show</label></div><input data-field="text" maxlength="60" value="' + esc(d.header.brand.text) + '" class="' + ui.input + '"><div class="grid grid-cols-2 gap-3"><input type="color" aria-label="Brand color" data-field="color" value="' + esc(d.header.brand.color) + '" class="w-full h-10 rounded border p-1"><input type="number" aria-label="Brand size" min="10" max="48" data-field="fontSize" value="' + Number(d.header.brand.fontSize) + '" class="' + ui.input + '"></div></div>' +
-                '<div class="space-y-3">' + d.header.items.map(function (item, i) { return contentItemCard('header', item, i, false); }).join('') + '</div><button type="button" data-action="add" data-section="header" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add header message</button></section>' +
+                '<div class="space-y-3">' + d.header.items.map(function (item, i) { return contentItemCard('header', item, i, false); }).join('') + '</div><button type="button" data-action="add" data-section="header" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add header message</button>' +
+                '<div class="border-t border-gray-200 dark:border-gray-700 mt-5 pt-5"><h5 class="font-bold text-sm mb-1">Featured navigation</h5><p class="text-xs text-gray-500 mb-3">Manage Gifts, category shortcuts, and section links shown below the search bar.</p><div class="space-y-3">' + d.header.featuredLinks.map(featuredLinkCard).join('') + '</div><button type="button" data-action="add" data-section="featured" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add featured link</button></div></section>' +
             '<section class="' + card + '"><div class="flex justify-between gap-3"><div><h4 class="font-bold mb-1">Dispatch banner</h4><p class="text-xs text-gray-500 mb-4">Add, edit, remove, or hide dispatch messages.</p></div><label class="flex items-center gap-2 text-xs font-semibold"><input id="kgDispatchVisible" type="checkbox"' + (d.dispatch.visible ? ' checked' : '') + '> Show banner</label></div>' +
                 '<div class="mb-3"><label class="' + ui.label + '">Banner background</label><input id="kgDispatchBackground" type="color" value="' + esc(d.dispatch.backgroundColor) + '" class="w-28 h-10 rounded border p-1"></div><div class="space-y-3">' + d.dispatch.items.map(function (item, i) { return contentItemCard('dispatch', item, i, false); }).join('') + '</div><button type="button" data-action="add" data-section="dispatch" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add dispatch message</button></section>' +
             '<section class="' + card + '"><h4 class="font-bold mb-1">Footer introduction</h4><p class="text-xs text-gray-500 mb-4">Edit the text shown below the footer logo.</p><div data-content-card data-section="about" class="space-y-3"><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-field="visible"' + (d.footer.about.visible ? ' checked' : '') + '> Show</label><textarea rows="4" maxlength="500" data-field="text" class="' + ui.input + '">' + esc(d.footer.about.text) + '</textarea><div class="grid grid-cols-2 gap-3"><input type="color" aria-label="About text color" data-field="color" value="' + esc(d.footer.about.color) + '" class="w-full h-10 rounded border p-1"><input type="number" aria-label="About text size" min="10" max="48" data-field="fontSize" value="' + Number(d.footer.about.fontSize) + '" class="' + ui.input + '"></div></div></section>' +
-            '<section class="' + card + '"><h4 class="font-bold mb-1">Footer help links</h4><p class="text-xs text-gray-500 mb-4">FAQ is the default label; links can be added, reordered by editing, hidden, or removed.</p><div class="space-y-3">' + d.footer.items.map(function (item, i) { return contentItemCard('footer', item, i, true); }).join('') + '</div><button type="button" data-action="add" data-section="footer" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add footer link</button></section></div>';
+            '<section class="' + card + '"><h4 class="font-bold mb-1">Footer help links</h4><p class="text-xs text-gray-500 mb-4">FAQ is the default label; links can be added, hidden, or removed.</p><div class="space-y-3">' + d.footer.items.map(function (item, i) { return contentItemCard('footer', item, i, true); }).join('') + '</div><button type="button" data-action="add" data-section="footer" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add footer link</button></section>' +
+            '<section class="' + card + '"><h4 class="font-bold mb-1">Footer bottom bar</h4><p class="text-xs text-gray-500 mb-4">Manage the copyright and the centered payment strip.</p><div class="space-y-3">' +
+                styledTextCard('copyright', 'Copyright', d.footer.bottom.copyright, 160) +
+                styledTextCard('payment-label', 'Payment heading', d.footer.bottom.paymentLabel, 60) +
+                '<div class="space-y-2">' + d.footer.bottom.payments.map(paymentCard).join('') + '</div><button type="button" data-action="add" data-section="payment" class="' + ui.btn2 + ' !py-1.5 !text-xs">+ Add payment method</button></div></section>' +
+            '<section class="' + card + '"><h4 class="font-bold mb-1">Footer bottom links</h4><p class="text-xs text-gray-500 mb-4">These links stay aligned at the far right. Keep an Admin link so you can reopen the console.</p><div class="space-y-3">' + d.footer.bottom.links.map(function (item, i) { return contentItemCard('legal', item, i, true); }).join('') + '</div><button type="button" data-action="add" data-section="legal" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add bottom link</button></section></div>';
 
         function status(message, kind, url) {
             const box = el.querySelector('#kgContentStatus'); box.classList.remove('hidden', 'bg-green-50', 'text-green-800', 'bg-red-50', 'text-red-800', 'bg-amber-50', 'text-amber-900');
@@ -70,8 +98,18 @@
         function targetFor(card) {
             if (card.dataset.section === 'brand') return d.header.brand;
             if (card.dataset.section === 'about') return d.footer.about;
-            const list = card.dataset.section === 'header' ? d.header.items : card.dataset.section === 'dispatch' ? d.dispatch.items : d.footer.items;
+            if (card.dataset.section === 'copyright') return d.footer.bottom.copyright;
+            if (card.dataset.section === 'payment-label') return d.footer.bottom.paymentLabel;
+            const list = listFor(card.dataset.section);
             return list[Number(card.dataset.index)];
+        }
+        function listFor(section) {
+            if (section === 'header') return d.header.items;
+            if (section === 'dispatch') return d.dispatch.items;
+            if (section === 'featured') return d.header.featuredLinks;
+            if (section === 'payment') return d.footer.bottom.payments;
+            if (section === 'legal') return d.footer.bottom.links;
+            return d.footer.items;
         }
         el.querySelectorAll('[data-content-card] [data-field]').forEach(function (input) {
             input.addEventListener(input.type === 'checkbox' || input.type === 'color' ? 'change' : 'input', function () {
@@ -85,17 +123,19 @@
         el.querySelectorAll('[data-action="remove"]').forEach(function (button) {
             button.addEventListener('click', function () {
                 const cardEl = button.closest('[data-content-card]');
-                const list = cardEl.dataset.section === 'header' ? d.header.items : cardEl.dataset.section === 'dispatch' ? d.dispatch.items : d.footer.items;
+                const list = listFor(cardEl.dataset.section);
                 list.splice(Number(cardEl.dataset.index), 1); window.KG_CONTENT.apply(d); renderContentEditor(el);
             });
         });
         el.querySelectorAll('[data-action="add"]').forEach(function (button) {
             button.addEventListener('click', function () {
                 const section = button.dataset.section;
-                const list = section === 'header' ? d.header.items : section === 'dispatch' ? d.dispatch.items : d.footer.items;
-                const item = { id: section + '-' + Date.now().toString(36), text: section === 'footer' ? 'New link' : 'New message', color: '#ffffff', fontSize: section === 'header' || section === 'dispatch' ? 12 : 14, visible: true };
+                const list = listFor(section);
+                const item = { id: section + '-' + Date.now().toString(36), text: section === 'payment' ? 'Payment' : section === 'footer' || section === 'legal' || section === 'featured' ? 'New link' : 'New message', color: section === 'featured' ? '#1f2937' : '#ffffff', fontSize: section === 'featured' ? 15 : section === 'header' || section === 'dispatch' || section === 'legal' ? 12 : 14, visible: true };
                 if (section === 'dispatch') item.color = '#4b5563';
-                if (section === 'footer') item.href = '#';
+                if (section === 'footer' || section === 'legal') item.href = '#';
+                if (section === 'featured') { item.action = 'section'; item.target = 'marketplace'; item.icon = ''; }
+                if (section === 'payment') { delete item.color; delete item.fontSize; }
                 list.push(item); window.KG_CONTENT.apply(d); renderContentEditor(el);
             });
         });
@@ -111,6 +151,54 @@
     function contentEditor(el) {
         contentDraft = window.KG_CONTENT.get();
         renderContentEditor(el);
+    }
+
+    /* ---------------------------- category manager ---------------------------- */
+    function categoriesEditor(el) {
+        const draft = window.KG_CONTENT.get();
+        const categories = draft.catalog.categories;
+        function draw(message, kind) {
+            el.innerHTML = '<div class="flex flex-wrap items-start justify-between gap-3 mb-4"><div><h3 class="text-lg font-bold">Store categories</h3><p class="text-xs text-gray-500 mt-1">Add, rename, hide, or delete categories across the menus, product forms, and storefront.</p></div><div class="flex gap-2"><button id="cat-add" class="' + ui.btn2 + ' !py-2 !text-xs">+ Add category</button><button id="cat-save" class="' + ui.btn + ' !py-2 !text-xs"><i class="fa-solid fa-cloud-arrow-up mr-1"></i>Publish categories</button></div></div>' +
+                '<div id="cat-status" class="' + (message ? '' : 'hidden ') + 'mb-4 rounded-lg p-3 text-xs ' + (kind === 'error' ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800') + '">' + esc(message || '') + '</div>' +
+                '<div class="grid lg:grid-cols-2 gap-3">' + categories.map(function (category, index) {
+                    const productCount = KG.products().filter(function (product) { return product.category === category.id; }).length;
+                    return '<article class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-4" data-category-index="' + index + '">' +
+                        '<div class="flex items-center justify-between gap-3 mb-3"><div class="flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 flex items-center justify-center"><i class="fa-solid ' + esc(category.icon) + '"></i></span><div><strong class="text-sm">' + esc(category.en) + '</strong><p class="text-[11px] text-gray-500">' + esc(category.id) + ' · ' + productCount + ' product' + (productCount === 1 ? '' : 's') + '</p></div></div>' +
+                        '<div class="flex items-center gap-3"><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-category-field="visible"' + (category.visible ? ' checked' : '') + '> Show</label><button type="button" data-delete-category class="text-xs font-semibold text-red-700 dark:text-red-400">Delete</button></div></div>' +
+                        '<div class="grid sm:grid-cols-2 gap-3"><div><label class="' + ui.label + '">English name</label><input data-category-field="en" maxlength="80" value="' + esc(category.en) + '" class="' + ui.input + '"></div><div><label class="' + ui.label + '">Nepali name</label><input data-category-field="ne" maxlength="80" value="' + esc(category.ne) + '" class="' + ui.input + '"></div></div>' +
+                        '<div class="mt-3"><label class="' + ui.label + '">Icon class</label><input data-category-field="icon" maxlength="40" value="' + esc(category.icon) + '" class="' + ui.input + '" placeholder="fa-gem"><p class="text-[11px] text-gray-500 mt-1">Use a Font Awesome icon such as fa-gem, fa-shirt, or fa-bag-shopping.</p></div></article>';
+                }).join('') + '</div>';
+
+            el.querySelectorAll('[data-category-field]').forEach(function (input) {
+                input.addEventListener(input.type === 'checkbox' ? 'change' : 'input', function () {
+                    const category = categories[Number(input.closest('[data-category-index]').dataset.categoryIndex)];
+                    category[input.dataset.categoryField] = input.type === 'checkbox' ? input.checked : input.value;
+                    window.KG_CONTENT.apply(draft);
+                });
+            });
+            el.querySelectorAll('[data-delete-category]').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const index = Number(button.closest('[data-category-index]').dataset.categoryIndex), category = categories[index];
+                    const count = KG.products().filter(function (product) { return product.category === category.id; }).length;
+                    if (count) { draw('“' + category.en + '” still has ' + count + ' product' + (count === 1 ? '' : 's') + '. Reassign those products or hide the category instead.', 'error'); return; }
+                    if (categories.length === 1) { draw('Keep at least one category in the store.', 'error'); return; }
+                    if (!confirm('Delete the category “' + category.en + '”?')) return;
+                    categories.splice(index, 1); window.KG_CONTENT.apply(draft); draw('Category removed from this draft. Publish to make it live.', 'success');
+                });
+            });
+            el.querySelector('#cat-add').addEventListener('click', function () {
+                let number = categories.length + 1, id = 'new-category-' + number;
+                while (categories.some(function (category) { return category.id === id; })) { number += 1; id = 'new-category-' + number; }
+                categories.push({ id: id, en: 'New Category', ne: 'नयाँ वर्ग', icon: 'fa-border-all', visible: true });
+                window.KG_CONTENT.apply(draft); draw('New category added to this draft. Rename it, then publish.', 'success');
+            });
+            el.querySelector('#cat-save').addEventListener('click', async function () {
+                const button = this; button.disabled = true; button.textContent = 'Publishing…';
+                try { await window.KG_CONTENT.save(draft); draw('Categories published. GitHub Pages normally updates within a few minutes.', 'success'); }
+                catch (error) { draw(error.message || 'Publishing failed.', 'error'); }
+            });
+        }
+        draw('', 'success');
     }
 
     /* ---------------------------- overview ---------------------------- */
@@ -318,6 +406,6 @@
         });
     }
 
-    const RENDER = { content: contentEditor, complaints: complaints, inquiries: inquiries, translations: translations, coupons: coupons, payouts: payouts, qr: qr, launch: launch };
+    const RENDER = { content: contentEditor, categories: categoriesEditor, complaints: complaints, inquiries: inquiries, translations: translations, coupons: coupons, payouts: payouts, qr: qr, launch: launch };
     KG.initAdmin = function () { addTabs(); };
 })();
