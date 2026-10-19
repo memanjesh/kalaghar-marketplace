@@ -107,7 +107,7 @@
         "action": "section",
         "target": "send-home",
         "icon": "",
-        "color": "#1f2937",
+        "color": "#aa7942",
         "fontSize": 15,
         "visible": true
       }
