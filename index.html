@@ -45,10 +45,10 @@
         .footer-icon-box {
             width: 40px; height: 40px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            background-color: #8b5a2b; /* Brown color from screenshot */
+            background-color: #b91c1c; /* Red theme */
             color: white; font-size: 16px;
         }
-        .dark .footer-icon-box { background-color: #4b2e1e; }
+        .dark .footer-icon-box { background-color: #991b1b; }
         
         .footer-link { transition: color 0.2s; }
         .footer-link:hover { color: #b91c1c; }
@@ -179,6 +179,17 @@
         </div>
     </section>
 
+    <!-- CATEGORY FILTER BAR (Moved here, below Hero) -->
+    <section class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-[64px] z-30 shadow-sm transition-colors">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-center gap-2" id="categoryButtons">
+            <button onclick="filterCategory('all')" class="cat-btn active bg-red-700 text-white text-xs px-4 py-2 rounded-full font-semibold transition shadow-sm" data-i18n="fAll">All Crafts</button>
+            <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-4 py-2 rounded-full font-semibold transition" data-i18n="fPashmina">Pashmina &amp; Cashmere</button>
+            <button onclick="filterCategory('dhaka')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-4 py-2 rounded-full font-semibold transition" data-i18n="fDhaka">Palpali Dhaka</button>
+            <button onclick="filterCategory('lokta')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-4 py-2 rounded-full font-semibold transition" data-i18n="fLokta">Lokta Paper</button>
+            <button onclick="filterCategory('metal')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-4 py-2 rounded-full font-semibold transition" data-i18n="fMetal">Patan Statues</button>
+        </div>
+    </section>
+
     <!-- FEATURED SPOTLIGHT -->
     <section class="max-w-7xl mx-auto px-4 py-10">
         <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden grid md:grid-cols-2 transition-colors">
@@ -275,13 +286,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="catalogTitle">Curated Heritage Collections</h2>
                 <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="catalogSub">Filter by authentic craft category</p>
             </div>
-            <div class="flex flex-wrap gap-2" id="categoryButtons">
-                <button onclick="filterCategory('all')" class="cat-btn active bg-red-700 text-white text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fAll">All Crafts</button>
-                <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fPashmina">Pashmina &amp; Cashmere</button>
-                <button onclick="filterCategory('dhaka')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fDhaka">Palpali Dhaka</button>
-                <button onclick="filterCategory('lokta')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fLokta">Lokta Paper</button>
-                <button onclick="filterCategory('metal')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fMetal">Patan Statues</button>
-            </div>
+            <!-- Removed buttons from here, they are now above -->
         </div>
 
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
@@ -381,29 +386,27 @@
         </div>
     </section>
 
-    <!-- =========================================================
-         NEW FOOTER MATCHING IVANNA STAY SCREENSHOT
-         ========================================================= -->
-    <footer class="bg-[#fcfbf9] dark:bg-gray-950 text-[#5a4b45] dark:text-gray-400 pt-16 pb-8 border-t border-[#e8e3df] dark:border-gray-800 mt-auto transition-colors">
+    <!-- FOOTER (Red/White Theme) -->
+    <footer class="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 pt-16 pb-8 border-t border-gray-200 dark:border-gray-800 mt-auto transition-colors">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">
             
             <!-- Col 1: Brand & Social -->
             <div class="lg:col-span-4">
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 bg-[#8b5a2b] dark:bg-gray-800 text-white rounded-lg flex items-center justify-center font-bold text-xl font-nepali">क</div>
+                    <div class="w-10 h-10 bg-red-700 text-white rounded-lg flex items-center justify-center font-bold text-xl font-nepali">क</div>
                     <div>
-                        <span class="text-2xl font-extrabold text-[#5a4b45] dark:text-white tracking-tight block leading-none" style="font-family: 'Mukta', serif;">KalaGhar</span>
-                        <span class="text-[10px] text-[#8b5a2b] dark:text-gray-500 font-nepali font-semibold tracking-wider">FEEL THE HERITAGE</span>
+                        <span class="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight block leading-none" style="font-family: 'Mukta', serif;">KalaGhar</span>
+                        <span class="text-[10px] text-red-700 dark:text-red-400 font-nepali font-semibold tracking-wider uppercase">FEEL THE HERITAGE</span>
                     </div>
                 </div>
                 <p class="text-sm leading-relaxed mb-6 max-w-xs" data-i18n="footerAbout">
                     Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.
                 </p>
                 <div class="flex gap-3">
-                    <a href="#" class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-[#8b5a2b] hover:text-[#8b5a2b] transition">
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-red-700 hover:text-red-700 transition">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-[#8b5a2b] hover:text-[#8b5a2b] transition">
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-red-700 hover:text-red-700 transition">
                         <i class="fa-brands fa-facebook-f"></i>
                     </a>
                 </div>
@@ -411,7 +414,7 @@
 
             <!-- Col 2: Explore Links -->
             <div class="lg:col-span-2">
-                <h4 class="font-bold text-[#5a4b45] dark:text-white mb-4 text-sm" data-i18n="expTitle">Explore</h4>
+                <h4 class="font-bold text-gray-900 dark:text-white mb-4 text-sm" data-i18n="expTitle">Explore</h4>
                 <ul class="space-y-3 text-sm">
                     <li><a href="#" class="footer-link" data-i18n="fAll">All Crafts</a></li>
                     <li><a href="#" class="footer-link" data-i18n="fPashmina">Pashmina &amp; Cashmere</a></li>
@@ -423,7 +426,7 @@
 
             <!-- Col 3: Support Links -->
             <div class="lg:col-span-2">
-                <h4 class="font-bold text-[#5a4b45] dark:text-white mb-4 text-sm" data-i18n="supTitle">Support</h4>
+                <h4 class="font-bold text-gray-900 dark:text-white mb-4 text-sm" data-i18n="supTitle">Support</h4>
                 <ul class="space-y-3 text-sm">
                     <li><a href="#" class="footer-link" data-i18n="fShippingInfo">Shipping &amp; Customs Info</a></li>
                     <li><a href="#" class="footer-link" data-i18n="fCert">Certificate of Origin</a></li>
@@ -435,7 +438,7 @@
 
             <!-- Col 4: Contact Info -->
             <div class="lg:col-span-4">
-                <h4 class="font-bold text-[#5a4b45] dark:text-white mb-4 text-sm" data-i18n="conTitle">Contact</h4>
+                <h4 class="font-bold text-gray-900 dark:text-white mb-4 text-sm" data-i18n="conTitle">Contact</h4>
                 <ul class="space-y-4 text-sm">
                     <li class="flex items-start gap-3">
                         <div class="footer-icon-box"><i class="fa-solid fa-location-dot"></i></div>
@@ -463,11 +466,11 @@
         </div>
 
         <!-- Bottom Bar -->
-        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-[#e8e3df] dark:border-gray-800 flex flex-col lg:flex-row justify-between items-center gap-4 text-xs">
+        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-gray-200 dark:border-gray-800 flex flex-col lg:flex-row justify-between items-center gap-4 text-xs">
             
-            <!-- Left: Theme toggle (optional duplicate for layout match) & Copyright -->
+            <!-- Left: Theme toggle & Copyright -->
             <div class="flex items-center gap-4">
-                <button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-500 hover:text-[#5a4b45] dark:hover:text-white transition">
+                <button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-500 hover:text-red-700 transition">
                     <i class="fa-regular fa-sun"></i>
                 </button>
                 <span data-i18n="fRights">&copy; 2026 KalaGhar Marketplace. All rights reserved.</span>
@@ -487,10 +490,10 @@
 
             <!-- Right: Legal Links -->
             <div class="flex gap-4 font-medium">
-                <a href="#" class="hover:text-[#5a4b45] dark:hover:text-white" data-i18n="privacy">Privacy</a>
-                <a href="#" class="hover:text-[#5a4b45] dark:hover:text-white" data-i18n="terms">Terms</a>
-                <a href="#" class="hover:text-[#5a4b45] dark:hover:text-white" data-i18n="sitemap">Sitemap</a>
-                <a href="#" onclick="openAdminPanel(); return false;" class="font-bold hover:text-[#5a4b45] dark:hover:text-white" data-i18n="admin">Admin</a>
+                <a href="#" class="hover:text-red-700 transition" data-i18n="privacy">Privacy</a>
+                <a href="#" class="hover:text-red-700 transition" data-i18n="terms">Terms</a>
+                <a href="#" class="hover:text-red-700 transition" data-i18n="sitemap">Sitemap</a>
+                <a href="#" onclick="openAdminPanel(); return false;" class="font-bold hover:text-red-700 transition" data-i18n="admin">Admin</a>
             </div>
         </div>
     </footer>
@@ -661,11 +664,8 @@
         </div>
     </div>
 
-    <!-- =========================================================
-         FLOATING SUPPORT (Matching screenshot: 3 buttons)
-         ========================================================= -->
+    <!-- FLOATING SUPPORT -->
     <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
-        <!-- Chat Panel -->
         <div id="chatPanel" class="hidden w-80 max-w-[calc(100vw-2.5rem)] h-96 flex-col bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
             <div class="bg-red-700 text-white px-4 py-3 flex items-start justify-between">
                 <div>
@@ -682,22 +682,18 @@
             </form>
         </div>
         
-        <!-- Buttons -->
         <div class="flex items-center gap-3">
-            <!-- Call Button (Brownish to match design) -->
             <a href="tel:+9779851022453" aria-label="Call Support" title="Call Support"
-               class="w-12 h-12 rounded-full bg-[#8b5a2b] hover:bg-[#724922] text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105">
+               class="w-12 h-12 rounded-full bg-red-700 hover:bg-red-800 text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105">
                 <i class="fa-solid fa-phone"></i>
             </a>
-            <!-- WhatsApp Button (Green) -->
             <a href="https://wa.me/9779851022453?text=Namaste%20KalaGhar%2C%20I%20have%20a%20question" target="_blank" rel="noopener"
                aria-label="WhatsApp support" title="WhatsApp support"
                class="w-12 h-12 rounded-full bg-[#25D366] hover:bg-[#1ebd58] text-white shadow-lg flex items-center justify-center text-2xl transition hover:scale-105">
                 <i class="fa-brands fa-whatsapp"></i>
             </a>
-            <!-- Live Chat Button (Brownish to match design) -->
             <button onclick="toggleChat()" aria-label="Live chat" title="Live chat"
-                    class="w-12 h-12 rounded-full bg-[#8b5a2b] hover:bg-[#724922] text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105">
+                    class="w-12 h-12 rounded-full bg-red-700 hover:bg-red-800 text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105">
                 <i class="fa-solid fa-comment-dots"></i>
             </button>
         </div>
