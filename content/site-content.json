@@ -31,14 +31,86 @@
       }
     ],
     "featuredLinks": [
-      { "id": "gifts", "text": "Gifts", "action": "gift", "target": "", "icon": "fa-gift", "color": "#1f2937", "fontSize": 15, "visible": true },
-      { "id": "festival-gifts", "text": "Dashain Gifts", "action": "section", "target": "festival", "icon": "", "color": "#1f2937", "fontSize": 15, "visible": true },
-      { "id": "pashmina", "text": "Himalayan Pashmina & Wool", "action": "category", "target": "pashmina", "icon": "", "color": "#1f2937", "fontSize": 15, "visible": true },
-      { "id": "home-favorites", "text": "Home Favorites", "action": "category", "target": "homedecor", "icon": "", "color": "#1f2937", "fontSize": 15, "visible": true },
-      { "id": "fashion-finds", "text": "Fashion Finds", "action": "category", "target": "clothes", "icon": "", "color": "#1f2937", "fontSize": 15, "visible": true },
-      { "id": "singing-bowls", "text": "Singing Bowls", "action": "category", "target": "singingbowl", "icon": "", "color": "#1f2937", "fontSize": 15, "visible": true },
-      { "id": "thangka-paubha", "text": "Thangka & Paubha", "action": "category", "target": "thangka", "icon": "", "color": "#1f2937", "fontSize": 15, "visible": true },
-      { "id": "send-gift-home", "text": "Send a Gift Home", "action": "section", "target": "send-home", "icon": "", "color": "#1f2937", "fontSize": 15, "visible": true }
+      {
+        "id": "gifts",
+        "text": "Gifts",
+        "action": "gift",
+        "target": "",
+        "icon": "fa-gift",
+        "color": "#1f2937",
+        "fontSize": 15,
+        "visible": true
+      },
+      {
+        "id": "festival-gifts",
+        "text": "Dashain Gifts",
+        "action": "section",
+        "target": "festival",
+        "icon": "",
+        "color": "#1f2937",
+        "fontSize": 15,
+        "visible": true
+      },
+      {
+        "id": "pashmina",
+        "text": "Himalayan Pashmina & Wool",
+        "action": "category",
+        "target": "pashmina",
+        "icon": "",
+        "color": "#1f2937",
+        "fontSize": 15,
+        "visible": true
+      },
+      {
+        "id": "home-favorites",
+        "text": "Home Favorites",
+        "action": "category",
+        "target": "homedecor",
+        "icon": "",
+        "color": "#1f2937",
+        "fontSize": 15,
+        "visible": true
+      },
+      {
+        "id": "fashion-finds",
+        "text": "Fashion Finds",
+        "action": "category",
+        "target": "clothes",
+        "icon": "",
+        "color": "#1f2937",
+        "fontSize": 15,
+        "visible": true
+      },
+      {
+        "id": "singing-bowls",
+        "text": "Singing Bowls",
+        "action": "category",
+        "target": "singingbowl",
+        "icon": "",
+        "color": "#1f2937",
+        "fontSize": 15,
+        "visible": true
+      },
+      {
+        "id": "thangka-paubha",
+        "text": "Thangka & Paubha",
+        "action": "category",
+        "target": "thangka",
+        "icon": "",
+        "color": "#1f2937",
+        "fontSize": 15,
+        "visible": true
+      },
+      {
+        "id": "send-gift-home",
+        "text": "Send a Gift Home",
+        "action": "section",
+        "target": "send-home",
+        "icon": "",
+        "color": "#1f2937",
+        "fontSize": 15,
+        "visible": true
+      }
     ]
   },
   "dispatch": {
@@ -56,22 +128,118 @@
   },
   "catalog": {
     "categories": [
-      { "id": "pashmina", "en": "Himalayan Pashmina & Wool", "ne": "हिमाली पश्मिना र ऊन", "icon": "fa-mitten", "visible": true },
-      { "id": "dhaka", "en": "Palpali Dhaka", "ne": "पाल्पाली ढाका", "icon": "fa-shirt", "visible": true },
-      { "id": "lokta", "en": "Lokta Paper", "ne": "लोक्ता कागज", "icon": "fa-book", "visible": true },
-      { "id": "metal", "en": "Patan Statues", "ne": "पाटनका मूर्ति", "icon": "fa-om", "visible": true },
-      { "id": "singingbowl", "en": "Singing Bowls", "ne": "सिङ्गिङ बोल", "icon": "fa-bell", "visible": true },
-      { "id": "thangka", "en": "Thangka & Paubha", "ne": "थाङ्का र पौभा", "icon": "fa-palette", "visible": true },
-      { "id": "felt", "en": "Felt Crafts", "ne": "फेल्ट शिल्प", "icon": "fa-circle", "visible": true },
-      { "id": "tea", "en": "Tea & Spices", "ne": "चिया र मसला", "icon": "fa-mug-hot", "visible": true },
-      { "id": "beads", "en": "Beads, Pote & Jewelry", "ne": "पोते, मोती र गहना", "icon": "fa-gem", "visible": true },
-      { "id": "wood", "en": "Wood Carving", "ne": "काष्ठकला", "icon": "fa-tree", "visible": true },
-      { "id": "rugs", "en": "Rugs & Carpets", "ne": "राडी र गलैंचा", "icon": "fa-rug", "visible": true },
-      { "id": "shoes", "en": "Shoes", "ne": "जुत्ता", "icon": "fa-shoe-prints", "visible": true },
-      { "id": "bags", "en": "Bags", "ne": "झोला", "icon": "fa-bag-shopping", "visible": true },
-      { "id": "homedecor", "en": "Home Decor", "ne": "घर सजावट", "icon": "fa-couch", "visible": true },
-      { "id": "clothes", "en": "Clothes", "ne": "लुगा", "icon": "fa-vest", "visible": true },
-      { "id": "accessories", "en": "Accessories", "ne": "सामग्री", "icon": "fa-glasses", "visible": true }
+      {
+        "id": "pashmina",
+        "en": "Pashmina & Wool",
+        "ne": "हिमाली पश्मिना र ऊन",
+        "icon": "fa-mitten",
+        "visible": true
+      },
+      {
+        "id": "dhaka",
+        "en": "Palpali Dhaka",
+        "ne": "पाल्पाली ढाका",
+        "icon": "fa-shirt",
+        "visible": true
+      },
+      {
+        "id": "lokta",
+        "en": "Lokta Paper",
+        "ne": "लोक्ता कागज",
+        "icon": "fa-book",
+        "visible": true
+      },
+      {
+        "id": "metal",
+        "en": "Patan Statues",
+        "ne": "पाटनका मूर्ति",
+        "icon": "fa-om",
+        "visible": true
+      },
+      {
+        "id": "singingbowl",
+        "en": "Singing Bowls",
+        "ne": "सिङ्गिङ बोल",
+        "icon": "fa-bell",
+        "visible": true
+      },
+      {
+        "id": "thangka",
+        "en": "Thangka & Paubha",
+        "ne": "थाङ्का र पौभा",
+        "icon": "fa-palette",
+        "visible": true
+      },
+      {
+        "id": "felt",
+        "en": "Felt Crafts",
+        "ne": "फेल्ट शिल्प",
+        "icon": "fa-circle",
+        "visible": true
+      },
+      {
+        "id": "tea",
+        "en": "Tea & Spices",
+        "ne": "चिया र मसला",
+        "icon": "fa-mug-hot",
+        "visible": true
+      },
+      {
+        "id": "beads",
+        "en": "Beads, Pote & Jewelry",
+        "ne": "पोते, मोती र गहना",
+        "icon": "fa-gem",
+        "visible": true
+      },
+      {
+        "id": "wood",
+        "en": "Wood Carving",
+        "ne": "काष्ठकला",
+        "icon": "fa-tree",
+        "visible": true
+      },
+      {
+        "id": "rugs",
+        "en": "Rugs & Carpets",
+        "ne": "राडी र गलैंचा",
+        "icon": "fa-rug",
+        "visible": true
+      },
+      {
+        "id": "shoes",
+        "en": "Shoes",
+        "ne": "जुत्ता",
+        "icon": "fa-shoe-prints",
+        "visible": true
+      },
+      {
+        "id": "bags",
+        "en": "Bags",
+        "ne": "झोला",
+        "icon": "fa-bag-shopping",
+        "visible": true
+      },
+      {
+        "id": "homedecor",
+        "en": "Home Decor",
+        "ne": "घर सजावट",
+        "icon": "fa-couch",
+        "visible": true
+      },
+      {
+        "id": "clothes",
+        "en": "Clothes",
+        "ne": "लुगा",
+        "icon": "fa-vest",
+        "visible": true
+      },
+      {
+        "id": "accessories",
+        "en": "Accessories",
+        "ne": "सामग्री",
+        "icon": "fa-glasses",
+        "visible": true
+      }
     ]
   },
   "footer": {
@@ -145,19 +313,75 @@
         "visible": true
       },
       "payments": [
-        { "id": "visa", "text": "Visa", "visible": true },
-        { "id": "mastercard", "text": "Mastercard", "visible": true },
-        { "id": "esewa", "text": "eSewa", "visible": true },
-        { "id": "khalti", "text": "Khalti", "visible": true },
-        { "id": "fonepay", "text": "fonepay", "visible": true },
-        { "id": "connectips", "text": "connectIPS", "visible": true },
-        { "id": "cash", "text": "Cash", "visible": true }
+        {
+          "id": "visa",
+          "text": "Visa",
+          "visible": true
+        },
+        {
+          "id": "mastercard",
+          "text": "Mastercard",
+          "visible": true
+        },
+        {
+          "id": "esewa",
+          "text": "eSewa",
+          "visible": true
+        },
+        {
+          "id": "khalti",
+          "text": "Khalti",
+          "visible": true
+        },
+        {
+          "id": "fonepay",
+          "text": "fonepay",
+          "visible": true
+        },
+        {
+          "id": "connectips",
+          "text": "connectIPS",
+          "visible": true
+        },
+        {
+          "id": "cash",
+          "text": "Cash",
+          "visible": true
+        }
       ],
       "links": [
-        { "id": "terms", "text": "Terms", "href": "pages/terms.html", "color": "#ffffff", "fontSize": 12, "visible": true },
-        { "id": "privacy", "text": "Privacy", "href": "pages/privacy.html", "color": "#ffffff", "fontSize": 12, "visible": true },
-        { "id": "sitemap", "text": "Sitemap", "href": "sitemap.xml", "color": "#ffffff", "fontSize": 12, "visible": true },
-        { "id": "admin", "text": "Admin", "href": "#admin", "color": "#ffffff", "fontSize": 12, "visible": true }
+        {
+          "id": "terms",
+          "text": "Terms",
+          "color": "#ffffff",
+          "fontSize": 12,
+          "visible": true,
+          "href": "pages/terms.html"
+        },
+        {
+          "id": "privacy",
+          "text": "Privacy",
+          "color": "#ffffff",
+          "fontSize": 12,
+          "visible": true,
+          "href": "pages/privacy.html"
+        },
+        {
+          "id": "sitemap",
+          "text": "Sitemap",
+          "color": "#ffffff",
+          "fontSize": 12,
+          "visible": true,
+          "href": "sitemap.xml"
+        },
+        {
+          "id": "admin",
+          "text": "Admin",
+          "color": "#ffffff",
+          "fontSize": 12,
+          "visible": true,
+          "href": "#admin"
+        }
       ]
     }
   }
