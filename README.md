@@ -59,6 +59,9 @@ Changes in these tabs preview instantly in your browser; the yellow bar's **Publ
 - **Google product pages** — publishes a real page per product (`p/…html`) with Google product data, plus `sitemap.xml` and `robots.txt`
 - **Analytics** — Google Analytics 4, Plausible and Meta pixel with a cookie-consent banner; the Privacy Policy updates itself to match
 - **Courier & labels** — book Nepal Can Move / Pathao / Export Hub pickups and print 4×6 or A6 labels with barcode and COD amount; sender details and defaults
+- **Delivery estimates** — "Arrives Oct 28 – Nov 2" on product pages, bag, checkout and orders; default processing days, daily cut-off, weekly days off, Dashain/Tihar closures; per-shop processing time (sellers also set it per shop and per listing)
+- **Checkout & gifting** — saved addresses (picker + address book), remembered payment method (card numbers are never stored), "Buy it again" on orders and the homepage, gift teaser emails to recipients with an editable template and send queue
+- **Badges & filters** — Bestseller, "In N bags", "Popular now" and "Only N left" with thresholds and per-product Force/Hide; seller name, rating, sales and joining year on product cards; "Ships from" region filter and "Near me" sorting
 
 **Legal pages** (`pages/`) — Terms, Privacy, Return & Refund, Delivery, Purchase Protection, Export Hub, plus the footer business details and complaint form required by the E-Commerce Act 2081. Have a lawyer in Nepal review them before launch.
 

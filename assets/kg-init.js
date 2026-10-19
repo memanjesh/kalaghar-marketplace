@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
     KG.initShipping();
     KG.initMarketing();
     KG.initHome();
+    KG.initBuyer();
+    KG.initSignals();
     KG.initSettings();
 
     // Re-draw the new sections whenever the language changes
