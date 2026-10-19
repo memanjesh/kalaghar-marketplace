@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
     KG.initDiscover();
     KG.initAdmin();
     KG.initGrowth();
+    KG.initOperations();
+    KG.initPlatform();
 
     // Re-draw the new sections whenever the language changes
     var origApplyLang = window.applyLang;

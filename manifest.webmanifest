@@ -1,0 +1,13 @@
+{
+  "name": "KalaGhar — Nepali Artisan Marketplace",
+  "short_name": "KalaGhar",
+  "description": "Discover authentic handmade craft from Nepal.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf3",
+  "theme_color": "#b91c1c",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

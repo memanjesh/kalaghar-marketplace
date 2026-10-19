@@ -30,6 +30,12 @@
         "visible": true
       }
     ],
+    "featuredNav": {
+      "visible": true,
+      "useThemeBackground": true,
+      "backgroundColor": "#ffffff",
+      "gap": 32
+    },
     "featuredLinks": [
       {
         "id": "gifts",
@@ -250,6 +256,14 @@
       "visible": true
     },
     "items": [
+      {
+        "id": "support-center",
+        "text": "Support Center",
+        "href": "#support",
+        "color": "#ffffff",
+        "fontSize": 14,
+        "visible": true
+      },
       {
         "id": "faq",
         "text": "FAQ",

@@ -35,9 +35,13 @@ An Etsy-style marketplace for handmade crafts from Nepal: buyers shop by craft o
 
 **Admin** (header gear icon)
 - Real orders with refunds and payout release, artisan approval and verification, licence checks
+- Unified support inbox with SLA warnings, public replies/private notes, shipment control and exception tracking
+- Customers, moderation, inventory, staff roles, operations settings and auditable admin actions
+- Control panel for all 25 KalaGhar Plus features plus one request-review queue
 - Complaints and protection cases, wholesale and workshop inquiries, translation queue
 - Coupons, payouts to transfer, festival override, printable tourist QR codes, launch checklist
-- Repository-backed Site Content editor for announcements, featured header navigation, footer sections, payment methods, legal links, and the dispatch banner
+- Repository-backed Site Content editor for announcements, footer sections, payment methods, legal links, and the dispatch banner
+- Full editor for the highlighted mobile shortcut strip: add, rename, hide, remove, duplicate, reorder, recolor, resize and retarget links
 - Category manager for adding, renaming, hiding, and safely deleting storefront categories
 - Responsive country, language, and currency preferences with matching regional flags
 
@@ -53,7 +57,7 @@ An Etsy-style marketplace for handmade crafts from Nepal: buyers shop by craft o
 | `content/site-content.json` | Published header, footer and dispatch-banner content |
 | `pages/` | Policy pages |
 | `server/` | Payment server for Khalti, eSewa and international cards |
-| `db/schema.sql` | Database for when you move to Supabase |
+| `db/schema.sql` + `db/migrations/` | Shared database, permissions, support and feature workflows for Supabase |
 
 ## Going live — checklist
 
@@ -62,7 +66,7 @@ The Admin panel has a **Launch checklist** tab that ticks these off automaticall
 1. **Register** on the Department of Commerce e-commerce portal. Put the listing number, registration number, PAN/VAT and complaint officer in `assets/config.js`.
 2. **Payments.** Open merchant accounts with Khalti and eSewa (and Stripe or your bank for international cards). Copy `server/.env.example` to `server/.env`, add the keys, and run the server (`node server.js`) on any Node 18 host. Then set `payments.paymentApiBase` in `config.js`. Until then checkout runs in **test mode** — orders are saved but no money is taken. Fonepay and ConnectIPS need their own merchant API access before they can be added to the server.
 3. **Couriers.** Open business accounts with Nepal Can Move and Pathao, and replace the illustrative shipping rates in `config.js` with your contracted rates.
-4. **Shared database.** Today, each visitor's data (accounts, orders, listings) stays in their own browser, which is fine for testing but not for real customers. Create a Supabase project, run `db/schema.sql`, and add the URL and key to `config.js`. The site's storage layer (`KG.store` in `kg-core.js`) is the single place to switch over, and the payment server must then read order totals from the database instead of trusting the browser.
+4. **Shared database.** Today, each visitor's data (accounts, orders, listings) stays in their own browser, which is fine for testing but not for real customers. Create a Supabase project; run `db/schema.sql`, `db/migrations/001_marketplace_v2.sql`, then `db/migrations/002_operations_and_plus.sql`; and add the URL and public key to `config.js`. The site's storage layer (`KG.store` in `kg-core.js`) is the single place to switch over, and the payment server must then read order totals from the database instead of trusting the browser.
 5. **Admin publishing.** Create a fine-grained GitHub personal access token restricted to this repository with **Contents: Read and write** permission. Open Admin in the footer and use that token to publish header, footer and dispatch-banner changes. The token is kept only in memory and is cleared on logout or refresh; it is never written to storage or the repository.
 6. **Replace sample content.** Sample artisans and new-category products are marked "sample" / "Photo coming soon".
 7. Update the domain in `sitemap.xml` and the festival dates in `config.js` each year.
@@ -87,4 +91,4 @@ Do not share the token or paste it anywhere except the site's Admin login. Becau
 
 Run `npm test` for the content-security and page checks, and `npm run check` for JavaScript syntax checks. The payment service has no third-party runtime dependencies and remains under `server/`.
 
-For the full 20-feature delivery matrix, including what is only a preview and what still requires external onboarding, see [`docs/IMPLEMENTATION_STATUS.md`](docs/IMPLEMENTATION_STATUS.md). Production infrastructure and launch gates are in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+For the original 20-feature matrix, the additional 25-feature expansion, admin coverage, and the exact boundary between preview and live services, see [`docs/IMPLEMENTATION_STATUS.md`](docs/IMPLEMENTATION_STATUS.md). Production infrastructure and launch gates are in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).

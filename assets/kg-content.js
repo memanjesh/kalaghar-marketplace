@@ -11,6 +11,7 @@
         version: 2,
         header: {
             brand: { text: 'KalaGhar', color: '#111827', fontSize: 26, visible: true },
+            featuredNav: { visible: true, useThemeBackground: true, backgroundColor: '#ffffff', gap: 32 },
             items: [
                 { id: 'artisan-impact', text: '✨ Empowering 1,200+ Nepali Artisans & Rural Cooperatives', color: '#ffffff', fontSize: 12, visible: true },
                 { id: 'free-shipping', text: '✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery', color: '#ffffff', fontSize: 12, visible: true },
@@ -55,6 +56,7 @@
         footer: {
             about: { text: 'Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.', color: '#ffffff', fontSize: 14, visible: true },
             items: [
+                { id: 'support-center', text: 'Support Center', href: '#support', color: '#ffffff', fontSize: 14, visible: true },
                 { id: 'faq', text: 'FAQ', href: '#faq', color: '#ffffff', fontSize: 14, visible: true },
                 { id: 'track-order', text: 'Track My Order', href: '#account', color: '#ffffff', fontSize: 14, visible: true },
                 { id: 'delivery', text: 'Delivery Policy', href: 'pages/delivery.html', color: '#ffffff', fontSize: 14, visible: true },
@@ -141,7 +143,7 @@
     }
     function cleanFeatured(item, index) {
         const source = item && typeof item === 'object' ? item : {};
-        const actions = ['gift', 'category', 'section', 'link'];
+        const actions = ['gift', 'category', 'section', 'link', 'support', 'features'];
         return {
             id: cleanId(source.id, 'featured', index),
             text: cleanText(source.text, 80),
@@ -150,6 +152,7 @@
             icon: /^fa-[a-z0-9-]+$/i.test(String(source.icon || '')) ? source.icon : '',
             color: cleanColor(source.color, '#1f2937'),
             fontSize: cleanSize(source.fontSize, 15),
+            emphasis: source.emphasis === true,
             visible: source.visible !== false
         };
     }
@@ -172,6 +175,12 @@
                     color: cleanColor(brandSource.color, DEFAULT_CONTENT.header.brand.color),
                     fontSize: cleanSize(brandSource.fontSize, DEFAULT_CONTENT.header.brand.fontSize),
                     visible: brandSource.visible !== false
+                },
+                featuredNav: {
+                    visible: !header.featuredNav || header.featuredNav.visible !== false,
+                    useThemeBackground: !header.featuredNav || header.featuredNav.useThemeBackground !== false,
+                    backgroundColor: cleanColor(header.featuredNav && header.featuredNav.backgroundColor, '#ffffff'),
+                    gap: Math.max(8, Math.min(64, Number(header.featuredNav && header.featuredNav.gap) || 32))
                 },
                 items: (Array.isArray(header.items) ? header.items : DEFAULT_CONTENT.header.items).slice(0, 12).map(function (item, index) { return cleanItem(item, index, 'header', false); }),
                 featuredLinks: (Array.isArray(header.featuredLinks) ? header.featuredLinks : DEFAULT_CONTENT.header.featuredLinks).slice(0, 16).map(cleanFeatured).filter(function (item) { return item.text; })
@@ -238,12 +247,17 @@
 
         const featured = document.getElementById('kgFeatured');
         if (featured) {
+            const featuredNav = featured.closest('nav');
+            featuredNav.hidden = !content.header.featuredNav.visible;
+            featuredNav.style.backgroundColor = content.header.featuredNav.useThemeBackground ? '' : content.header.featuredNav.backgroundColor;
+            featured.style.gap = content.header.featuredNav.gap + 'px';
             featured.replaceChildren();
             content.header.featuredLinks.filter(function (item) { return item.visible; }).forEach(function (item) {
                 const li = document.createElement('li'), button = document.createElement('button');
                 button.type = 'button'; button.className = 'kg-feat'; button.dataset.featuredAction = item.action;
                 if (item.color.toLowerCase() !== '#1f2937') button.style.color = item.color;
                 button.style.fontSize = item.fontSize + 'px';
+                button.style.fontWeight = item.emphasis ? '800' : '';
                 if (item.icon) { const icon = document.createElement('i'); icon.className = 'fa-solid ' + item.icon + ' mr-1.5'; icon.setAttribute('aria-hidden', 'true'); button.appendChild(icon); }
                 button.appendChild(document.createTextNode(item.text));
                 button.addEventListener('click', function () {
@@ -251,6 +265,8 @@
                     if (item.action === 'category' && window.KG && KG.goCategory) return KG.goCategory(item.target);
                     if (item.action === 'section') { const section = document.getElementById(item.target.replace(/^#/, '')); if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
                     if (item.action === 'link') window.location.href = cleanHref(item.target);
+                    if (item.action === 'support' && window.KG && KG.openSupportCenter) return KG.openSupportCenter();
+                    if (item.action === 'features' && window.KG && KG.openPlusHub) return KG.openPlusHub();
                 });
                 li.appendChild(button); featured.appendChild(li);
             });

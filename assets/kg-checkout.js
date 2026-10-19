@@ -77,7 +77,7 @@
     KG.openCheckout = function (opts) {
         const lines = cartLines(); if (!lines.length) { KG.openCart(); return; }
         const u = KG.user();
-        const st = Object.assign({ zone: 'np-valley', gift: false, coupon: null, insurance: false, method: null }, opts || {});
+        const st = Object.assign({ zone: 'np-valley', gift: false, coupon: null, insurance: false, method: null, fulfillment: 'courier' }, opts || {});
         if (st.gift) st.zone = 'np-outside';
         const pay = C.payments;
         const testMode = !pay.paymentApiBase;
@@ -107,6 +107,11 @@
                         '</div>' +
                         '<div><label class="' + ui.label + '" for="co-msg">' + KG.tx('Gift message', 'उपहार सन्देश') + '</label><textarea id="co-msg" name="giftMsg" rows="2" maxlength="300" class="' + ui.input + '" placeholder="' + KG.tx('Happy Dashain, Aama! With love from Sydney.', 'दशैंको शुभकामना!') + '"></textarea></div>' +
                     '</fieldset>' +
+                    '<fieldset class="space-y-3"><legend class="text-sm font-bold text-gray-900 dark:text-white mb-2">' + KG.tx('How should we deliver?', 'कसरी डेलिभरी गर्ने?') + '</legend><div class="grid sm:grid-cols-3 gap-2">' +
+                        '<label class="border rounded-xl p-3 text-xs cursor-pointer has-[:checked]:border-red-700"><input type="radio" name="fulfillment" value="courier" class="accent-red-700"' + (st.fulfillment === 'courier' ? ' checked' : '') + '> <strong class="block mt-1">Courier delivery</strong><span class="text-gray-500">Home or office</span></label>' +
+                        '<label class="border rounded-xl p-3 text-xs cursor-pointer has-[:checked]:border-red-700"><input type="radio" name="fulfillment" value="hotel" class="accent-red-700"' + (st.fulfillment === 'hotel' ? ' checked' : '') + '> <strong class="block mt-1">Hotel delivery</strong><span class="text-gray-500">Reception handoff</span></label>' +
+                        '<label class="border rounded-xl p-3 text-xs cursor-pointer has-[:checked]:border-red-700"><input type="radio" name="fulfillment" value="pickup" class="accent-red-700"' + (st.fulfillment === 'pickup' ? ' checked' : '') + '> <strong class="block mt-1">Partner pickup</strong><span class="text-gray-500">Admin confirms point</span></label></div>' +
+                        '<div id="co-fulfillment-note" class="hidden"><label class="' + ui.label + '" for="co-fulfillmentDetails">Hotel name, booking name, or preferred pickup area</label><input id="co-fulfillmentDetails" name="fulfillmentDetails" class="' + ui.input + '" maxlength="200"></div></fieldset>' +
                     '<fieldset class="space-y-3"><legend id="co-addr-legend" class="text-sm font-bold text-gray-900 dark:text-white mb-2">' + KG.tx('Delivery address', 'डेलिभरी ठेगाना') + '</legend>' +
                         '<div class="grid sm:grid-cols-2 gap-3">' +
                             field('address', KG.tx('Street / Tole', 'टोल / सडक'), 'text', '', true) +
@@ -145,6 +150,7 @@
             const weight = lines.reduce(function (s, l) { return s + (l.p.weightG || 500) * l.qty; }, 0);
             const cd = couponDiscount(coupon, lines);
             let ship = KG.shippingCost(z.id, goods - cd.amount, weight);
+            if ((form.querySelector('input[name="fulfillment"]:checked') || {}).value === 'pickup' && z.domestic) ship = 0;
             if (cd.freeship) ship = 0;
             const ins = form.insurance.checked ? Math.round(goods * C.shipping.insuranceRate) : 0;
             const total = goods - cd.amount + ship + ins;
@@ -154,8 +160,11 @@
         function renderOptions() {
             const z = KG.zoneById(form.zone.value);
             const giftOn = form.gift.checked;
+            const fulfillment = (form.querySelector('input[name="fulfillment"]:checked') || {}).value || 'courier';
+            body.querySelector('#co-fulfillment-note').classList.toggle('hidden', fulfillment === 'courier');
+            form.fulfillmentDetails.required = fulfillment !== 'courier';
             body.querySelector('#co-giftbox').classList.toggle('hidden', !giftOn);
-            body.querySelector('#co-addr-legend').textContent = giftOn ? KG.tx('Recipient\'s address in Nepal', 'प्राप्तकर्ताको ठेगाना (नेपाल)') : KG.tx('Delivery address', 'डेलिभरी ठेगाना');
+            body.querySelector('#co-addr-legend').textContent = fulfillment === 'pickup' ? KG.tx('Pickup contact address', 'पिकअप सम्पर्क ठेगाना') : giftOn ? KG.tx('Recipient\'s address in Nepal', 'प्राप्तकर्ताको ठेगाना (नेपाल)') : KG.tx('Delivery address', 'डेलिभरी ठेगाना');
             if (giftOn && !z.domestic) { form.zone.value = 'np-outside'; return renderOptions(); }
             if (z.domestic) form.country.value = 'Nepal';
             else if (form.country.value === 'Nepal') form.country.value = '';
@@ -198,7 +207,7 @@
             const m = (form.querySelector('input[name="method"]:checked') || {}).value;
             body.querySelector('#co-paylabel').textContent = m === 'cod' ? KG.tx('Place order — pay on delivery', 'अर्डर गर्नुहोस् — डेलिभरीमा तिर्नुहोस्') : KG.tx('Pay ', 'तिर्नुहोस् ') + KG.npr(r.total);
         }
-        form.addEventListener('change', function (e) { if (e.target.name === 'zone' || e.target.name === 'gift') renderOptions(); else renderTotals(); });
+        form.addEventListener('change', function (e) { if (e.target.name === 'zone' || e.target.name === 'gift' || e.target.name === 'fulfillment') renderOptions(); else renderTotals(); });
         body.querySelector('#co-apply').addEventListener('click', function () { st.coupon = form.coupon.value.trim().toUpperCase() || null; renderTotals(); });
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -246,6 +255,7 @@
                 id: 'KG-' + seq, groupId: groupId, sellerId: sid, buyerId: u ? u.id : null,
                 buyer: { name: form.name.value.trim(), email: form.email.value.trim(), phone: form.phone.value.trim() },
                 address: { line: form.address.value.trim(), city: form.city.value.trim(), district: form.district.value.trim(), postcode: form.postcode.value.trim(), country: form.country.value.trim() },
+                fulfillment: { type: (form.querySelector('input[name="fulfillment"]:checked') || {}).value || 'courier', details: form.fulfillmentDetails.value.trim(), pickupLocationId: null, confirmedAt: null },
                 gift: giftOn ? { recipient: form.rname.value.trim(), phone: form.rphone.value.trim(), occasion: form.occasion.value, message: form.giftMsg.value.trim(), hidePrices: form.hidePrices.checked } : null,
                 items: ls.map(function (l) { return { productId: l.p.id, name: l.p.name, price: l.p.price, qty: l.qty, personalization: l.personalization, packaging: l.packaging || 'eco', sellerId: sid }; }),
                 goods: goods, discount: discount, coupon: r.coupon && !r.cd.error ? r.coupon.code : '', shipping: ship, insurance: ins, total: total,

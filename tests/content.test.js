@@ -31,7 +31,8 @@ function loadContentManager() {
 test('content manager exposes safe defaults with the FAQ label', function () {
     const manager = loadContentManager();
     const defaults = manager.defaults();
-    assert.equal(defaults.footer.items[0].text, 'FAQ');
+    assert.equal(defaults.footer.items.some(function (item) { return item.text === 'FAQ'; }), true);
+    assert.equal(defaults.footer.items.some(function (item) { return item.href === '#support'; }), true);
     assert.equal(defaults.dispatch.items[0].text.includes('1–2 business days'), true);
     assert.equal(defaults.header.featuredLinks.length, 8);
     assert.equal(defaults.catalog.categories.length, 16);

@@ -37,7 +37,8 @@ test('content file is valid and includes visible defaults', function () {
     const content = JSON.parse(fs.readFileSync(path.join(root, 'content', 'site-content.json'), 'utf8'));
     assert.equal(content.header.items.length >= 1, true);
     assert.equal(content.dispatch.visible, true);
-    assert.equal(content.footer.items[0].text, 'FAQ');
+    assert.equal(content.footer.items.some(function (item) { return item.text === 'FAQ'; }), true);
+    assert.equal(content.footer.items.some(function (item) { return item.href === '#support'; }), true);
     assert.equal(content.header.featuredLinks.length, 8);
     assert.equal(content.catalog.categories.length, 16);
     assert.equal(content.footer.bottom.links.some(function (link) { return link.id === 'admin'; }), true);
@@ -92,4 +93,69 @@ test('pending registration and complaint officer strip is absent from the storef
     const discover = fs.readFileSync(path.join(root, 'assets', 'kg-discover.js'), 'utf8');
     assert.doesNotMatch(discover, /id="kgBizStrip"/);
     assert.doesNotMatch(html, /Reg\. No\. pending/);
+});
+
+test('support, shipment and complete admin operations controls are wired', function () {
+    const operations = fs.readFileSync(path.join(root, 'assets', 'kg-operations.js'), 'utf8');
+    [/'support', 'Support'/, /'tracking', 'Tracking'/, /'customers', 'Customers'/, /'moderation', 'Moderation'/,
+        /'inventory', 'Inventory'/, /'staff', 'Staff access'/, /'operations', 'Operations'/, /'audit', 'Audit log'/
+    ].forEach(function (pattern) { assert.match(operations, pattern); });
+    assert.match(operations, /KG\.openSupportCenter/);
+    assert.match(operations, /shipmentEvents/);
+    assert.match(operations, /firstResponseHours/);
+    assert.match(operations, /KG_ADMIN_AUDIT/);
+});
+
+test('all 25 expansion features have public entry points and admin controls', function () {
+    const platform = fs.readFileSync(path.join(root, 'assets', 'kg-platform.js'), 'utf8');
+    const ids = Array.from(platform.matchAll(/\{ id: (\d+), icon:/g), function (match) { return Number(match[1]); });
+    assert.deepEqual(ids, Array.from({ length: 25 }, function (_, index) { return index + 1; }));
+    assert.match(platform, /Control every customer feature/);
+    assert.match(platform, /Feature requests/);
+    assert.match(platform, /KG\.openPlusFeature/);
+    assert.match(platform, /data-feature-state/);
+});
+
+test('highlighted mobile shortcut strip is fully editable from admin', function () {
+    const admin = fs.readFileSync(path.join(root, 'assets', 'kg-admin.js'), 'utf8');
+    const contentManager = fs.readFileSync(path.join(root, 'assets', 'kg-content.js'), 'utf8');
+    const content = JSON.parse(fs.readFileSync(path.join(root, 'content', 'site-content.json'), 'utf8'));
+    assert.equal(content.header.featuredNav.visible, true);
+    assert.match(admin, /highlighted horizontal strip below the mobile header/);
+    assert.match(admin, /move-featured/);
+    assert.match(admin, /duplicate-featured/);
+    assert.match(admin, /kgFeaturedVisible/);
+    assert.match(contentManager, /Open Support Center|item\.action === 'support'/);
+    assert.match(contentManager, /featuredNav\.useThemeBackground/);
+});
+
+test('production migration covers operations and feature workflows', function () {
+    const schema = fs.readFileSync(path.join(root, 'db', 'migrations', '002_operations_and_plus.sql'), 'utf8');
+    ['admin_members', 'support_tickets', 'support_messages', 'moderation_cases', 'feature_catalog', 'feature_requests',
+        'craft_passports', 'live_sessions', 'gift_registries', 'subscriptions', 'product_drops', 'service_requests',
+        'size_profiles', 'pickup_locations', 'affiliate_accounts', 'community_collections', 'seller_team_members',
+        'landed_cost_quotes', 'wholesale_milestones'
+    ].forEach(function (table) { assert.match(schema, new RegExp('create table if not exists ' + table)); });
+    assert.match(schema, /has_admin_permission/);
+    assert.match(schema, /enable row level security/);
+    assert.match(schema, /select id, 'super_admin' from profiles where role='admin'/);
+    assert.match(schema, /users join drop waitlists[\s\S]*status='waitlist'[\s\S]*payment_attempt_id is null/);
+    assert.match(schema, /users create service requests[\s\S]*status='new'[\s\S]*quote_npr is null/);
+    assert.match(schema, /users create affiliate application[\s\S]*status='applied'[\s\S]*commission_rate is null/);
+});
+
+test('installable low-bandwidth shell and fulfillment choices are present', function () {
+    const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.webmanifest'), 'utf8'));
+    const worker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+    const checkout = fs.readFileSync(path.join(root, 'assets', 'kg-checkout.js'), 'utf8');
+    assert.equal(manifest.display, 'standalone');
+    assert.match(worker, /kalaghar-shell-v2/);
+    assert.match(checkout, /value="hotel"/);
+    assert.match(checkout, /value="pickup"/);
+    assert.match(checkout, /fulfillment:/);
+});
+
+test('FAQ navigation has a real anchor for the services shelf and footer link', function () {
+    assert.match(html, /<section id="faq"/);
+    assert.match(html, /href="#faq"/);
 });
