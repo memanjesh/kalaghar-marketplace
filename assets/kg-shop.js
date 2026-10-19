@@ -427,19 +427,13 @@
 
     /* ---------------------------- Etsy-style featured row ---------------------------- */
     KG.renderFeatured = function () {
-        const ul = document.getElementById('kgFeatured'); if (!ul) return;
+        // The row itself is in index.html; here we only update the seasonal link and labels
+        const li = document.getElementById('kgFestivalItem'); if (!li) return;
         const f = KG.activeFestival ? KG.activeFestival() : null;
-        const items = [
-            ['<i class="fa-solid fa-gift mr-1.5 text-red-700 dark:text-amber-300"></i>' + t('kgGiftMode'), 'KG.openGiftMode()'],
-            f ? ['<i class="fa-solid fa-star mr-1.5 text-amber-500"></i>' + esc(KG.tx(f.name + ' Gifts', f.ne + 'का उपहार')), "document.getElementById('festival').scrollIntoView({behavior:'smooth'})"] : null,
-            [KG.tx('Home Favorites', 'घरका मनपर्ने'), "KG.goCategory('homedecor')"],
-            [KG.tx('Fashion Finds', 'फेसन'), "KG.goCategory('clothes')"],
-            [KG.tx('Pashmina', 'पश्मिना'), "KG.goCategory('pashmina')"],
-            [KG.tx('Send a Gift Home', 'घरमा उपहार'), "document.getElementById('send-home').scrollIntoView({behavior:'smooth'})"],
-            [KG.tx('Shop by Region', 'क्षेत्र अनुसार'), "document.getElementById('regions').scrollIntoView({behavior:'smooth'})"],
-            [KG.tx('Meet the Makers', 'शिल्पीहरू'), "document.getElementById('makers').scrollIntoView({behavior:'smooth'})"]
-        ].filter(Boolean);
-        ul.innerHTML = items.map(function (x) { return '<li><button type="button" onclick="' + x[1] + '" class="kg-feat px-3 py-1.5 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">' + x[0] + '</button></li>'; }).join('');
+        li.classList.toggle('hidden', !f);
+        if (f) li.querySelector('button').textContent = KG.tx(f.name + ' Gifts', f.ne + 'का उपहार');
+        const g = document.querySelector('#kgFeatured li:first-child button');
+        if (g) g.innerHTML = '<i class="fa-solid fa-gift mr-1.5"></i>' + KG.tx('Gifts', 'उपहार');
     };
 
     /* ---------------------------- language / currency (footer, like Etsy) ---------------------------- */

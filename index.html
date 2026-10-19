@@ -8,7 +8,7 @@
     <meta property="og:description" content="Handmade in Nepal, shipped worldwide. Buy directly from verified artisans and cooperatives.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#b91c1c">
-    <link rel="stylesheet" href="assets/kg.css">
+    <link rel="stylesheet" href="assets/kg.css?v=20261019b">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
@@ -96,28 +96,28 @@
 
             <div class="relative w-full md:w-auto md:flex-1 order-last md:order-none">
                 <input id="searchInput" onkeyup="filterProductsBySearch()" type="text"
-                       data-i18n-ph="searchPh" placeholder="Search handcrafted pashmina, dhaka, bronze statues, lokta paper..."
-                       class="w-full bg-white dark:bg-gray-800 border-2 border-gray-800 dark:border-gray-600 rounded-full py-2.5 pl-5 pr-12 text-sm text-gray-800 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-red-700 focus:bg-white dark:focus:bg-gray-900 transition">
-                <button type="button" aria-label="Search" onclick="filterProductsBySearch();document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" class="kg-grad absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full text-white flex items-center justify-center hover:brightness-95">
+                       data-i18n-ph="searchPh" placeholder="Search for anything"
+                       class="w-full bg-white dark:bg-gray-800 border-2 border-gray-800 dark:border-gray-600 rounded-full py-3 pl-5 pr-14 text-base text-gray-800 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-red-700 focus:bg-white dark:focus:bg-gray-900 transition">
+                <button type="button" aria-label="Search" onclick="filterProductsBySearch();document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" class="kg-grad absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-white flex items-center justify-center hover:brightness-95">
                     <i class="fa-solid fa-magnifying-glass text-sm"></i>
                 </button>
             </div>
 
             <div class="flex items-center gap-1 sm:gap-2">
                 <!-- Become a Seller -->
-                <button onclick="openModal('artisanModal')" class="hidden lg:flex items-center gap-2 text-xs font-bold tracking-wider text-red-700 dark:text-red-400 border-2 border-red-700 dark:border-red-500 px-3 py-1.5 rounded-full hover:bg-red-700 hover:text-white transition">
+                <button onclick="openModal('artisanModal')" class="hidden items-center gap-2 text-xs font-bold tracking-wider text-red-700 dark:text-red-400 border-2 border-red-700 dark:border-red-500 px-3 py-1.5 rounded-full hover:bg-red-700 hover:text-white transition">
                     <i class="fa-solid fa-hands-holding"></i>
                     <span data-i18n="becomeSeller">BECOME A SELLER</span>
                 </button>
 
                 <!-- Theme toggle -->
                 <button id="themeToggle" onclick="toggleTheme()" title="Toggle day / night"
-                        class="text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                        class="hidden text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                     <i id="themeIcon" class="fa-solid fa-moon"></i>
                 </button>
 
                 <!-- Language dropdown with flags -->
-                <div class="relative" id="langDropdownWrap">
+                <div class="relative hidden" id="langDropdownWrap">
                     <button onclick="toggleLangDropdown()" title="Change language"
                             class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-2 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
                         <img id="currentLangFlag" src="https://flagcdn.com/24x18/us.png" alt="US flag" class="w-5 h-3.5 rounded-sm object-cover">
@@ -139,9 +139,9 @@
                 </div>
 
                 <!-- Sign In -->
-                <button onclick="openModal('customerAuthModal')" class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-2 sm:px-3 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
+                <button onclick="openModal('customerAuthModal')" class="flex items-center gap-2 text-sm font-semibold text-gray-800 dark:text-gray-100 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                     <i class="fa-regular fa-user text-sm"></i>
-                    <span id="userStatusLabel" data-i18n="signIn" class="hidden sm:inline">Sign In</span>
+                    <span id="userStatusLabel" data-i18n="signIn" class="hidden md:inline">Sign In</span>
                 </button>
 
 
@@ -156,7 +156,16 @@
         </div>
         <!-- FEATURED LINKS (Etsy-style second row) -->
         <nav aria-label="Featured" class="kg-catnav overflow-x-auto">
-            <ul id="kgFeatured" class="flex w-max mx-auto items-center gap-1 sm:gap-2 px-3 pb-2 text-sm whitespace-nowrap"></ul>
+            <ul id="kgFeatured" class="flex w-max mx-auto items-center gap-5 lg:gap-9 px-4 pb-3 pt-1 whitespace-nowrap">
+                <li><button type="button" onclick="KG.openGiftMode()" class="kg-feat"><i class="fa-solid fa-gift mr-1.5"></i>Gifts</button></li>
+                <li id="kgFestivalItem"><button type="button" onclick="document.getElementById('festival').scrollIntoView({behavior:'smooth'})" class="kg-feat">Dashain Gifts</button></li>
+                <li><button type="button" onclick="KG.goCategory('pashmina')" class="kg-feat" data-i18n="fPashmina">Himalayan Pashmina &amp; Wool</button></li>
+                <li><button type="button" onclick="KG.goCategory('homedecor')" class="kg-feat" data-i18n="kgHomeFav">Home Favorites</button></li>
+                <li><button type="button" onclick="KG.goCategory('clothes')" class="kg-feat" data-i18n="kgFashion">Fashion Finds</button></li>
+                <li><button type="button" onclick="KG.goCategory('singingbowl')" class="kg-feat" data-i18n="kgCat_singingbowl">Singing Bowls</button></li>
+                <li><button type="button" onclick="KG.goCategory('thangka')" class="kg-feat" data-i18n="kgCat_thangka">Thangka &amp; Paubha</button></li>
+                <li><button type="button" onclick="document.getElementById('send-home').scrollIntoView({behavior:'smooth'})" class="kg-feat" data-i18n="ftSendHome">Send a Gift Home</button></li>
+            </ul>
         </nav>
         <!-- Categories dropdown -->
         <div id="kgCatPanel" class="hidden absolute left-0 right-0 top-full z-50" role="menu"></div>
@@ -700,7 +709,7 @@
             t3:"📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa",
             dispatch:'Order today for dispatch from Kathmandu within <strong class="text-red-700 dark:text-red-400">1–2 business days</strong>.',
             becomeSeller:"BECOME A SELLER", signIn:"Sign In", myAccount:"My Account",
-            searchPh:"Search handcrafted pashmina, dhaka, bronze statues, lokta paper...",
+            searchPh:"Search for anything",
             heroBadge:"Authentic Nepali Heritage Crafts",
             heroTitle:"Handcrafted Heritage, Nepal's Identity",
             heroSub:"Connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally. Certified origin & fair trade.",
@@ -799,7 +808,7 @@
             t3:"📜 काठमाडौं, पाटन र पाल्पाको १००% प्रमाणित प्रामाणिक शिल्प",
             dispatch:'आजै अर्डर गर्नुहोस् — काठमाडौंबाट <strong class="text-red-700 dark:text-red-400">१–२ कार्यदिवस</strong>भित्र पठाइनेछ।',
             becomeSeller:"शिल्पी बन्नुहोस्", signIn:"साइन इन", myAccount:"मेरो खाता",
-            searchPh:"पश्मिना, ढाका, काँसको मूर्ति, लोक्ता कागज खोज्नुहोस्...",
+            searchPh:"कुनै पनि कुरा खोज्नुहोस्",
             heroBadge:"प्रामाणिक नेपाली सम्पदा शिल्प",
             heroTitle:"हस्तकलाको संसार, नेपालको पहिचान",
             heroSub:"मुख्य बुनकर, काँसका मूर्तिकार र कागज शिल्पीलाई सिधै विश्वभरका खरिदकर्तासँग जोड्दै। प्रमाणित उत्पत्ति र न्यायपूर्ण व्यापार।",
@@ -1519,13 +1528,13 @@
     </script>
 
     <!-- KalaGhar feature modules -->
-    <script src="assets/config.js"></script>
-    <script src="assets/kg-core.js"></script>
-    <script src="assets/kg-shop.js"></script>
-    <script src="assets/kg-checkout.js"></script>
-    <script src="assets/kg-discover.js"></script>
-    <script src="assets/kg-seller.js"></script>
-    <script src="assets/kg-admin.js"></script>
-    <script src="assets/kg-init.js"></script>
+    <script src="assets/config.js?v=20261019b"></script>
+    <script src="assets/kg-core.js?v=20261019b"></script>
+    <script src="assets/kg-shop.js?v=20261019b"></script>
+    <script src="assets/kg-checkout.js?v=20261019b"></script>
+    <script src="assets/kg-discover.js?v=20261019b"></script>
+    <script src="assets/kg-seller.js?v=20261019b"></script>
+    <script src="assets/kg-admin.js?v=20261019b"></script>
+    <script src="assets/kg-init.js?v=20261019b"></script>
 </body>
 </html>

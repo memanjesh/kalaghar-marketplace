@@ -41,7 +41,10 @@
 /* Header: featured row + categories menu */
 .kg-catnav { scrollbar-width: none; }
 .kg-catnav::-webkit-scrollbar { display: none; }
-.kg-feat { transition: background-color .15s; }
+.kg-feat { font-size: 15px; font-weight: 600; color: #1f2937; padding: 6px 2px; border-bottom: 2px solid transparent; transition: border-color .15s, color .15s; }
+.kg-feat:hover { color: #991b1b; border-bottom-color: #d97706; }
+.dark .kg-feat { color: #e5e7eb; }
+.dark .kg-feat:hover { color: #fbbf24; }
 .kg-catitem { transition: background-color .12s; }
 .kg-catitem:hover, .kg-catitem-on { background: #fff7ed; }
 .kg-catitem-on { font-weight: 700; box-shadow: inset 3px 0 0 #c2410c; }

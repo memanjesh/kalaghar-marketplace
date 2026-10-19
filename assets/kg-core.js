@@ -391,7 +391,7 @@
         kgDiasporaTitle: 'Send a gift home to Nepal', kgDiasporaSub: 'Living abroad? Pay by card and we deliver to your family anywhere in Nepal — with a gift message.',
         kgComplaint: 'File a Complaint', fPrivacyPolicy: 'Privacy Policy', fReturns: 'Return & Refund Policy', fDelivery: 'Delivery Policy',
         fProtection: 'Purchase Protection', fExportHub: 'Export Hub for Artisans', fSellerDash: 'Seller Dashboard', fWholesale: 'Wholesale', fImpact: 'Our Impact', fWorkshops: 'Workshops',
-        kgCategories: 'Categories', ftShop: 'Shop', ftSell: 'Sell', ftAbout: 'About', ftHelp: 'Help', ftHandmade: '100% handmade in Nepal',
+        kgCategories: 'Categories', kgHomeFav: 'Home Favorites', kgFashion: 'Fashion Finds', ftShop: 'Shop', ftSell: 'Sell', ftAbout: 'About', ftHelp: 'Help', ftHandmade: '100% handmade in Nepal',
         ftFestival: 'Festival Gifts', ftSendHome: 'Send a Gift Home', ftSellOn: 'Sell on KalaGhar', ftSellerRules: 'Seller Policies', ftTrack: 'Track My Order'
     });
     Object.assign(I18N.ne, {
@@ -403,7 +403,7 @@
         kgDiasporaTitle: 'नेपालमा घर उपहार पठाउनुहोस्', kgDiasporaSub: 'विदेशमा हुनुहुन्छ? कार्डबाट तिर्नुहोस्, हामी नेपालभर तपाईंको परिवारसम्म उपहार सन्देशसहित पुर्‍याउँछौं।',
         kgComplaint: 'गुनासो दर्ता', fPrivacyPolicy: 'गोपनीयता नीति', fReturns: 'फिर्ता तथा रकम फिर्ता नीति', fDelivery: 'डेलिभरी नीति',
         fProtection: 'खरिद सुरक्षा', fExportHub: 'शिल्पीका लागि निर्यात केन्द्र', fSellerDash: 'विक्रेता ड्यासबोर्ड', fWholesale: 'थोक', fImpact: 'हाम्रो प्रभाव', fWorkshops: 'कार्यशाला',
-        kgCategories: 'वर्गहरू', ftShop: 'किनमेल', ftSell: 'बिक्री', ftAbout: 'हाम्रोबारे', ftHelp: 'सहायता', ftHandmade: '१००% नेपालमा हातले बनेको',
+        kgCategories: 'वर्गहरू', kgHomeFav: 'घरका मनपर्ने', kgFashion: 'फेसन', ftShop: 'किनमेल', ftSell: 'बिक्री', ftAbout: 'हाम्रोबारे', ftHelp: 'सहायता', ftHandmade: '१००% नेपालमा हातले बनेको',
         ftFestival: 'चाडपर्व उपहार', ftSendHome: 'घरमा उपहार पठाउनुहोस्', ftSellOn: 'KalaGhar मा बेच्नुहोस्', ftSellerRules: 'विक्रेता नीति', ftTrack: 'मेरो अर्डर ट्र्याक'
     });
     KG.CATEGORIES.forEach(function (c) {
