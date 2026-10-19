@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
-    /* Apply saved theme before paint to avoid a flash */
     (function () {
         try {
             var t = localStorage.getItem('kg-theme');
@@ -29,11 +28,36 @@
         details > summary::-webkit-details-marker { display: none; }
         details > summary::after { content: "+"; float: right; color: #b91c1c; font-weight: 700; }
         details[open] > summary::after { content: "−"; }
+
+        .admin-tab {
+            padding: 12px 20px; font-size: 13px; font-weight: 600;
+            color: #6b7280; border-bottom: 2px solid transparent;
+            transition: all .15s; white-space: nowrap; cursor: pointer;
+        }
+        .admin-tab.active { color: #b91c1c; border-bottom-color: #b91c1c; }
+        .dark .admin-tab { color: #9ca3af; }
+        .dark .admin-tab.active { color: #f87171; border-bottom-color: #f87171; }
+
+        .lang-option.selected { background-color: #fef2f2; }
+        .dark .lang-option.selected { background-color: rgba(185, 28, 28, 0.15); }
+
+        /* Footer Specific Styles */
+        .footer-icon-box {
+            width: 40px; height: 40px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            background-color: #8b5a2b; /* Brown color from screenshot */
+            color: white; font-size: 16px;
+        }
+        .dark .footer-icon-box { background-color: #4b2e1e; }
+        
+        .footer-link { transition: color 0.2s; }
+        .footer-link:hover { color: #b91c1c; }
+        .dark .footer-link:hover { color: #f87171; }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen transition-colors duration-200">
 
-    <!-- 1. ANNOUNCEMENT MARQUEE -->
+    <!-- ANNOUNCEMENT MARQUEE -->
     <div class="bg-red-800 dark:bg-red-900 text-white text-xs py-2 overflow-hidden whitespace-nowrap relative z-50 shadow-inner">
         <div class="animate-marquee flex items-center gap-8 font-medium">
             <span class="flex items-center gap-2" data-i18n="t1">✨ Empowering 1,200+ Nepali Artisans &amp; Rural Cooperatives</span>
@@ -45,14 +69,14 @@
         </div>
     </div>
 
-    <!-- 2. HEADER -->
+    <!-- HEADER -->
     <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40 shadow-sm transition-colors">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-            <a href="#" class="flex items-center gap-3 group shrink-0">
-                <div class="w-10 h-10 bg-red-700 text-white rounded-lg flex items-center justify-center font-bold text-xl font-nepali shadow-md group-hover:bg-red-800 transition">क</div>
+        <div class="max-w-7xl mx-auto px-3 sm:px-4 py-3 flex items-center justify-between gap-2 sm:gap-3">
+            <a href="#" class="flex items-center gap-2 sm:gap-3 group shrink-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-red-700 text-white rounded-lg flex items-center justify-center font-bold text-lg sm:text-xl font-nepali shadow-md group-hover:bg-red-800 transition">क</div>
                 <div>
-                    <span class="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight block leading-none">KalaGhar</span>
-                    <span class="text-xs text-red-700 dark:text-red-400 font-nepali font-semibold tracking-wider">कलाघर नेपाल</span>
+                    <span class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight block leading-none">KalaGhar</span>
+                    <span class="text-[10px] sm:text-xs text-red-700 dark:text-red-400 font-nepali font-semibold tracking-wider">कलाघर नेपाल</span>
                 </div>
             </a>
 
@@ -65,31 +89,49 @@
                 </button>
             </div>
 
-            <div class="flex items-center gap-1.5 sm:gap-2">
+            <div class="flex items-center gap-1 sm:gap-2">
+                <!-- Become a Seller -->
+                <button onclick="openModal('artisanModal')" class="hidden lg:flex items-center gap-2 text-xs font-bold tracking-wider text-red-700 dark:text-red-400 border-2 border-red-700 dark:border-red-500 px-3 py-1.5 rounded-full hover:bg-red-700 hover:text-white transition">
+                    <i class="fa-solid fa-hands-holding"></i>
+                    <span data-i18n="becomeSeller">BECOME A SELLER</span>
+                </button>
+
                 <!-- Theme toggle -->
                 <button id="themeToggle" onclick="toggleTheme()" title="Toggle day / night"
                         class="text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                     <i id="themeIcon" class="fa-solid fa-moon"></i>
                 </button>
 
-                <!-- Language toggle -->
-                <button id="langToggle" onclick="toggleLang()" title="Change language"
-                        class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-2.5 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
-                    <i class="fa-solid fa-language text-sm"></i>
-                    <span id="langLabel">नेपाली</span>
-                </button>
+                <!-- Language dropdown with flags -->
+                <div class="relative" id="langDropdownWrap">
+                    <button onclick="toggleLangDropdown()" title="Change language"
+                            class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-2 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
+                        <img id="currentLangFlag" src="https://flagcdn.com/24x18/us.png" alt="US flag" class="w-5 h-3.5 rounded-sm object-cover">
+                        <span id="langLabel" class="hidden sm:inline">English</span>
+                        <i class="fa-solid fa-chevron-down text-[9px] opacity-60"></i>
+                    </button>
+                    <div id="langDropdown" class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden z-50">
+                        <button onclick="selectLang('en')" class="lang-option w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <img src="https://flagcdn.com/24x18/us.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
+                            <span>English</span>
+                            <i class="fa-solid fa-check ml-auto text-red-700 dark:text-red-400 check-mark-en hidden"></i>
+                        </button>
+                        <button onclick="selectLang('ne')" class="lang-option w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-t border-gray-100 dark:border-gray-800">
+                            <img src="https://flagcdn.com/24x18/np.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
+                            <span>नेपाली</span>
+                            <i class="fa-solid fa-check ml-auto text-red-700 dark:text-red-400 check-mark-ne hidden"></i>
+                        </button>
+                    </div>
+                </div>
 
-                <button onclick="openModal('artisanModal')" class="hidden lg:flex items-center gap-2 text-xs font-bold tracking-wider text-red-700 dark:text-red-400 border-2 border-red-700 dark:border-red-500 px-3 py-1.5 rounded-full hover:bg-red-700 hover:text-white transition">
-                    <i class="fa-solid fa-hands-holding"></i>
-                    <span data-i18n="becomeSeller">BECOME A SELLER</span>
-                </button>
-
-                <button onclick="openModal('customerAuthModal')" class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-3 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
+                <!-- Sign In -->
+                <button onclick="openModal('customerAuthModal')" class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-2 sm:px-3 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
                     <i class="fa-regular fa-user text-sm"></i>
                     <span id="userStatusLabel" data-i18n="signIn" class="hidden sm:inline">Sign In</span>
                 </button>
 
-                <button onclick="openModal('adminModal')" title="Admin Control Console"
+                <!-- Admin -->
+                <button onclick="openAdminPanel()" title="Admin Control Console"
                         class="text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 p-2 text-base rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                     <i class="fa-solid fa-user-gear"></i>
                 </button>
@@ -105,13 +147,13 @@
         </div>
     </header>
 
-    <!-- 3. DISPATCH NOTICE -->
+    <!-- DISPATCH NOTICE -->
     <div class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 text-center text-xs text-gray-600 dark:text-gray-400 py-2 px-4 transition-colors"
          data-i18n-html="dispatch">
         Order today for dispatch from Kathmandu within <strong class="text-red-700 dark:text-red-400">1–2 business days</strong>.
     </div>
 
-    <!-- 4. HERO -->
+    <!-- HERO -->
     <section class="relative bg-amber-950 text-white py-14 px-4 overflow-hidden">
         <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div class="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-8 items-center">
@@ -137,7 +179,7 @@
         </div>
     </section>
 
-    <!-- 5. FEATURED SPOTLIGHT -->
+    <!-- FEATURED SPOTLIGHT -->
     <section class="max-w-7xl mx-auto px-4 py-10">
         <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden grid md:grid-cols-2 transition-colors">
             <div class="h-64 md:h-auto overflow-hidden">
@@ -155,41 +197,29 @@
         </div>
     </section>
 
-    <!-- 6. WHY SHOP WITH KALAGHAR -->
+    <!-- WHY SHOP -->
     <section class="bg-white dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800 py-10 px-4 transition-colors">
         <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="flex gap-3 items-start">
                 <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 flex items-center justify-center"><i class="fa-solid fa-hands-holding"></i></div>
-                <div>
-                    <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b1t">Empowering 1,200+ Artisans</h4>
-                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b1s">Nepali artisans &amp; rural cooperatives</p>
-                </div>
+                <div><h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b1t">Empowering 1,200+ Artisans</h4><p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b1s">Nepali artisans &amp; rural cooperatives</p></div>
             </div>
             <div class="flex gap-3 items-start">
                 <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 flex items-center justify-center"><i class="fa-solid fa-truck-fast"></i></div>
-                <div>
-                    <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b2t">Free Shipping across Nepal</h4>
-                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b2s">On orders over NPR 3,000</p>
-                </div>
+                <div><h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b2t">Free Shipping across Nepal</h4><p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b2s">On orders over NPR 3,000</p></div>
             </div>
             <div class="flex gap-3 items-start">
                 <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 flex items-center justify-center"><i class="fa-solid fa-plane-up"></i></div>
-                <div>
-                    <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b3t">Global Express Delivery</h4>
-                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b3s">Shipped worldwide from Kathmandu</p>
-                </div>
+                <div><h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b3t">Global Express Delivery</h4><p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b3s">Shipped worldwide from Kathmandu</p></div>
             </div>
             <div class="flex gap-3 items-start">
                 <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 flex items-center justify-center"><i class="fa-solid fa-certificate"></i></div>
-                <div>
-                    <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b4t">100% Certified Authentic</h4>
-                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b4s">Kathmandu, Patan &amp; Palpa</p>
-                </div>
+                <div><h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b4t">100% Certified Authentic</h4><p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b4s">Kathmandu, Patan &amp; Palpa</p></div>
             </div>
         </div>
     </section>
 
-    <!-- 7. CRAFT OF THE WEEK -->
+    <!-- CRAFT OF THE WEEK -->
     <section class="max-w-7xl mx-auto px-4 py-10">
         <div class="bg-amber-50 dark:bg-gray-900 border border-amber-200 dark:border-gray-800 rounded-2xl p-6 md:p-8 grid md:grid-cols-2 gap-6 items-center transition-colors">
             <div class="h-56 rounded-xl overflow-hidden">
@@ -208,7 +238,7 @@
         </div>
     </section>
 
-    <!-- 8. CATEGORY TILES -->
+    <!-- CATEGORY TILES -->
     <section class="max-w-7xl mx-auto px-4 pb-4">
         <div class="flex items-end justify-between mb-4">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="catsTitle">Shop Popular Categories</h2>
@@ -218,39 +248,27 @@
             <button onclick="filterCategory('pashmina')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/375880/pexels-photo-375880.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white">
-                    <strong class="block text-sm font-bold" data-i18n="cat1t">Pashmina &amp; Cashmere</strong>
-                    <span class="text-[11px] opacity-80" data-i18n="cat1s">Mustang</span>
-                </div>
+                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat1t">Pashmina &amp; Cashmere</strong><span class="text-[11px] opacity-80" data-i18n="cat1s">Mustang</span></div>
             </button>
             <button onclick="filterCategory('dhaka')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/2292919/pexels-photo-2292919.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white">
-                    <strong class="block text-sm font-bold" data-i18n="cat2t">Palpali Dhaka</strong>
-                    <span class="text-[11px] opacity-80" data-i18n="cat2s">Palpa</span>
-                </div>
+                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat2t">Palpali Dhaka</strong><span class="text-[11px] opacity-80" data-i18n="cat2s">Palpa</span></div>
             </button>
             <button onclick="filterCategory('lokta')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/261763/pexels-photo-261763.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white">
-                    <strong class="block text-sm font-bold" data-i18n="cat3t">Lokta Paper</strong>
-                    <span class="text-[11px] opacity-80" data-i18n="cat3s">Eco Paper</span>
-                </div>
+                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat3t">Lokta Paper</strong><span class="text-[11px] opacity-80" data-i18n="cat3s">Eco Paper</span></div>
             </button>
             <button onclick="filterCategory('metal')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white">
-                    <strong class="block text-sm font-bold" data-i18n="cat4t">Patan Statues</strong>
-                    <span class="text-[11px] opacity-80" data-i18n="cat4s">Patan Craft</span>
-                </div>
+                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat4t">Patan Statues</strong><span class="text-[11px] opacity-80" data-i18n="cat4s">Patan Craft</span></div>
             </button>
         </div>
     </section>
 
-    <!-- 9. CATALOG -->
+    <!-- CATALOG -->
     <section id="marketplace" class="max-w-7xl mx-auto px-4 py-10">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-200 dark:border-gray-800 pb-4">
             <div>
@@ -266,70 +284,10 @@
             </div>
         </div>
 
-        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="pashmina">
-                <div class="h-48 overflow-hidden relative">
-                    <img src="https://images.pexels.com/photos/375880/pexels-photo-375880.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Chyangra Pashmina" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                    <span class="absolute top-2 left-2 bg-red-700 text-white text-[10px] font-bold px-2 py-0.5 rounded">MUSTANG</span>
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition" data-i18n="p1t">Pure Chyangra Pashmina Shawl</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="p1s">100% Hand-spun Cashmere</p>
-                    <div class="flex items-center justify-between mt-3">
-                        <span class="text-sm font-bold text-red-700 dark:text-red-400">NPR 12,500</span>
-                        <button onclick="addToCart('Pure Chyangra Pashmina Shawl')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition" data-i18n="addToBag">+ Add to Bag</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="dhaka">
-                <div class="h-48 overflow-hidden relative">
-                    <img src="https://images.pexels.com/photos/2292919/pexels-photo-2292919.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Dhaka Topi & Scarf" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                    <span class="absolute top-2 left-2 bg-amber-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">PALPA</span>
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition" data-i18n="p2t">Authentic Palpali Dhaka Scarf</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="p2s">Traditional Wooden Loom Weave</p>
-                    <div class="flex items-center justify-between mt-3">
-                        <span class="text-sm font-bold text-red-700 dark:text-red-400">NPR 1,800</span>
-                        <button onclick="addToCart('Authentic Palpali Dhaka Scarf')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition" data-i18n="addToBag">+ Add to Bag</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="lokta">
-                <div class="h-48 overflow-hidden relative">
-                    <img src="https://images.pexels.com/photos/261763/pexels-photo-261763.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Lokta Journal" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                    <span class="absolute top-2 left-2 bg-green-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">ECO PAPER</span>
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition" data-i18n="p3t">Himalayan Bark Lokta Journal</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="p3s">Handbound Eco-friendly Paper</p>
-                    <div class="flex items-center justify-between mt-3">
-                        <span class="text-sm font-bold text-red-700 dark:text-red-400">NPR 750</span>
-                        <button onclick="addToCart('Himalayan Bark Lokta Journal')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition" data-i18n="addToBag">+ Add to Bag</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="metal">
-                <div class="h-48 overflow-hidden relative">
-                    <img src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Patan Bronze" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                    <span class="absolute top-2 left-2 bg-yellow-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">PATAN CRAFT</span>
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition" data-i18n="p4t">Hand-carved Bronze Buddha</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="p4s">45-Day Lost Wax Casting Process</p>
-                    <div class="flex items-center justify-between mt-3">
-                        <span class="text-sm font-bold text-red-700 dark:text-red-400">NPR 24,000</span>
-                        <button onclick="addToCart('Hand-carved Bronze Buddha')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition" data-i18n="addToBag">+ Add to Bag</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
     </section>
 
-    <!-- 10. ARTISAN SPOTLIGHT -->
+    <!-- ARTISAN SPOTLIGHT -->
     <section class="bg-amber-50 dark:bg-gray-900 border-y border-amber-200 dark:border-gray-800 py-12 px-4 transition-colors">
         <div class="max-w-7xl mx-auto">
             <div class="text-center max-w-2xl mx-auto mb-10">
@@ -341,30 +299,21 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-amber-100 dark:border-gray-700 shadow-sm">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 flex items-center justify-center font-bold">S</div>
-                        <div>
-                            <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar1n">Sunita Shrestha</h4>
-                            <p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar1r">Master Dhaka Weaver, Palpa</p>
-                        </div>
+                        <div><h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar1n">Sunita Shrestha</h4><p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar1r">Master Dhaka Weaver, Palpa</p></div>
                     </div>
                     <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic" data-i18n="ar1q">"I have been hand-weaving traditional Dhaka on wooden looms for 22 years. KalaGhar allows us to connect directly with buyers."</p>
                 </div>
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-amber-100 dark:border-gray-700 shadow-sm">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 flex items-center justify-center font-bold">P</div>
-                        <div>
-                            <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar2n">Purna Shakya</h4>
-                            <p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar2r">Bronze Sculptor, Patan</p>
-                        </div>
+                        <div><h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar2n">Purna Shakya</h4><p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar2r">Bronze Sculptor, Patan</p></div>
                     </div>
                     <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic" data-i18n="ar2q">"Lost-wax sculpting is passed down through generations in Patan. Each statue takes over a month of focused metalwork."</p>
                 </div>
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-amber-100 dark:border-gray-700 shadow-sm">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 flex items-center justify-center font-bold">M</div>
-                        <div>
-                            <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar3n">Maya Gurung</h4>
-                            <p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar3r">Mustang Cashmere Spinner</p>
-                        </div>
+                        <div><h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar3n">Maya Gurung</h4><p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar3r">Mustang Cashmere Spinner</p></div>
                     </div>
                     <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic" data-i18n="ar3q">"Chyangra goats live above 14,000 ft. We comb their undercoat by hand each spring to spin soft, authentic cashmere."</p>
                 </div>
@@ -372,7 +321,7 @@
         </div>
     </section>
 
-    <!-- 11. SHIPPING CALCULATOR -->
+    <!-- SHIPPING CALCULATOR -->
     <section class="max-w-7xl mx-auto px-4 py-12">
         <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 md:p-8 shadow-sm transition-colors">
             <div class="max-w-xl">
@@ -397,7 +346,7 @@
         </div>
     </section>
 
-    <!-- 12. FAQ -->
+    <!-- FAQ -->
     <section class="max-w-4xl mx-auto px-4 pb-12">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-i18n="faqTitle">Frequently Asked Questions</h2>
         <div class="space-y-3">
@@ -416,7 +365,7 @@
         </div>
     </section>
 
-    <!-- 13. NEWSLETTER -->
+    <!-- NEWSLETTER -->
     <section class="max-w-7xl mx-auto px-4 pb-12">
         <div class="bg-red-700 rounded-2xl p-6 md:p-10 grid md:grid-cols-2 gap-6 items-center">
             <div class="text-white">
@@ -432,49 +381,121 @@
         </div>
     </section>
 
-    <!-- 14. FOOTER -->
-    <footer class="bg-gray-900 dark:bg-black text-gray-400 mt-auto py-10 border-t border-gray-800 dark:border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-sm">
-            <div>
-                <h4 class="text-white font-bold mb-3">KalaGhar Marketplace</h4>
-                <p class="text-xs leading-relaxed" data-i18n="footerAbout">Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.</p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-3" data-i18n="fCategories">Categories</h4>
-                <ul class="space-y-1.5 text-xs">
-                    <li><a href="#marketplace" onclick="filterCategory('pashmina')" class="hover:text-white" data-i18n="fPashmina">Pashmina &amp; Cashmere</a></li>
-                    <li><a href="#marketplace" onclick="filterCategory('dhaka')" class="hover:text-white" data-i18n="fDhaka">Palpali Dhaka</a></li>
-                    <li><a href="#marketplace" onclick="filterCategory('lokta')" class="hover:text-white" data-i18n="fLokta">Lokta Paper</a></li>
-                    <li><a href="#marketplace" onclick="filterCategory('metal')" class="hover:text-white" data-i18n="fMetal">Patan Statues</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-3" data-i18n="fSupport">Customer Support</h4>
-                <ul class="space-y-1.5 text-xs">
-                    <li><a href="#" class="hover:text-white" data-i18n="fShippingInfo">Shipping &amp; Customs Info</a></li>
-                    <li><a href="#" class="hover:text-white" data-i18n="fCert">Certificate of Origin</a></li>
-                    <li><a href="#" class="hover:text-white" data-i18n="fTrack">Track Package</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-3" data-i18n="fPortals">Portals</h4>
-                <div class="flex flex-col gap-2">
-                    <button onclick="openModal('artisanModal')" class="bg-red-700 text-white text-xs px-3 py-2 rounded font-semibold hover:bg-red-800 transition text-left">
-                        <i class="fa-solid fa-hands-holding mr-1"></i> <span data-i18n="fSellerApp">Seller Application</span>
-                    </button>
-                    <button onclick="openModal('adminModal')" class="bg-gray-800 text-gray-300 text-xs px-3 py-2 rounded font-semibold hover:bg-gray-700 transition text-left">
-                        <i class="fa-solid fa-lock mr-1"></i> <span data-i18n="fAdmin">Admin Console</span>
-                    </button>
+    <!-- =========================================================
+         NEW FOOTER MATCHING IVANNA STAY SCREENSHOT
+         ========================================================= -->
+    <footer class="bg-[#fcfbf9] dark:bg-gray-950 text-[#5a4b45] dark:text-gray-400 pt-16 pb-8 border-t border-[#e8e3df] dark:border-gray-800 mt-auto transition-colors">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">
+            
+            <!-- Col 1: Brand & Social -->
+            <div class="lg:col-span-4">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 bg-[#8b5a2b] dark:bg-gray-800 text-white rounded-lg flex items-center justify-center font-bold text-xl font-nepali">क</div>
+                    <div>
+                        <span class="text-2xl font-extrabold text-[#5a4b45] dark:text-white tracking-tight block leading-none" style="font-family: 'Mukta', serif;">KalaGhar</span>
+                        <span class="text-[10px] text-[#8b5a2b] dark:text-gray-500 font-nepali font-semibold tracking-wider">FEEL THE HERITAGE</span>
+                    </div>
+                </div>
+                <p class="text-sm leading-relaxed mb-6 max-w-xs" data-i18n="footerAbout">
+                    Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.
+                </p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-[#8b5a2b] hover:text-[#8b5a2b] transition">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-[#8b5a2b] hover:text-[#8b5a2b] transition">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
                 </div>
             </div>
+
+            <!-- Col 2: Explore Links -->
+            <div class="lg:col-span-2">
+                <h4 class="font-bold text-[#5a4b45] dark:text-white mb-4 text-sm" data-i18n="expTitle">Explore</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="footer-link" data-i18n="fAll">All Crafts</a></li>
+                    <li><a href="#" class="footer-link" data-i18n="fPashmina">Pashmina &amp; Cashmere</a></li>
+                    <li><a href="#" class="footer-link" data-i18n="fDhaka">Palpali Dhaka</a></li>
+                    <li><a href="#" class="footer-link" data-i18n="fLokta">Lokta Paper</a></li>
+                    <li><a href="#" class="footer-link" data-i18n="fMetal">Patan Statues</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Support Links -->
+            <div class="lg:col-span-2">
+                <h4 class="font-bold text-[#5a4b45] dark:text-white mb-4 text-sm" data-i18n="supTitle">Support</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="footer-link" data-i18n="fShippingInfo">Shipping &amp; Customs Info</a></li>
+                    <li><a href="#" class="footer-link" data-i18n="fCert">Certificate of Origin</a></li>
+                    <li><a href="#" class="footer-link" data-i18n="fTrack">Track Package</a></li>
+                    <li><a href="#faq" class="footer-link" data-i18n="faqTitle">FAQ</a></li>
+                    <li><a href="#" class="footer-link" data-i18n="footerTerms">Terms &amp; Conditions</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Contact Info -->
+            <div class="lg:col-span-4">
+                <h4 class="font-bold text-[#5a4b45] dark:text-white mb-4 text-sm" data-i18n="conTitle">Contact</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start gap-3">
+                        <div class="footer-icon-box"><i class="fa-solid fa-location-dot"></i></div>
+                        <div>
+                            <span class="block text-[10px] font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-0.5" data-i18n="addressLabel">ADDRESS</span>
+                            <span data-i18n="contactAddress">Kathmandu- 14, Nepal</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="footer-icon-box"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <span class="block text-[10px] font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-0.5" data-i18n="phoneLabel">PHONE</span>
+                            <a href="tel:+9779851022453" class="hover:text-red-700 dark:hover:text-red-400 transition">+977 9851022453</a>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="footer-icon-box"><i class="fa-solid fa-envelope"></i></div>
+                        <div>
+                            <span class="block text-[10px] font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-0.5" data-i18n="emailLabel">EMAIL</span>
+                            <a href="mailto:support@kalanepal.com" class="hover:text-red-700 dark:hover:text-red-400 transition">support@kalanepal.com</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-gray-800 text-xs text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-2">
-            <p data-i18n="fRights">&copy; 2026 KalaGhar Marketplace. All rights reserved.</p>
-            <p class="text-gray-500 font-nepali">कलाघर - नेपालको पहिचान</p>
+
+        <!-- Bottom Bar -->
+        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-[#e8e3df] dark:border-gray-800 flex flex-col lg:flex-row justify-between items-center gap-4 text-xs">
+            
+            <!-- Left: Theme toggle (optional duplicate for layout match) & Copyright -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-500 hover:text-[#5a4b45] dark:hover:text-white transition">
+                    <i class="fa-regular fa-sun"></i>
+                </button>
+                <span data-i18n="fRights">&copy; 2026 KalaGhar Marketplace. All rights reserved.</span>
+            </div>
+
+            <!-- Center: Payment Methods -->
+            <div class="flex items-center gap-3 opacity-80 grayscale dark:grayscale-0 dark:opacity-100">
+                <span class="font-bold text-[10px] tracking-widest uppercase text-gray-400" data-i18n="weAccept">WE ACCEPT:</span>
+                <div class="flex gap-1.5 items-center">
+                    <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-sm"><i class="fa-brands fa-cc-visa text-blue-800 text-lg"></i></span>
+                    <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-sm"><i class="fa-brands fa-cc-mastercard text-red-600 text-lg"></i></span>
+                    <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-sm text-[10px] font-bold text-green-700">eSewa</span>
+                    <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-sm text-[10px] font-bold text-red-600">fonepay</span>
+                    <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-sm text-[10px] font-bold text-gray-700"><i class="fa-solid fa-money-bill-1 mr-0.5"></i> Cash</span>
+                </div>
+            </div>
+
+            <!-- Right: Legal Links -->
+            <div class="flex gap-4 font-medium">
+                <a href="#" class="hover:text-[#5a4b45] dark:hover:text-white" data-i18n="privacy">Privacy</a>
+                <a href="#" class="hover:text-[#5a4b45] dark:hover:text-white" data-i18n="terms">Terms</a>
+                <a href="#" class="hover:text-[#5a4b45] dark:hover:text-white" data-i18n="sitemap">Sitemap</a>
+                <a href="#" onclick="openAdminPanel(); return false;" class="font-bold hover:text-[#5a4b45] dark:hover:text-white" data-i18n="admin">Admin</a>
+            </div>
         </div>
     </footer>
 
-    <!-- MODAL 1: CUSTOMER AUTH -->
+    <!-- MODAL: CUSTOMER AUTH -->
     <div id="customerAuthModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
         <div class="bg-white dark:bg-gray-900 rounded-xl max-w-md w-full p-6 shadow-2xl relative">
             <button onclick="closeModal('customerAuthModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -482,121 +503,202 @@
                 <button id="loginTabBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700 dark:text-red-400">Customer Sign In</button>
                 <button id="signupTabBtn" onclick="switchAuthTab('signup')" class="flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-gray-500">Create Account</button>
             </div>
-
             <form id="loginForm" onsubmit="handleCustomerLogin(event)" class="space-y-4 text-sm">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
-                    <input type="email" required placeholder="buyer@example.com" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                    <input type="password" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                </div>
+                <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                    <input type="email" required placeholder="buyer@example.com" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none"></div>
+                <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none"></div>
                 <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition">Sign In</button>
             </form>
-
             <form id="signupForm" onsubmit="handleCustomerLogin(event)" class="space-y-4 text-sm hidden">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
-                    <input type="text" required placeholder="Your name" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
-                    <input type="email" required placeholder="buyer@example.com" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                    <input type="password" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                </div>
+                <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <input type="text" required placeholder="Your name" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none"></div>
+                <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                    <input type="email" required placeholder="buyer@example.com" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none"></div>
+                <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none"></div>
                 <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition">Create Account</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 2: ARTISAN APPLICATION -->
+    <!-- MODAL: ARTISAN APPLICATION -->
     <div id="artisanModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
         <div class="bg-white dark:bg-gray-900 rounded-xl max-w-md w-full p-6 shadow-2xl relative">
             <button onclick="closeModal('artisanModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i class="fa-solid fa-xmark text-lg"></i></button>
             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Become a Seller</h3>
             <p class="text-xs text-gray-500 dark:text-gray-400 mb-5">Artisan &amp; cooperative application</p>
             <form onsubmit="handleArtisanApply(event)" class="space-y-4 text-sm">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Artisan / Cooperative Name</label>
-                    <input type="text" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Craft Category</label>
+                <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Artisan / Cooperative Name</label>
+                    <input type="text" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none"></div>
+                <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Craft Category</label>
                     <select required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                         <option value="">Select…</option>
-                        <option>Pashmina &amp; Cashmere</option>
-                        <option>Palpali Dhaka</option>
-                        <option>Lokta Paper</option>
-                        <option>Patan Statues</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                    <input type="email" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                </div>
+                        <option>Pashmina &amp; Cashmere</option><option>Palpali Dhaka</option>
+                        <option>Lokta Paper</option><option>Patan Statues</option>
+                    </select></div>
+                <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none"></div>
                 <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition">Submit Application</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 3: ADMIN -->
-    <div id="adminModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+    <!-- ADMIN PANEL OVERLAY -->
+    <div id="adminOverlay" class="fixed inset-0 z-[70] bg-gray-100 dark:bg-gray-950 overflow-y-auto hidden">
+        <!-- LOGIN VIEW -->
+        <div id="adminLoginView" class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-8 border border-gray-200 dark:border-gray-800">
+                <div class="text-center mb-6">
+                    <div class="w-14 h-14 bg-red-700 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl font-bold font-nepali shadow-lg">क</div>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="adminTitle">Admin Console</h2>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-i18n="adminSubtitle">Restricted access</p>
+                </div>
+                <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminEmailLabel">Admin Email</label>
+                        <input id="adminEmail" type="email" required placeholder="admin@kalaghar.com"
+                               class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminPasswordLabel">Password</label>
+                        <input id="adminPassword" type="password" required placeholder="••••••••"
+                               class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    </div>
+                    <p id="adminLoginError" class="hidden text-xs text-red-600 dark:text-red-400"></p>
+                    <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition" data-i18n="adminSignInBtn">Sign In to Console</button>
+                </form>
+                <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                    <p class="text-[11px] text-amber-900 dark:text-amber-200 leading-relaxed">
+                        <strong data-i18n="adminDemoHintLabel">Demo credentials:</strong><br>
+                        Email: <code class="font-mono">admin@kalaghar.com</code><br>
+                        Password: <code class="font-mono">KalaGhar@2026</code>
+                    </p>
+                </div>
+                <button onclick="closeAdminPanel()" class="w-full mt-4 text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" data-i18n="adminBackToStore">← Back to store</button>
+            </div>
+        </div>
+
+        <!-- DASHBOARD VIEW -->
+        <div id="adminDashboardView" class="hidden min-h-screen">
+            <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-10">
+                <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-red-700 text-white rounded-lg flex items-center justify-center font-bold text-xl font-nepali">क</div>
+                        <div>
+                            <h2 class="font-bold text-gray-900 dark:text-white leading-tight">KalaGhar Admin</h2>
+                            <p id="adminEmailDisplay" class="text-[11px] text-gray-500 dark:text-gray-400"></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="adminLogout()" class="text-xs font-semibold text-red-700 dark:text-red-400 border border-red-700 dark:border-red-500 px-3 py-1.5 rounded-lg hover:bg-red-700 hover:text-white transition">
+                            <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> <span data-i18n="adminLogout">Logout</span>
+                        </button>
+                        <button onclick="closeAdminPanel()" class="text-gray-600 dark:text-gray-300 hover:text-red-700 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition" title="Close panel">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="max-w-7xl mx-auto px-2 flex overflow-x-auto border-t border-gray-100 dark:border-gray-800">
+                    <button onclick="switchAdminTab('overview')" class="admin-tab active" data-tab="overview" data-i18n="adminTabOverview">Overview</button>
+                    <button onclick="switchAdminTab('products')" class="admin-tab" data-tab="products" data-i18n="adminTabProducts">Products</button>
+                    <button onclick="switchAdminTab('orders')" class="admin-tab" data-tab="orders" data-i18n="adminTabOrders">Orders</button>
+                    <button onclick="switchAdminTab('artisans')" class="admin-tab" data-tab="artisans" data-i18n="adminTabArtisans">Artisans</button>
+                </div>
+            </header>
+            <main class="max-w-7xl mx-auto p-4 sm:p-6">
+                <div id="adminTab-overview" class="admin-tab-content"></div>
+                <div id="adminTab-products" class="admin-tab-content hidden"></div>
+                <div id="adminTab-orders" class="admin-tab-content hidden"></div>
+                <div id="adminTab-artisans" class="admin-tab-content hidden"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ADMIN: PRODUCT FORM MODAL -->
+    <div id="adminProductModal" class="fixed inset-0 bg-black/60 z-[80] hidden items-center justify-center p-4">
         <div class="bg-white dark:bg-gray-900 rounded-xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeModal('adminModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Admin Console</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-5">Restricted access</p>
-            <form onsubmit="handleAdminLogin(event)" class="space-y-4 text-sm">
+            <button onclick="closeProductForm()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 id="productFormTitle" class="text-xl font-bold text-gray-900 dark:text-white mb-5">Add Product</h3>
+            <form onsubmit="handleProductFormSubmit(event)" class="space-y-3">
+                <input type="hidden" id="pfId">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Admin Email</label>
-                    <input type="email" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminProductName">Product Name</label>
+                    <input id="pfName" type="text" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                    <input type="password" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminProductSub">Subtitle</label>
+                    <input id="pfSub" type="text" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
-                <button type="submit" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-2.5 rounded-lg transition">Enter Console</button>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminProductPrice">Price (NPR)</label>
+                        <input id="pfPrice" type="number" required min="1" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminProductCategory">Category</label>
+                        <select id="pfCategory" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                            <option value="pashmina">Pashmina</option>
+                            <option value="dhaka">Dhaka</option>
+                            <option value="lokta">Lokta</option>
+                            <option value="metal">Metal</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Image URL</label>
+                    <input id="pfImage" type="url" required placeholder="https://…" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Tag Label</label>
+                    <input id="pfTag" type="text" required placeholder="MUSTANG" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeProductForm()" class="flex-1 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-semibold py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition text-sm" data-i18n="adminCancel">Cancel</button>
+                    <button type="submit" class="flex-1 bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition text-sm" data-i18n="adminSave">Save</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- 15. FLOATING SUPPORT: WHATSAPP + LIVE CHAT -->
+    <!-- =========================================================
+         FLOATING SUPPORT (Matching screenshot: 3 buttons)
+         ========================================================= -->
     <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
-
-        <!-- Chat panel -->
+        <!-- Chat Panel -->
         <div id="chatPanel" class="hidden w-80 max-w-[calc(100vw-2.5rem)] h-96 flex-col bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
             <div class="bg-red-700 text-white px-4 py-3 flex items-start justify-between">
                 <div>
                     <p class="font-bold text-sm" data-i18n="chatTitle">KalaGhar Support</p>
                     <p class="text-[11px] text-red-100" data-i18n="chatSub">We usually reply in a few minutes</p>
                 </div>
-                <button onclick="toggleChat(false)" class="text-white/80 hover:text-white mt-0.5" aria-label="Close chat">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <button onclick="toggleChat(false)" class="text-white/80 hover:text-white mt-0.5" aria-label="Close chat"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="chatMessages" class="flex-1 overflow-y-auto p-3 space-y-2 bg-gray-50 dark:bg-gray-950"></div>
             <form onsubmit="sendChat(event)" class="p-2 border-t border-gray-200 dark:border-gray-800 flex gap-2 bg-white dark:bg-gray-900">
                 <input id="chatInput" data-i18n-ph="chatPh" placeholder="Type your message..." aria-label="Message"
                        class="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-400 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-red-700">
-                <button type="submit" class="bg-red-700 hover:bg-red-800 text-white px-3 rounded-lg text-sm" aria-label="Send">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
+                <button type="submit" class="bg-red-700 hover:bg-red-800 text-white px-3 rounded-lg text-sm" aria-label="Send"><i class="fa-solid fa-paper-plane"></i></button>
             </form>
         </div>
-
+        
         <!-- Buttons -->
-        <div class="flex items-center gap-2">
-            <a href="https://wa.me/9779800000000?text=Namaste%20KalaGhar%2C%20I%20have%20a%20question"
-               target="_blank" rel="noopener" aria-label="WhatsApp support" title="WhatsApp support"
-               class="w-12 h-12 rounded-full bg-green-600 hover:bg-green-700 text-white shadow-lg flex items-center justify-center text-2xl transition hover:scale-105">
+        <div class="flex items-center gap-3">
+            <!-- Call Button (Brownish to match design) -->
+            <a href="tel:+9779851022453" aria-label="Call Support" title="Call Support"
+               class="w-12 h-12 rounded-full bg-[#8b5a2b] hover:bg-[#724922] text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105">
+                <i class="fa-solid fa-phone"></i>
+            </a>
+            <!-- WhatsApp Button (Green) -->
+            <a href="https://wa.me/9779851022453?text=Namaste%20KalaGhar%2C%20I%20have%20a%20question" target="_blank" rel="noopener"
+               aria-label="WhatsApp support" title="WhatsApp support"
+               class="w-12 h-12 rounded-full bg-[#25D366] hover:bg-[#1ebd58] text-white shadow-lg flex items-center justify-center text-2xl transition hover:scale-105">
                 <i class="fa-brands fa-whatsapp"></i>
             </a>
+            <!-- Live Chat Button (Brownish to match design) -->
             <button onclick="toggleChat()" aria-label="Live chat" title="Live chat"
-                    class="w-12 h-12 rounded-full bg-red-700 hover:bg-red-800 text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105">
-                <i class="fa-solid fa-comments"></i>
+                    class="w-12 h-12 rounded-full bg-[#8b5a2b] hover:bg-[#724922] text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105">
+                <i class="fa-solid fa-comment-dots"></i>
             </button>
         </div>
     </div>
@@ -607,299 +709,390 @@
        ========================================================= */
     const I18N = {
         en: {
-            t1: "✨ Empowering 1,200+ Nepali Artisans & Rural Cooperatives",
-            t2: "✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery",
-            t3: "📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa",
-            dispatch: 'Order today for dispatch from Kathmandu within <strong class="text-red-700 dark:text-red-400">1–2 business days</strong>.',
-            becomeSeller: "BECOME A SELLER",
-            signIn: "Sign In",
-            myAccount: "My Account",
-            searchPh: "Search handcrafted pashmina, dhaka, bronze statues, lokta paper...",
-            heroBadge: "Authentic Nepali Heritage Crafts",
-            heroTitle: "Handcrafted Heritage, Nepal's Identity",
-            heroSub: "Connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally. Certified origin & fair trade.",
-            exploreCatalog: "Explore Catalog",
-            registerArtisan: "Register as Artisan",
-            featuredTag: "Mustang",
-            featuredTitle: "Pure Chyangra Pashmina Shawl",
-            featuredSub: "100% Hand-spun Cashmere",
-            shopThisCraft: "Shop this craft",
-            b1t: "Empowering 1,200+ Artisans", b1s: "Nepali artisans & rural cooperatives",
-            b2t: "Free Shipping across Nepal", b2s: "On orders over NPR 3,000",
-            b3t: "Global Express Delivery", b3s: "Shipped worldwide from Kathmandu",
-            b4t: "100% Certified Authentic", b4s: "Kathmandu, Patan & Palpa",
-            cowTag: "Craft of the Week",
-            cowTitle: "Authentic Palpali Dhaka Scarf",
-            cowSub: "Traditional Wooden Loom Weave",
-            cowCta: "View this craft",
-            catsTitle: "Shop Popular Categories",
-            viewAll: "View All →",
-            cat1t: "Pashmina & Cashmere", cat1s: "Mustang",
-            cat2t: "Palpali Dhaka", cat2s: "Palpa",
-            cat3t: "Lokta Paper", cat3s: "Eco Paper",
-            cat4t: "Patan Statues", cat4s: "Patan Craft",
-            catalogTitle: "Curated Heritage Collections",
-            catalogSub: "Filter by authentic craft category",
-            fAll: "All Crafts", fPashmina: "Pashmina & Cashmere", fDhaka: "Palpali Dhaka",
-            fLokta: "Lokta Paper", fMetal: "Patan Statues",
-            p1t: "Pure Chyangra Pashmina Shawl", p1s: "100% Hand-spun Cashmere",
-            p2t: "Authentic Palpali Dhaka Scarf", p2s: "Traditional Wooden Loom Weave",
-            p3t: "Himalayan Bark Lokta Journal", p3s: "Handbound Eco-friendly Paper",
-            p4t: "Hand-carved Bronze Buddha", p4s: "45-Day Lost Wax Casting Process",
-            addToBag: "+ Add to Bag",
-            artTag: "Direct Impact",
-            artTitle: "Stories Behind the Craft",
-            artSub: "Every order supports rural female weaving circles and heritage conservation.",
-            ar1n: "Sunita Shrestha", ar1r: "Master Dhaka Weaver, Palpa",
-            ar1q: '"I have been hand-weaving traditional Dhaka on wooden looms for 22 years. KalaGhar allows us to connect directly with buyers."',
-            ar2n: "Purna Shakya", ar2r: "Bronze Sculptor, Patan",
-            ar2q: '"Lost-wax sculpting is passed down through generations in Patan. Each statue takes over a month of focused metalwork."',
-            ar3n: "Maya Gurung", ar3r: "Mustang Cashmere Spinner",
-            ar3q: '"Chyangra goats live above 14,000 ft. We comb their undercoat by hand each spring to spin soft, authentic cashmere."',
-            shipTag: "Logistics & Express Shipping",
-            shipTitle: "Estimate Delivery & Rates",
-            destLabel: "Destination",
-            destNepal: "Nepal (Domestic Express)",
-            destUsa: "United States / Canada",
-            destEurope: "Europe / UK",
-            amountLabel: "Order Amount (NPR)",
-            faqTitle: "Frequently Asked Questions",
-            q1: "Are the crafts certified authentic?",
-            a1: "Yes — 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa.",
-            q2: "What are the shipping rates and delivery times?",
-            a2: "Free Shipping across Nepal over NPR 3,000. Domestic orders are delivered within 2-3 business days. Global Express Delivery is available worldwide.",
-            q3: "Does my purchase support artisans directly?",
-            a3: "Yes. Every order supports rural female weaving circles and heritage conservation, connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally.",
-            nlTitle: "Join the KalaGhar community",
-            nlSub: "New collections, artisan stories, and shipping updates.",
-            nlPh: "Your email address",
-            nlBtn: "Subscribe",
-            nlMsg: "Thanks — you're subscribed.",
-            footerAbout: "Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.",
-            fCategories: "Categories",
-            fSupport: "Customer Support",
-            fPortals: "Portals",
-            fShippingInfo: "Shipping & Customs Info",
-            fCert: "Certificate of Origin",
-            fTrack: "Track Package",
-            fSellerApp: "Seller Application",
-            fAdmin: "Admin Console",
-            fRights: "© 2026 KalaGhar Marketplace. All rights reserved.",
-            chatTitle: "KalaGhar Support",
-            chatSub: "We usually reply in a few minutes",
-            chatPh: "Type your message...",
-            chatWelcome: "Namaste! 🙏 How can we help you today?",
-            chatAuto: "Thanks for reaching out! Our team will reply shortly.",
-            srFree: "🚚 Free Domestic Delivery Eligible! Delivered within 2-3 business days.",
-            srAdd: "📦 Domestic shipping: NPR 200. Add NPR 3,000 more for free delivery.",
-            srUsa: "✈️ Global Express to US/Canada: NPR 2,500, 5–8 business days.",
-            srEurope: "✈️ Global Express to Europe/UK: NPR 2,200, 5–7 business days."
+            t1:"✨ Empowering 1,200+ Nepali Artisans & Rural Cooperatives",
+            t2:"✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery",
+            t3:"📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa",
+            dispatch:'Order today for dispatch from Kathmandu within <strong class="text-red-700 dark:text-red-400">1–2 business days</strong>.',
+            becomeSeller:"BECOME A SELLER", signIn:"Sign In", myAccount:"My Account",
+            searchPh:"Search handcrafted pashmina, dhaka, bronze statues, lokta paper...",
+            heroBadge:"Authentic Nepali Heritage Crafts",
+            heroTitle:"Handcrafted Heritage, Nepal's Identity",
+            heroSub:"Connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally. Certified origin & fair trade.",
+            exploreCatalog:"Explore Catalog", registerArtisan:"Register as Artisan",
+            featuredTag:"Mustang", featuredTitle:"Pure Chyangra Pashmina Shawl", featuredSub:"100% Hand-spun Cashmere",
+            shopThisCraft:"Shop this craft",
+            b1t:"Empowering 1,200+ Artisans", b1s:"Nepali artisans & rural cooperatives",
+            b2t:"Free Shipping across Nepal", b2s:"On orders over NPR 3,000",
+            b3t:"Global Express Delivery", b3s:"Shipped worldwide from Kathmandu",
+            b4t:"100% Certified Authentic", b4s:"Kathmandu, Patan & Palpa",
+            cowTag:"Craft of the Week", cowTitle:"Authentic Palpali Dhaka Scarf",
+            cowSub:"Traditional Wooden Loom Weave", cowCta:"View this craft",
+            catsTitle:"Shop Popular Categories", viewAll:"View All →",
+            cat1t:"Pashmina & Cashmere", cat1s:"Mustang",
+            cat2t:"Palpali Dhaka", cat2s:"Palpa",
+            cat3t:"Lokta Paper", cat3s:"Eco Paper",
+            cat4t:"Patan Statues", cat4s:"Patan Craft",
+            catalogTitle:"Curated Heritage Collections", catalogSub:"Filter by authentic craft category",
+            fAll:"All Crafts", fPashmina:"Pashmina & Cashmere", fDhaka:"Palpali Dhaka",
+            fLokta:"Lokta Paper", fMetal:"Patan Statues",
+            addToBag:"+ Add to Bag",
+            artTag:"Direct Impact", artTitle:"Stories Behind the Craft",
+            artSub:"Every order supports rural female weaving circles and heritage conservation.",
+            ar1n:"Sunita Shrestha", ar1r:"Master Dhaka Weaver, Palpa",
+            ar1q:'"I have been hand-weaving traditional Dhaka on wooden looms for 22 years. KalaGhar allows us to connect directly with buyers."',
+            ar2n:"Purna Shakya", ar2r:"Bronze Sculptor, Patan",
+            ar2q:'"Lost-wax sculpting is passed down through generations in Patan. Each statue takes over a month of focused metalwork."',
+            ar3n:"Maya Gurung", ar3r:"Mustang Cashmere Spinner",
+            ar3q:'"Chyangra goats live above 14,000 ft. We comb their undercoat by hand each spring to spin soft, authentic cashmere."',
+            shipTag:"Logistics & Express Shipping", shipTitle:"Estimate Delivery & Rates",
+            destLabel:"Destination", destNepal:"Nepal (Domestic Express)",
+            destUsa:"United States / Canada", destEurope:"Europe / UK",
+            amountLabel:"Order Amount (NPR)",
+            faqTitle:"Frequently Asked Questions",
+            q1:"Are the crafts certified authentic?",
+            a1:"Yes — 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa.",
+            q2:"What are the shipping rates and delivery times?",
+            a2:"Free Shipping across Nepal over NPR 3,000. Domestic orders are delivered within 2-3 business days. Global Express Delivery is available worldwide.",
+            q3:"Does my purchase support artisans directly?",
+            a3:"Yes. Every order supports rural female weaving circles and heritage conservation, connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally.",
+            nlTitle:"Join the KalaGhar community", nlSub:"New collections, artisan stories, and shipping updates.",
+            nlPh:"Your email address", nlBtn:"Subscribe", nlMsg:"Thanks — you're subscribed.",
+            footerAbout:"Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.",
+            fCategories:"Categories", fSupport:"Customer Support", fPortals:"Portals",
+            fShippingInfo:"Shipping & Customs Info", fCert:"Certificate of Origin", fTrack:"Track Package",
+            fSellerApp:"Seller Application", fAdmin:"Admin Console",
+            fRights:"© 2026 KalaGhar Marketplace. All rights reserved.",
+            chatTitle:"KalaGhar Support", chatSub:"We usually reply in a few minutes",
+            chatPh:"Type your message...", chatWelcome:"Namaste! 🙏 How can we help you today?",
+            chatAuto:"Thanks for reaching out! Our team will reply shortly.",
+            srFree:"🚚 Free Domestic Delivery Eligible! Delivered within 2-3 business days.",
+            srUsa:"✈️ Global Express to US/Canada: NPR 2,500, 5–8 business days.",
+            srEurope:"✈️ Global Express to Europe/UK: NPR 2,200, 5–7 business days.",
+            adminTitle:"Admin Console", adminSubtitle:"Restricted access",
+            adminEmailLabel:"Admin Email", adminPasswordLabel:"Password",
+            adminSignInBtn:"Sign In to Console", adminDemoHintLabel:"Demo credentials:",
+            adminInvalid:"Invalid email or password",
+            adminLogout:"Logout", adminBackToStore:"← Back to store",
+            adminTabOverview:"Overview", adminTabProducts:"Products",
+            adminTabOrders:"Orders", adminTabArtisans:"Artisans",
+            adminStatProducts:"Total Products", adminStatOrders:"Total Orders",
+            adminStatArtisans:"Artisans", adminStatRevenue:"Revenue",
+            adminAddProduct:"+ Add Product", adminColName:"Product", adminColCategory:"Category",
+            adminColPrice:"Price", adminColActions:"Actions",
+            adminEdit:"Edit", adminDelete:"Delete", adminSave:"Save", adminCancel:"Cancel",
+            adminNewProduct:"Add Product", adminEditProduct:"Edit Product",
+            adminProductName:"Product Name", adminProductSub:"Subtitle",
+            adminProductPrice:"Price (NPR)", adminProductCategory:"Category",
+            adminConfirmDelete:"Delete this product?",
+            adminColOrderId:"Order ID", adminColCustomer:"Customer", adminColItems:"Items",
+            adminColTotal:"Total", adminColStatus:"Status", adminColDate:"Date",
+            adminColLocation:"Location", adminColCraft:"Craft", adminColArtisan:"Artisan",
+            adminStatusPaid:"Paid", adminStatusShipped:"Shipped", adminStatusPending:"Pending",
+            adminStatusApproved:"Approved",
+            adminNoProducts:"No products yet.",
+            expTitle:"Explore",
+            supTitle:"Support",
+            conTitle:"Contact",
+            addressLabel:"ADDRESS",
+            phoneLabel:"PHONE",
+            emailLabel:"EMAIL",
+            contactAddress:"Kathmandu- 14, Nepal",
+            contactPhone:"+977 9851022453",
+            contactEmail:"support@kalanepal.com",
+            weAccept:"WE ACCEPT:",
+            privacy:"Privacy",
+            terms:"Terms",
+            sitemap:"Sitemap",
+            admin:"Admin",
+            footerTerms:"Terms & Conditions"
         },
         ne: {
-            t1: "✨ १,२००+ नेपाली शिल्पी र ग्रामीण सहकारीको सशक्तीकरण",
-            t2: "✈️ नेपालभर NPR ३,००० माथिको अर्डरमा निःशुल्क ढुवानी | विश्वव्यापी एक्सप्रेस डेलिभरी",
-            t3: "📜 काठमाडौं, पाटन र पाल्पाको १००% प्रमाणित प्रामाणिक शिल्प",
-            dispatch: 'आजै अर्डर गर्नुहोस् — काठमाडौंबाट <strong class="text-red-700 dark:text-red-400">१–२ कार्यदिवस</strong>भित्र पठाइनेछ।',
-            becomeSeller: "शिल्पी बन्नुहोस्",
-            signIn: "साइन इन",
-            myAccount: "मेरो खाता",
-            searchPh: "पश्मिना, ढाका, काँसको मूर्ति, लोक्ता कागज खोज्नुहोस्...",
-            heroBadge: "प्रामाणिक नेपाली सम्पदा शिल्प",
-            heroTitle: "हस्तकलाको संसार, नेपालको पहिचान",
-            heroSub: "मुख्य बुनकर, काँसका मूर्तिकार र कागज शिल्पीलाई सिधै विश्वभरका खरिदकर्तासँग जोड्दै। प्रमाणित उत्पत्ति र न्यायपूर्ण व्यापार।",
-            exploreCatalog: "क्याटलग हेर्नुहोस्",
-            registerArtisan: "शिल्पीको रूपमा दर्ता हुनुहोस्",
-            featuredTag: "मुस्ताङ",
-            featuredTitle: "शुद्ध च्याङ्ग्रा पश्मिना शल",
-            featuredSub: "१००% हातले कातेको क्यास्मियर",
-            shopThisCraft: "यो शिल्प किन्नुहोस्",
-            b1t: "१,२००+ शिल्पीको सशक्तीकरण", b1s: "नेपाली शिल्पी र ग्रामीण सहकारी",
-            b2t: "नेपालभर निःशुल्क ढुवानी", b2s: "NPR ३,००० माथिको अर्डरमा",
-            b3t: "विश्वव्यापी एक्सप्रेस डेलिभरी", b3s: "काठमाडौंबाट विश्वभर पठाइन्छ",
-            b4t: "१००% प्रमाणित प्रामाणिक", b4s: "काठमाडौं, पाटन र पाल्पा",
-            cowTag: "साताको शिल्प",
-            cowTitle: "प्रामाणिक पाल्पाली ढाका स्कार्फ",
-            cowSub: "परम्परागत काठको तानामा बुनिएको",
-            cowCta: "यो शिल्प हेर्नुहोस्",
-            catsTitle: "लोकप्रिय श्रेणीहरू",
-            viewAll: "सबै हेर्नुहोस् →",
-            cat1t: "पश्मिना र क्यास्मियर", cat1s: "मुस्ताङ",
-            cat2t: "पाल्पाली ढाका", cat2s: "पाल्पा",
-            cat3t: "लोक्ता कागज", cat3s: "इको पेपर",
-            cat4t: "पाटनका मूर्ति", cat4s: "पाटन शिल्प",
-            catalogTitle: "क्युरेटेड सम्पदा संग्रह",
-            catalogSub: "प्रामाणिक शिल्प श्रेणीअनुसार छान्नुहोस्",
-            fAll: "सबै शिल्प", fPashmina: "पश्मिना र क्यास्मियर", fDhaka: "पाल्पाली ढाका",
-            fLokta: "लोक्ता कागज", fMetal: "पाटनका मूर्ति",
-            p1t: "शुद्ध च्याङ्ग्रा पश्मिना शल", p1s: "१००% हातले कातेको क्यास्मियर",
-            p2t: "प्रामाणिक पाल्पाली ढाका स्कार्फ", p2s: "परम्परागत काठको तानामा बुनिएको",
-            p3t: "हिमाली लोक्ता जर्नल", p3s: "हातले बाँधिएको वातावरणमैत्री कागज",
-            p4t: "हातले कोरिएको काँसको बुद्ध", p4s: "४५ दिनको लस्ट वैक्स ढलाइ प्रक्रिया",
-            addToBag: "+ झोलामा",
-            artTag: "प्रत्यक्ष प्रभाव",
-            artTitle: "सिपालु हातहरुको कथा",
-            artSub: "हरेक अर्डरले ग्रामीण महिला बुनाई समूह र सम्पदा संरक्षणलाई सहयोग गर्छ।",
-            ar1n: "सुनिता श्रेष्ठ", ar1r: "मुख्य ढाका बुनकर, पाल्पा",
-            ar1q: '"मैले २२ वर्षदेखि काठको तानामा परम्परागत ढाका बुन्दै आएकी छु। कलाघरले हामीलाई सिधै खरिदकर्तासँग जोड्न दिन्छ।"',
-            ar2n: "पूर्ण शाक्य", ar2r: "काँस मूर्तिकार, पाटन",
-            ar2q: '"पाटनमा लस्ट-वैक्स मूर्तिकला पुस्तौंदेखि हस्तान्तरण भएको छ। हरेक मूर्तिमा एक महिनाभन्दा बढी समय लाग्छ।"',
-            ar3n: "माया गुरुङ", ar3r: "मुस्ताङ क्यास्मियर कात्ने",
-            ar3q: '"च्याङ्ग्रा बाख्रा १४,००० फिटभन्दा माथि बस्छन्। हामी हरेक वसन्तमा हातले भुत्ला कोरेर नरम क्यास्मियर कात्छौं।"',
-            shipTag: "लजिस्टिक्स र एक्सप्रेस ढुवानी",
-            shipTitle: "डेलिभरी र दर अनुमान",
-            destLabel: "गन्तव्य",
-            destNepal: "नेपाल (घरेलु एक्सप्रेस)",
-            destUsa: "अमेरिका / क्यानडा",
-            destEurope: "युरोप / बेलायत",
-            amountLabel: "अर्डर रकम (NPR)",
-            faqTitle: "बारम्बार सोधिने प्रश्नहरू",
-            q1: "के शिल्पहरू प्रमाणित प्रामाणिक छन्?",
-            a1: "हो — काठमाडौं, पाटन र पाल्पाको १००% प्रमाणित प्रामाणिक शिल्प।",
-            q2: "ढुवानी दर र डेलिभरी समय कति हो?",
-            a2: "NPR ३,००० माथि नेपालभर निःशुल्क ढुवानी। घरेलु अर्डर २–३ कार्यदिवसभित्र डेलिभरी। विश्वव्यापी एक्सप्रेस डेलिभरी उपलब्ध।",
-            q3: "के मेरो खरिदले शिल्पीलाई सिधै सहयोग गर्छ?",
-            a3: "हो। हरेक अर्डरले ग्रामीण महिला बुनाई समूह र सम्पदा संरक्षणलाई सहयोग गर्छ, र मुख्य बुनकर, काँस मूर्तिकार र कागज शिल्पीलाई विश्वभरका खरिदकर्तासँग जोड्छ।",
-            nlTitle: "कलाघर समुदायमा सामेल हुनुहोस्",
-            nlSub: "नयाँ संग्रह, शिल्पीका कथा र ढुवानी अपडेट।",
-            nlPh: "तपाईंको इमेल ठेगाना",
-            nlBtn: "सदस्यता लिनुहोस्",
-            nlMsg: "धन्यवाद — तपाईं सदस्यता लिनुभयो।",
-            footerAbout: "प्रामाणिक नेपाली शिल्पको प्रवर्द्धन, स्थानीय बुनकरको सशक्तीकरण र सम्पदा सामग्री विश्वभर डेलिभरी।",
-            fCategories: "श्रेणीहरू",
-            fSupport: "ग्राहक सहायता",
-            fPortals: "पोर्टलहरू",
-            fShippingInfo: "ढुवानी र भन्सार जानकारी",
-            fCert: "उत्पत्ति प्रमाणपत्र",
-            fTrack: "प्याकेज ट्र्याक",
-            fSellerApp: "शिल्पी आवेदन",
-            fAdmin: "एडमिन कन्सोल",
-            fRights: "© २०२६ कलाघर मार्केटप्लेस। सर्वाधिकार सुरक्षित।",
-            chatTitle: "कलाघर सहायता",
-            chatSub: "हामी सामान्यतया केही मिनेटमै जवाफ दिन्छौं",
-            chatPh: "तपाईंको सन्देश लेख्नुहोस्...",
-            chatWelcome: "नमस्ते! 🙏 आज हामी कसरी सहयोग गर्न सक्छौं?",
-            chatAuto: "सम्पर्क गर्नुभएकोमा धन्यवाद! हाम्रो टिमले चाँडै जवाफ दिनेछ।",
-            srFree: "🚚 निःशुल्क घरेलु डेलिभरी! २–३ कार्यदिवसभित्र पुग्नेछ।",
-            srAdd: "📦 घरेलु ढुवानी: NPR २००। निःशुल्क डेलिभरीका लागि NPR ३,००० पुर्याउनुहोस्।",
-            srUsa: "✈️ अमेरिका/क्यानडा एक्सप्रेस: NPR २,५००, ५–८ कार्यदिवस।",
-            srEurope: "✈️ युरोप/बेलायत एक्सप्रेस: NPR २,२००, ५–७ कार्यदिवस।"
+            t1:"✨ १,२००+ नेपाली शिल्पी र ग्रामीण सहकारीको सशक्तीकरण",
+            t2:"✈️ नेपालभर NPR ३,००० माथिको अर्डरमा निःशुल्क ढुवानी | विश्वव्यापी एक्सप्रेस डेलिभरी",
+            t3:"📜 काठमाडौं, पाटन र पाल्पाको १००% प्रमाणित प्रामाणिक शिल्प",
+            dispatch:'आजै अर्डर गर्नुहोस् — काठमाडौंबाट <strong class="text-red-700 dark:text-red-400">१–२ कार्यदिवस</strong>भित्र पठाइनेछ।',
+            becomeSeller:"शिल्पी बन्नुहोस्", signIn:"साइन इन", myAccount:"मेरो खाता",
+            searchPh:"पश्मिना, ढाका, काँसको मूर्ति, लोक्ता कागज खोज्नुहोस्...",
+            heroBadge:"प्रामाणिक नेपाली सम्पदा शिल्प",
+            heroTitle:"हस्तकलाको संसार, नेपालको पहिचान",
+            heroSub:"मुख्य बुनकर, काँसका मूर्तिकार र कागज शिल्पीलाई सिधै विश्वभरका खरिदकर्तासँग जोड्दै। प्रमाणित उत्पत्ति र न्यायपूर्ण व्यापार।",
+            exploreCatalog:"क्याटलग हेर्नुहोस्", registerArtisan:"शिल्पीको रूपमा दर्ता हुनुहोस्",
+            featuredTag:"मुस्ताङ", featuredTitle:"शुद्ध च्याङ्ग्रा पश्मिना शल", featuredSub:"१००% हातले कातेको क्यास्मियर",
+            shopThisCraft:"यो शिल्प किन्नुहोस्",
+            b1t:"१,२००+ शिल्पीको सशक्तीकरण", b1s:"नेपाली शिल्पी र ग्रामीण सहकारी",
+            b2t:"नेपालभर निःशुल्क ढुवानी", b2s:"NPR ३,००० माथिको अर्डरमा",
+            b3t:"विश्वव्यापी एक्सप्रेस डेलिभरी", b3s:"काठमाडौंबाट विश्वभर पठाइन्छ",
+            b4t:"१००% प्रमाणित प्रामाणिक", b4s:"काठमाडौं, पाटन र पाल्पा",
+            cowTag:"साताको शिल्प", cowTitle:"प्रामाणिक पाल्पाली ढाका स्कार्फ",
+            cowSub:"परम्परागत काठको तानामा बुनिएको", cowCta:"यो शिल्प हेर्नुहोस्",
+            catsTitle:"लोकप्रिय श्रेणीहरू", viewAll:"सबै हेर्नुहोस् →",
+            cat1t:"पश्मिना र क्यास्मियर", cat1s:"मुस्ताङ",
+            cat2t:"पाल्पाली ढाका", cat2s:"पाल्पा",
+            cat3t:"लोक्ता कागज", cat3s:"इको पेपर",
+            cat4t:"पाटनका मूर्ति", cat4s:"पाटन शिल्प",
+            catalogTitle:"क्युरेटेड सम्पदा संग्रह", catalogSub:"प्रामाणिक शिल्प श्रेणीअनुसार छान्नुहोस्",
+            fAll:"सबै शिल्प", fPashmina:"पश्मिना र क्यास्मियर", fDhaka:"पाल्पाली ढाका",
+            fLokta:"लोक्ता कागज", fMetal:"पाटनका मूर्ति",
+            addToBag:"+ झोलामा",
+            artTag:"प्रत्यक्ष प्रभाव", artTitle:"सिपालु हातहरुको कथा",
+            artSub:"हरेक अर्डरले ग्रामीण महिला बुनाई समूह र सम्पदा संरक्षणलाई सहयोग गर्छ।",
+            ar1n:"सुनिता श्रेष्ठ", ar1r:"मुख्य ढाका बुनकर, पाल्पा",
+            ar1q:'"मैले २२ वर्षदेखि काठको तानामा परम्परागत ढाका बुन्दै आएकी छु। कलाघरले हामीलाई सिधै खरिदकर्तासँग जोड्न दिन्छ।"',
+            ar2n:"पूर्ण शाक्य", ar2r:"काँस मूर्तिकार, पाटन",
+            ar2q:'"पाटनमा लस्ट-वैक्स मूर्तिकला पुस्तौंदेखि हस्तान्तरण भएको छ। हरेक मूर्तिमा एक महिनाभन्दा बढी समय लाग्छ।"',
+            ar3n:"माया गुरुङ", ar3r:"मुस्ताङ क्यास्मियर कात्ने",
+            ar3q:'"च्याङ्ग्रा बाख्रा १४,००० फिटभन्दा माथि बस्छन्। हामी हरेक वसन्तमा हातले भुत्ला कोरेर नरम क्यास्मियर कात्छौं।"',
+            shipTag:"लजिस्टिक्स र एक्सप्रेस ढुवानी", shipTitle:"डेलिभरी र दर अनुमान",
+            destLabel:"गन्तव्य", destNepal:"नेपाल (घरेलु एक्सप्रेस)",
+            destUsa:"अमेरिका / क्यानडा", destEurope:"युरोप / बेलायत",
+            amountLabel:"अर्डर रकम (NPR)",
+            faqTitle:"बारम्बार सोधिने प्रश्नहरू",
+            q1:"के शिल्पहरू प्रमाणित प्रामाणिक छन्?",
+            a1:"हो — काठमाडौं, पाटन र पाल्पाको १००% प्रमाणित प्रामाणिक शिल्प।",
+            q2:"ढुवानी दर र डेलिभरी समय कति हो?",
+            a2:"NPR ३,००० माथि नेपालभर निःशुल्क ढुवानी। घरेलु अर्डर २–३ कार्यदिवसभित्र डेलिभरी। विश्वव्यापी एक्सप्रेस डेलिभरी उपलब्ध।",
+            q3:"के मेरो खरिदले शिल्पीलाई सिधै सहयोग गर्छ?",
+            a3:"हो। हरेक अर्डरले ग्रामीण महिला बुनाई समूह र सम्पदा संरक्षणलाई सहयोग गर्छ, र मुख्य बुनकर, काँस मूर्तिकार र कागज शिल्पीलाई विश्वभरका खरिदकर्तासँग जोड्छ।",
+            nlTitle:"कलाघर समुदायमा सामेल हुनुहोस्", nlSub:"नयाँ संग्रह, शिल्पीका कथा र ढुवानी अपडेट।",
+            nlPh:"तपाईंको इमेल ठेगाना", nlBtn:"सदस्यता लिनुहोस्", nlMsg:"धन्यवाद — तपाईं सदस्यता लिनुभयो।",
+            footerAbout:"प्रामाणिक नेपाली शिल्पको प्रवर्द्धन, स्थानीय बुनकरको सशक्तीकरण र सम्पदा सामग्री विश्वभर डेलिभरी।",
+            fCategories:"श्रेणीहरू", fSupport:"ग्राहक सहायता", fPortals:"पोर्टलहरू",
+            fShippingInfo:"ढुवानी र भन्सार जानकारी", fCert:"उत्पत्ति प्रमाणपत्र", fTrack:"प्याकेज ट्र्याक",
+            fSellerApp:"शिल्पी आवेदन", fAdmin:"एडमिन कन्सोल",
+            fRights:"© २०२६ कलाघर मार्केटप्लेस। सर्वाधिकार सुरक्षित।",
+            chatTitle:"कलाघर सहायता", chatSub:"हामी सामान्यतया केही मिनेटमै जवाफ दिन्छौं",
+            chatPh:"तपाईंको सन्देश लेख्नुहोस्...", chatWelcome:"नमस्ते! 🙏 आज हामी कसरी सहयोग गर्न सक्छौं?",
+            chatAuto:"सम्पर्क गर्नुभएकोमा धन्यवाद! हाम्रो टिमले चाँडै जवाफ दिनेछ।",
+            srFree:"🚚 निःशुल्क घरेलु डेलिभरी! २–३ कार्यदिवसभित्र पुग्नेछ।",
+            srUsa:"✈️ अमेरिका/क्यानडा एक्सप्रेस: NPR २,५००, ५–८ कार्यदिवस।",
+            srEurope:"✈️ युरोप/बेलायत एक्सप्रेस: NPR २,२००, ५–७ कार्यदिवस।",
+            adminTitle:"एडमिन कन्सोल", adminSubtitle:"प्रतिबन्धित पहुँच",
+            adminEmailLabel:"एडमिन इमेल", adminPasswordLabel:"पासवर्ड",
+            adminSignInBtn:"कन्सोलमा साइन इन", adminDemoHintLabel:"डेमो लगइन:",
+            adminInvalid:"गलत इमेल वा पासवर्ड",
+            adminLogout:"लगआउट", adminBackToStore:"← स्टोरमा फर्कनुहोस्",
+            adminTabOverview:"अवलोकन", adminTabProducts:"उत्पादनहरू",
+            adminTabOrders:"अर्डरहरू", adminTabArtisans:"शिल्पीहरू",
+            adminStatProducts:"कुल उत्पादन", adminStatOrders:"कुल अर्डर",
+            adminStatArtisans:"शिल्पी", adminStatRevenue:"राजस्व",
+            adminAddProduct:"+ उत्पादन थप्नुहोस्", adminColName:"उत्पादन", adminColCategory:"श्रेणी",
+            adminColPrice:"मूल्य", adminColActions:"कार्यहरू",
+            adminEdit:"सम्पादन", adminDelete:"मेटाउनुहोस्", adminSave:"सुरक्षित", adminCancel:"रद्द",
+            adminNewProduct:"उत्पादन थप्नुहोस्", adminEditProduct:"उत्पादन सम्पादन",
+            adminProductName:"उत्पादनको नाम", adminProductSub:"उपशीर्षक",
+            adminProductPrice:"मूल्य (NPR)", adminProductCategory:"श्रेणी",
+            adminConfirmDelete:"यो उत्पादन मेटाउने हो?",
+            adminColOrderId:"अर्डर आईडी", adminColCustomer:"ग्राहक", adminColItems:"वस्तुहरू",
+            adminColTotal:"कुल", adminColStatus:"स्थिति", adminColDate:"मिति",
+            adminColLocation:"स्थान", adminColCraft:"शिल्प", adminColArtisan:"शिल्पी",
+            adminStatusPaid:"भुक्तान भयो", adminStatusShipped:"पठाइयो", adminStatusPending:"पर्खाइमा",
+            adminStatusApproved:"स्वीकृत",
+            adminNoProducts:"अझै उत्पादन छैन।",
+            expTitle:"अन्वेषण",
+            supTitle:"सहायता",
+            conTitle:"सम्पर्क",
+            addressLabel:"ठेगाना",
+            phoneLabel:"फोन",
+            emailLabel:"इमेल",
+            contactAddress:"काठमाडौं- १४, नेपाल",
+            contactPhone:"+९७७ ९८५१०२२४५३",
+            contactEmail:"support@kalanepal.com",
+            weAccept:"हामी स्वीकार्छौं:",
+            privacy:"गोपनीयता",
+            terms:"सर्तहरू",
+            sitemap:"साइटम्याप",
+            admin:"एडमिन",
+            footerTerms:"सर्त र शर्तहरू"
         }
     };
 
     let currentLang = 'en';
 
-    function t(key) {
-        return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en[key] || key);
-    }
+    function t(key) { return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en[key] || key); }
 
     /* =========================================================
-       LANGUAGE
+       PRODUCTS DATA
        ========================================================= */
-    function applyLang(lang) {
-        currentLang = (lang === 'ne') ? 'ne' : 'en';
-        document.documentElement.lang = currentLang;
+    const DEFAULT_PRODUCTS = [
+        { id: 1, name: 'Pure Chyangra Pashmina Shawl', sub: '100% Hand-spun Cashmere', price: 12500, category: 'pashmina', tag: 'MUSTANG', tagClass: 'bg-red-700', image: 'https://images.pexels.com/photos/375880/pexels-photo-375880.jpeg?auto=compress&cs=tinysrgb&w=600' },
+        { id: 2, name: 'Authentic Palpali Dhaka Scarf', sub: 'Traditional Wooden Loom Weave', price: 1800, category: 'dhaka', tag: 'PALPA', tagClass: 'bg-amber-800', image: 'https://images.pexels.com/photos/2292919/pexels-photo-2292919.jpeg?auto=compress&cs=tinysrgb&w=600' },
+        { id: 3, name: 'Himalayan Bark Lokta Journal', sub: 'Handbound Eco-friendly Paper', price: 750, category: 'lokta', tag: 'ECO PAPER', tagClass: 'bg-green-800', image: 'https://images.pexels.com/photos/261763/pexels-photo-261763.jpeg?auto=compress&cs=tinysrgb&w=600' },
+        { id: 4, name: 'Hand-carved Bronze Buddha', sub: '45-Day Lost Wax Casting Process', price: 24000, category: 'metal', tag: 'PATAN CRAFT', tagClass: 'bg-yellow-800', image: 'https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&w=600' }
+    ];
 
-        document.querySelectorAll('[data-i18n]').forEach(function (el) {
-            el.textContent = t(el.dataset.i18n);
-        });
-        document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-            el.innerHTML = t(el.dataset.i18nHtml);
-        });
-        document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
-            el.placeholder = t(el.dataset.i18nPh);
-        });
+    const MOCK_ORDERS = [
+        { id: 'KG-1001', customer: 'Ram Thapa', items: 'Pashmina Shawl', total: 12500, status: 'paid', date: '2026-10-15' },
+        { id: 'KG-1002', customer: 'Sarah Chen', items: 'Dhaka Scarf', total: 1800, status: 'shipped', date: '2026-10-16' },
+        { id: 'KG-1003', customer: 'Bishal Rai', items: 'Lokta Journal ×2', total: 1500, status: 'pending', date: '2026-10-17' }
+    ];
 
-        // Toggle button shows the OTHER language
-        document.getElementById('langLabel').textContent = currentLang === 'en' ? 'नेपाली' : 'English';
+    const MOCK_ARTISANS = [
+        { name: 'Sunita Shrestha', craft: 'Palpali Dhaka', location: 'Palpa', status: 'approved', date: '2026-09-20' },
+        { name: 'Purna Shakya', craft: 'Patan Statues', location: 'Patan', status: 'approved', date: '2026-09-25' },
+        { name: 'Maya Gurung', craft: 'Pashmina & Cashmere', location: 'Mustang', status: 'pending', date: '2026-10-10' }
+    ];
 
-        calcShipping();
-        try { localStorage.setItem('kg-lang', currentLang); } catch (e) {}
+    function loadProducts() {
+        try {
+            const s = localStorage.getItem('kg-products');
+            if (s) return JSON.parse(s);
+        } catch (e) {}
+        return JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
     }
+    function saveProducts(p) { localStorage.setItem('kg-products', JSON.stringify(p)); }
 
-    function toggleLang() {
-        applyLang(currentLang === 'en' ? 'ne' : 'en');
+    let activeCategory = 'all';
+
+    function renderProducts() {
+        const products = loadProducts();
+        const grid = document.getElementById('productGrid');
+        if (!grid) return;
+        grid.innerHTML = products.map(function (p) {
+            const nameSafe = p.name.replace(/'/g, "\\'");
+            return '<div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="' + p.category + '">' +
+                '<div class="h-48 overflow-hidden relative">' +
+                    '<img src="' + p.image + '" alt="' + p.name + '" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">' +
+                    '<span class="absolute top-2 left-2 ' + p.tagClass + ' text-white text-[10px] font-bold px-2 py-0.5 rounded">' + p.tag + '</span>' +
+                '</div>' +
+                '<div class="p-4">' +
+                    '<h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition">' + p.name + '</h3>' +
+                    '<p class="text-xs text-gray-500 dark:text-gray-400 mb-2">' + p.sub + '</p>' +
+                    '<div class="flex items-center justify-between mt-3">' +
+                        '<span class="text-sm font-bold text-red-700 dark:text-red-400">NPR ' + p.price.toLocaleString() + '</span>' +
+                        '<button onclick="addToCart(\'' + nameSafe + '\')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition">' + t('addToBag') + '</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+        // Re-apply filter
+        document.querySelectorAll('.product-card').forEach(function (card) {
+            card.style.display = (activeCategory === 'all' || card.dataset.category === activeCategory) ? '' : 'none';
+        });
     }
 
     /* =========================================================
        THEME
        ========================================================= */
     function setThemeIcon() {
-        var dark = document.documentElement.classList.contains('dark');
-        var icon = document.getElementById('themeIcon');
+        const dark = document.documentElement.classList.contains('dark');
+        const icon = document.getElementById('themeIcon');
         if (icon) icon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
     }
-
     function toggleTheme() {
-        var dark = document.documentElement.classList.toggle('dark');
+        const dark = document.documentElement.classList.toggle('dark');
         try { localStorage.setItem('kg-theme', dark ? 'dark' : 'light'); } catch (e) {}
         setThemeIcon();
     }
 
     /* =========================================================
-       MODALS
+       LANGUAGE + FLAG DROPDOWN
+       ========================================================= */
+    function applyLang(lang) {
+        currentLang = (lang === 'ne') ? 'ne' : 'en';
+        document.documentElement.lang = currentLang;
+
+        document.querySelectorAll('[data-i18n]').forEach(function (el) { el.textContent = t(el.dataset.i18n); });
+        document.querySelectorAll('[data-i18n-html]').forEach(function (el) { el.innerHTML = t(el.dataset.i18nHtml); });
+        document.querySelectorAll('[data-i18n-ph]').forEach(function (el) { el.placeholder = t(el.dataset.i18nPh); });
+
+        // Update flag + label
+        const flag = document.getElementById('currentLangFlag');
+        const label = document.getElementById('langLabel');
+        if (flag) flag.src = currentLang === 'en' ? 'https://flagcdn.com/24x18/us.png' : 'https://flagcdn.com/24x18/np.png';
+        if (label) label.textContent = currentLang === 'en' ? 'English' : 'नेपाली';
+
+        // Update check marks in dropdown
+        document.querySelectorAll('.check-mark-en').forEach(function (el) { el.classList.toggle('hidden', currentLang !== 'en'); });
+        document.querySelectorAll('.check-mark-ne').forEach(function (el) { el.classList.toggle('hidden', currentLang !== 'ne'); });
+        document.querySelectorAll('.lang-option').forEach(function (el) { el.classList.remove('selected'); });
+        const selected = document.querySelector('.lang-option[onclick*="\'" + currentLang + "\'"]');
+        if (selected) selected.classList.add('selected');
+
+        try { localStorage.setItem('kg-lang', currentLang); } catch (e) {}
+
+        // Re-render dynamic content
+        renderProducts();
+        if (typeof renderAdminDashboard === 'function' && isAdminLoggedIn()) {
+            renderAdminDashboard();
+            renderAdminProducts();
+            renderAdminOrders();
+            renderAdminArtisans();
+        }
+        calcShipping();
+    }
+
+    function toggleLangDropdown() {
+        const d = document.getElementById('langDropdown');
+        d.classList.toggle('hidden');
+    }
+    function selectLang(lang) {
+        applyLang(lang);
+        document.getElementById('langDropdown').classList.add('hidden');
+    }
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (e) {
+        const wrap = document.getElementById('langDropdownWrap');
+        if (wrap && !wrap.contains(e.target)) {
+            const d = document.getElementById('langDropdown');
+            if (d) d.classList.add('hidden');
+        }
+    });
+
+    /* =========================================================
+       MODALS (customer + artisan)
        ========================================================= */
     function openModal(id) {
-        var m = document.getElementById(id);
+        const m = document.getElementById(id);
         if (!m) return;
         m.classList.remove('hidden');
         m.classList.add('flex');
         document.body.style.overflow = 'hidden';
     }
     function closeModal(id) {
-        var m = document.getElementById(id);
+        const m = document.getElementById(id);
         if (!m) return;
         m.classList.add('hidden');
         m.classList.remove('flex');
         document.body.style.overflow = '';
     }
-    document.querySelectorAll('.fixed.inset-0').forEach(function (m) {
+    document.querySelectorAll('#customerAuthModal, #artisanModal, #adminProductModal').forEach(function (m) {
         m.addEventListener('click', function (e) { if (e.target === m) closeModal(m.id); });
     });
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
-            document.querySelectorAll('.fixed.inset-0').forEach(function (m) { closeModal(m.id); });
+            document.querySelectorAll('#customerAuthModal, #artisanModal, #adminProductModal').forEach(function (m) { closeModal(m.id); });
             toggleChat(false);
+            const d = document.getElementById('langDropdown');
+            if (d) d.classList.add('hidden');
         }
     });
 
     function switchAuthTab(which) {
-        var loginForm = document.getElementById('loginForm');
-        var signupForm = document.getElementById('signupForm');
-        var loginBtn = document.getElementById('loginTabBtn');
-        var signupBtn = document.getElementById('signupTabBtn');
+        const lf = document.getElementById('loginForm'), sf = document.getElementById('signupForm');
+        const lb = document.getElementById('loginTabBtn'), sb = document.getElementById('signupTabBtn');
         if (which === 'login') {
-            loginForm.classList.remove('hidden');
-            signupForm.classList.add('hidden');
-            loginBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700 dark:text-red-400';
-            signupBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-gray-500';
+            lf.classList.remove('hidden'); sf.classList.add('hidden');
+            lb.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700 dark:text-red-400';
+            sb.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-gray-500';
         } else {
-            signupForm.classList.remove('hidden');
-            loginForm.classList.add('hidden');
-            signupBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700 dark:text-red-400';
-            loginBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-gray-500';
+            sf.classList.remove('hidden'); lf.classList.add('hidden');
+            sb.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700 dark:text-red-400';
+            lb.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-gray-500';
         }
     }
-
     function handleCustomerLogin(e) {
         e.preventDefault();
-        var label = document.getElementById('userStatusLabel');
+        const label = document.getElementById('userStatusLabel');
         if (label) { label.dataset.i18n = 'myAccount'; label.textContent = t('myAccount'); }
         closeModal('customerAuthModal');
     }
     function handleArtisanApply(e) {
         e.preventDefault(); e.target.reset(); closeModal('artisanModal');
-        alert(currentLang === 'ne'
-            ? 'आवेदन प्राप्त भयो। हाम्रो टिमले ३ कार्यदिवसभित्र सम्पर्क गर्नेछ।'
-            : 'Application received. Our team will contact you within 3 business days.');
-    }
-    function handleAdminLogin(e) {
-        e.preventDefault(); closeModal('adminModal');
-        alert(currentLang === 'ne' ? 'एडमिन कन्सोल अझै जोडिएको छैन।' : 'Admin console is not connected yet.');
+        alert(currentLang === 'ne' ? 'आवेदन प्राप्त भयो। हाम्रो टिमले ३ कार्यदिवसभित्र सम्पर्क गर्नेछ।' : 'Application received. Our team will contact you within 3 business days.');
     }
     function handleNewsletter(e) {
         e.preventDefault();
-        var msg = document.getElementById('newsletterMsg');
-        if (msg) msg.classList.remove('hidden');
+        document.getElementById('newsletterMsg').classList.remove('hidden');
         e.target.reset();
     }
 
@@ -907,11 +1100,12 @@
        FILTERS / SEARCH / CART
        ========================================================= */
     function filterCategory(cat) {
+        activeCategory = cat;
         document.querySelectorAll('.cat-btn').forEach(function (b) {
             b.classList.remove('bg-red-700', 'text-white');
             b.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-200');
         });
-        var btn = Array.from(document.querySelectorAll('.cat-btn')).find(function (b) {
+        const btn = Array.from(document.querySelectorAll('.cat-btn')).find(function (b) {
             return (b.getAttribute('onclick') || '').indexOf("'" + cat + "'") > -1;
         });
         if (btn) {
@@ -921,22 +1115,18 @@
         document.querySelectorAll('.product-card').forEach(function (card) {
             card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
         });
-        if (cat !== 'all') {
-            document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        if (cat !== 'all') document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
     function filterProductsBySearch() {
-        var q = document.getElementById('searchInput').value.toLowerCase().trim();
+        const q = document.getElementById('searchInput').value.toLowerCase().trim();
         document.querySelectorAll('.product-card').forEach(function (card) {
             card.style.display = card.textContent.toLowerCase().indexOf(q) > -1 ? '' : 'none';
         });
     }
-
-    var cartCount = 0;
+    let cartCount = 0;
     function addToCart(name) {
         cartCount++;
-        var el = document.getElementById('cartCounter');
+        const el = document.getElementById('cartCounter');
         if (el) el.textContent = cartCount;
         console.log('Added to bag:', name);
     }
@@ -945,17 +1135,16 @@
        SHIPPING CALCULATOR
        ========================================================= */
     function calcShipping() {
-        var dest = document.getElementById('shippingDest').value;
-        var val = parseFloat(document.getElementById('shippingValue').value) || 0;
-        var out = document.getElementById('shippingResult');
-        var html = '';
-
+        const dest = document.getElementById('shippingDest').value;
+        const val = parseFloat(document.getElementById('shippingValue').value) || 0;
+        const out = document.getElementById('shippingResult');
+        let html = '';
         if (dest === 'nepal') {
             if (val >= 3000) {
                 html = '<div class="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded p-3 text-xs text-green-900 dark:text-green-200">' + t('srFree') + '</div>';
             } else {
-                var remaining = 3000 - val;
-                var msg = currentLang === 'ne'
+                const remaining = 3000 - val;
+                const msg = currentLang === 'ne'
                     ? '📦 घरेलु ढुवानी: NPR २००। निःशुल्क डेलिभरीका लागि NPR ' + remaining + ' थप्नुहोस्।'
                     : '📦 Domestic shipping: NPR 200. Add NPR ' + remaining + ' more for free delivery.';
                 html = '<div class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded p-3 text-xs text-amber-900 dark:text-amber-200">' + msg + '</div>';
@@ -972,26 +1161,21 @@
        COUNTDOWN
        ========================================================= */
     (function countdown() {
-        var el = document.getElementById('countdown');
+        const el = document.getElementById('countdown');
         if (!el) return;
         function nextSunday() {
-            var d = new Date();
+            const d = new Date();
             d.setDate(d.getDate() + ((7 - d.getDay()) % 7 || 7));
             d.setHours(23, 59, 59, 0);
             return d;
         }
-        var end = nextSunday();
+        const end = nextSunday();
         function tick() {
-            var diff = end - new Date();
-            if (diff <= 0) {
-                el.textContent = currentLang === 'ne' ? 'अफर समाप्त' : 'Offer ended';
-                return;
-            }
-            var d = Math.floor(diff / 864e5);
-            var h = Math.floor(diff % 864e5 / 36e5);
-            var m = Math.floor(diff % 36e5 / 6e4);
-            var s = Math.floor(diff % 6e4 / 1000);
-            var pad = function (n) { return String(n).padStart(2, '0'); };
+            const diff = end - new Date();
+            if (diff <= 0) { el.textContent = currentLang === 'ne' ? 'अफर समाप्त' : 'Offer ended'; return; }
+            const d = Math.floor(diff / 864e5), h = Math.floor(diff % 864e5 / 36e5),
+                  m = Math.floor(diff % 36e5 / 6e4), s = Math.floor(diff % 6e4 / 1000);
+            const pad = function (n) { return String(n).padStart(2, '0'); };
             el.textContent = currentLang === 'ne'
                 ? 'बाँकी ' + d + 'दि ' + pad(h) + 'घ ' + pad(m) + 'मि ' + pad(s) + 'से'
                 : 'Ends in ' + d + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
@@ -1003,11 +1187,9 @@
     /* =========================================================
        LIVE CHAT
        ========================================================= */
-    var chatOpen = false;
-    var chatStarted = false;
-
+    let chatOpen = false, chatStarted = false;
     function toggleChat(force) {
-        var panel = document.getElementById('chatPanel');
+        const panel = document.getElementById('chatPanel');
         chatOpen = (typeof force === 'boolean') ? force : !chatOpen;
         panel.classList.toggle('hidden', !chatOpen);
         panel.classList.toggle('flex', chatOpen);
@@ -1016,31 +1198,314 @@
             setTimeout(function () { document.getElementById('chatInput').focus(); }, 50);
         }
     }
-
     function addChatMessage(who, text) {
-        var box = document.getElementById('chatMessages');
-        var wrap = document.createElement('div');
+        const box = document.getElementById('chatMessages');
+        const wrap = document.createElement('div');
         wrap.className = who === 'user' ? 'flex justify-end' : 'flex justify-start';
-
-        var bubble = document.createElement('div');
+        const bubble = document.createElement('div');
         bubble.className = who === 'user'
             ? 'max-w-[80%] bg-red-700 text-white text-xs rounded-2xl rounded-br-sm px-3 py-2'
             : 'max-w-[80%] bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700 text-xs rounded-2xl rounded-bl-sm px-3 py-2';
         bubble.textContent = text;
-
         wrap.appendChild(bubble);
         box.appendChild(wrap);
         box.scrollTop = box.scrollHeight;
     }
-
     function sendChat(e) {
         e.preventDefault();
-        var input = document.getElementById('chatInput');
-        var msg = input.value.trim();
+        const input = document.getElementById('chatInput');
+        const msg = input.value.trim();
         if (!msg) return;
         addChatMessage('user', msg);
         input.value = '';
         setTimeout(function () { addChatMessage('bot', t('chatAuto')); }, 900);
+    }
+
+    /* =========================================================
+       ADMIN PANEL
+       ========================================================= */
+    const ADMIN_CREDS = { email: 'admin@kalaghar.com', password: 'KalaGhar@2026' };
+
+    function isAdminLoggedIn() {
+        try { return sessionStorage.getItem('kg-admin-session') === ADMIN_CREDS.email; }
+        catch (e) { return false; }
+    }
+
+    function openAdminPanel() {
+        document.getElementById('adminOverlay').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        const err = document.getElementById('adminLoginError');
+        if (err) err.classList.add('hidden');
+        if (isAdminLoggedIn()) showAdminDashboard();
+        else showAdminLogin();
+    }
+    function closeAdminPanel() {
+        document.getElementById('adminOverlay').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    function showAdminLogin() {
+        document.getElementById('adminLoginView').classList.remove('hidden');
+        document.getElementById('adminDashboardView').classList.add('hidden');
+        document.getElementById('adminEmail').value = '';
+        document.getElementById('adminPassword').value = '';
+    }
+
+    function showAdminDashboard() {
+        document.getElementById('adminLoginView').classList.add('hidden');
+        document.getElementById('adminDashboardView').classList.remove('hidden');
+        document.getElementById('adminEmailDisplay').textContent = ADMIN_CREDS.email;
+        switchAdminTab('overview');
+    }
+
+    function handleAdminLoginSubmit(e) {
+        e.preventDefault();
+        const email = document.getElementById('adminEmail').value.trim();
+        const pass = document.getElementById('adminPassword').value;
+        const err = document.getElementById('adminLoginError');
+
+        if (email === ADMIN_CREDS.email && pass === ADMIN_CREDS.password) {
+            try { sessionStorage.setItem('kg-admin-session', email); } catch (e) {}
+            err.classList.add('hidden');
+            showAdminDashboard();
+        } else {
+            err.textContent = t('adminInvalid');
+            err.classList.remove('hidden');
+        }
+    }
+
+    function adminLogout() {
+        try { sessionStorage.removeItem('kg-admin-session'); } catch (e) {}
+        showAdminLogin();
+    }
+
+    function switchAdminTab(tabId) {
+        document.querySelectorAll('.admin-tab').forEach(function (t) {
+            t.classList.toggle('active', t.dataset.tab === tabId);
+        });
+        document.querySelectorAll('.admin-tab-content').forEach(function (c) {
+            c.classList.add('hidden');
+        });
+        document.getElementById('adminTab-' + tabId).classList.remove('hidden');
+
+        if (tabId === 'overview') renderAdminDashboard();
+        else if (tabId === 'products') renderAdminProducts();
+        else if (tabId === 'orders') renderAdminOrders();
+        else if (tabId === 'artisans') renderAdminArtisans();
+    }
+
+    function renderAdminDashboard() {
+        const products = loadProducts();
+        const totalProducts = products.length;
+        const totalOrders = MOCK_ORDERS.length;
+        const totalArtisans = MOCK_ARTISANS.length;
+        const revenue = MOCK_ORDERS.reduce(function (sum, o) { return sum + o.total; }, 0);
+
+        document.getElementById('adminTab-overview').innerHTML = 
+            '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">' +
+                '<div class="bg-white dark:bg-gray-900 p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">' +
+                    '<p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" data-i18n="adminStatProducts">' + t('adminStatProducts') + '</p>' +
+                    '<p class="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">' + totalProducts + '</p>' +
+                '</div>' +
+                '<div class="bg-white dark:bg-gray-900 p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">' +
+                    '<p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" data-i18n="adminStatOrders">' + t('adminStatOrders') + '</p>' +
+                    '<p class="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">' + totalOrders + '</p>' +
+                '</div>' +
+                '<div class="bg-white dark:bg-gray-900 p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">' +
+                    '<p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" data-i18n="adminStatArtisans">' + t('adminStatArtisans') + '</p>' +
+                    '<p class="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">' + totalArtisans + '</p>' +
+                '</div>' +
+                '<div class="bg-white dark:bg-gray-900 p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">' +
+                    '<p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" data-i18n="adminStatRevenue">' + t('adminStatRevenue') + '</p>' +
+                    '<p class="text-3xl font-extrabold text-green-600 dark:text-green-400 mt-1">NPR ' + revenue.toLocaleString() + '</p>' +
+                '</div>' +
+            '</div>' +
+            '<div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-6">' +
+                '<h3 class="font-bold text-gray-900 dark:text-white mb-4">Recent Activity</h3>' +
+                '<p class="text-sm text-gray-500 dark:text-gray-400">Admin panel is functioning correctly. Use the tabs above to manage products, orders, and artisans.</p>' +
+            '</div>';
+    }
+
+    function renderAdminProducts() {
+        const products = loadProducts();
+        let rows = '';
+        products.forEach(function (p) {
+            const nameSafe = p.name.replace(/'/g, "\\'");
+            rows += '<tr class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">' +
+                '<td class="p-4 flex items-center gap-3">' +
+                    '<img src="' + p.image + '" alt="" class="w-10 h-10 rounded object-cover border border-gray-200 dark:border-gray-700">' +
+                    '<div><p class="font-bold text-sm text-gray-900 dark:text-white">' + p.name + '</p><p class="text-xs text-gray-500 dark:text-gray-400">' + p.sub + '</p></div>' +
+                '</td>' +
+                '<td class="p-4 text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">' + p.category + '</td>' +
+                '<td class="p-4 text-sm font-bold text-red-700 dark:text-red-400">NPR ' + p.price.toLocaleString() + '</td>' +
+                '<td class="p-4 text-right">' +
+                    '<button onclick="editProduct(' + p.id + ')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-xs font-bold mr-3"><i class="fa-solid fa-pen"></i> ' + t('adminEdit') + '</button>' +
+                    '<button onclick="deleteProduct(' + p.id + ')" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-xs font-bold"><i class="fa-solid fa-trash"></i> ' + t('adminDelete') + '</button>' +
+                '</td>' +
+            '</tr>';
+        });
+
+        document.getElementById('adminTab-products').innerHTML =
+            '<div class="flex justify-between items-center mb-6">' +
+                '<h3 class="text-lg font-bold text-gray-900 dark:text-white">' + t('adminTabProducts') + '</h3>' +
+                '<button onclick="openProductForm()" class="bg-red-700 hover:bg-red-800 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">' + t('adminAddProduct') + '</button>' +
+            '</div>' +
+            '<div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-x-auto">' +
+                '<table class="w-full text-left min-w-[600px]">' +
+                    '<thead class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800">' +
+                        '<tr>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColName') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColCategory') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColPrice') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">' + t('adminColActions') + '</th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + (rows || '<tr><td colspan="4" class="p-6 text-center text-sm text-gray-500">' + t('adminNoProducts') + '</td></tr>') + '</tbody>' +
+                '</table>' +
+            '</div>';
+    }
+
+    function renderAdminOrders() {
+        let rows = '';
+        MOCK_ORDERS.forEach(function (o) {
+            const badgeClass = o.status === 'paid' ? 'bg-green-100 text-green-800' :
+                               o.status === 'shipped' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800';
+            const statusLabel = o.status === 'paid' ? t('adminStatusPaid') :
+                                o.status === 'shipped' ? t('adminStatusShipped') : t('adminStatusPending');
+            rows += '<tr class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">' +
+                '<td class="p-4 text-sm font-bold text-gray-900 dark:text-white">' + o.id + '</td>' +
+                '<td class="p-4 text-sm text-gray-600 dark:text-gray-300">' + o.customer + '</td>' +
+                '<td class="p-4 text-sm text-gray-600 dark:text-gray-300">' + o.items + '</td>' +
+                '<td class="p-4 text-sm font-bold text-gray-900 dark:text-white">NPR ' + o.total.toLocaleString() + '</td>' +
+                '<td class="p-4"><span class="px-2 py-1 rounded text-[10px] font-bold uppercase ' + badgeClass + '">' + statusLabel + '</span></td>' +
+                '<td class="p-4 text-xs text-gray-500 dark:text-gray-400">' + o.date + '</td>' +
+            '</tr>';
+        });
+
+        document.getElementById('adminTab-orders').innerHTML =
+            '<div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-x-auto">' +
+                '<table class="w-full text-left min-w-[700px]">' +
+                    '<thead class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800">' +
+                        '<tr>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColOrderId') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColCustomer') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColItems') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColTotal') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColStatus') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColDate') + '</th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + rows + '</tbody>' +
+                '</table>' +
+            '</div>';
+    }
+
+    function renderAdminArtisans() {
+        let rows = '';
+        MOCK_ARTISANS.forEach(function (a) {
+            const badgeClass = a.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800';
+            const statusLabel = a.status === 'approved' ? t('adminStatusApproved') : t('adminStatusPending');
+            rows += '<tr class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">' +
+                '<td class="p-4 text-sm font-bold text-gray-900 dark:text-white">' + a.name + '</td>' +
+                '<td class="p-4 text-sm text-gray-600 dark:text-gray-300">' + a.craft + '</td>' +
+                '<td class="p-4 text-sm text-gray-600 dark:text-gray-300">' + a.location + '</td>' +
+                '<td class="p-4"><span class="px-2 py-1 rounded text-[10px] font-bold uppercase ' + badgeClass + '">' + statusLabel + '</span></td>' +
+                '<td class="p-4 text-xs text-gray-500 dark:text-gray-400">' + a.date + '</td>' +
+            '</tr>';
+        });
+
+        document.getElementById('adminTab-artisans').innerHTML =
+            '<div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-x-auto">' +
+                '<table class="w-full text-left min-w-[600px]">' +
+                    '<thead class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800">' +
+                        '<tr>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColArtisan') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColCraft') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColLocation') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColStatus') + '</th>' +
+                            '<th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">' + t('adminColDate') + '</th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + rows + '</tbody>' +
+                '</table>' +
+            '</div>';
+    }
+
+    function openProductForm(id) {
+        const modal = document.getElementById('adminProductModal');
+        const title = document.getElementById('productFormTitle');
+        const form = modal.querySelector('form');
+        form.reset();
+        document.getElementById('pfId').value = '';
+
+        if (id) {
+            const products = loadProducts();
+            const p = products.find(function (x) { return x.id === id; });
+            if (p) {
+                title.textContent = t('adminEditProduct');
+                document.getElementById('pfId').value = p.id;
+                document.getElementById('pfName').value = p.name;
+                document.getElementById('pfSub').value = p.sub;
+                document.getElementById('pfPrice').value = p.price;
+                document.getElementById('pfCategory').value = p.category;
+                document.getElementById('pfImage').value = p.image;
+                document.getElementById('pfTag').value = p.tag;
+            }
+        } else {
+            title.textContent = t('adminNewProduct');
+        }
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeProductForm() {
+        document.getElementById('adminProductModal').classList.add('hidden');
+        document.getElementById('adminProductModal').classList.remove('flex');
+    }
+
+    function editProduct(id) { openProductForm(id); }
+
+    function deleteProduct(id) {
+        if (!confirm(t('adminConfirmDelete'))) return;
+        let products = loadProducts();
+        products = products.filter(function (p) { return p.id !== id; });
+        saveProducts(products);
+        renderAdminProducts();
+        renderProducts();
+    }
+
+    function handleProductFormSubmit(e) {
+        e.preventDefault();
+        const id = document.getElementById('pfId').value;
+        const name = document.getElementById('pfName').value;
+        const sub = document.getElementById('pfSub').value;
+        const price = parseFloat(document.getElementById('pfPrice').value);
+        const category = document.getElementById('pfCategory').value;
+        const image = document.getElementById('pfImage').value;
+        const tag = document.getElementById('pfTag').value;
+
+        let products = loadProducts();
+
+        if (id) {
+            // Edit
+            const idx = products.findIndex(function (p) { return p.id == id; });
+            if (idx > -1) {
+                products[idx] = { ...products[idx], name, sub, price, category, image, tag };
+            }
+        } else {
+            // Add
+            const newId = products.length ? Math.max(...products.map(function (p) { return p.id; })) + 1 : 1;
+            const tagClass = category === 'pashmina' ? 'bg-red-700' :
+                             category === 'dhaka' ? 'bg-amber-800' :
+                             category === 'lokta' ? 'bg-green-800' : 'bg-yellow-800';
+            products.push({ id: newId, name, sub, price, category, image, tag, tagClass });
+        }
+
+        saveProducts(products);
+        closeProductForm();
+        renderAdminProducts();
+        renderProducts();
     }
 
     /* =========================================================
