@@ -1,0 +1,9 @@
+{
+  "name": "kalaghar-payment-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Payment server for KalaGhar (Khalti, eSewa, international cards)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
