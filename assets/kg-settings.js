@@ -20,6 +20,7 @@
         { key: 'popular-categories', label: 'Shop Popular Categories' },
         { key: 'marketplace', label: 'Product catalog' },
         { key: 'kgDiscoveryShelf', label: 'Personal picks (recently viewed)' },
+        { key: 'kgBuyAgain', label: 'Buy it again (signed-in shoppers)' },
         { key: 'spotlight', label: 'Featured spotlight' },
         { key: 'craft-of-week', label: 'Craft of the week' },
         { key: 'regions', label: 'Shop by Region map' },
@@ -62,6 +63,24 @@
             seoPagesEnabled: true,
             analyticsEnabled: false, consentBanner: true, ga4Id: '', plausibleDomain: '', metaPixelId: ''
         },
+        delivery: {
+            enabled: true, showOnProduct: true, showInCart: true, showAtCheckout: true,
+            processingMin: 1, processingMax: 3, cutoffHour: 14,
+            nonWorkingDays: [6],            // 0 = Sunday … 6 = Saturday (Nepal's weekly holiday)
+            holidays: []                    // closed dates, e.g. Dashain/Tihar: ["2026-10-20", …]
+        },
+        buyer: {
+            savedAddresses: true, rememberPayment: true, buyAgain: true, giftTeaser: true,
+            teaserSubject: 'A gift is on its way to you!',
+            teaserBody: 'Namaste {recipient}! {sender} has sent you something handmade from Nepal for {occasion}. It should arrive around {arrival}. We won\'t spoil the surprise — keep an eye out for your parcel.\n\nMessage from {sender}: {message}'
+        },
+        discovery: {
+            shipsFromFilter: true, nearMe: true,
+            bestseller: true, inCarts: true, popularNow: true, lowStock: true,
+            bestsellerMinSales: 3, inCartsMin: 3, popularViews: 10, lowStockMax: 3,
+            sellerOnCards: true, cardShopName: true, cardRating: true, cardSales: true, cardSince: true,
+            badgeOverrides: {}              // { productId: { force: ['bestseller'], hide: ['inCarts'] } }
+        },
         courier: {
             enabled: true, labelSize: '4x6', defaultCourier: 'ncm', defaultWeightG: 500,
             sender: { name: 'KalaGhar Marketplace', phone: '+977 9851022453', address: 'Kathmandu-14', city: 'Kathmandu' },
@@ -83,7 +102,11 @@
         const known = HOME_SECTIONS.map(function (x) { return x.key; });
         let sections = (Array.isArray(h.sections) ? h.sections : []).filter(function (x) { return x && known.indexOf(x.key) > -1; })
             .map(function (x) { return { key: x.key, visible: x.visible !== false, mobile: x.mobile !== false, title: str(x.title, 80) }; });
-        d.home.sections.forEach(function (x) { if (!sections.some(function (y) { return y.key === x.key; })) sections.push(Object.assign({}, x)); });
+        d.home.sections.forEach(function (x, i) {
+            if (sections.some(function (y) { return y.key === x.key; })) return;
+            const prev = i ? d.home.sections[i - 1].key : null, at = prev ? sections.findIndex(function (y) { return y.key === prev; }) : -1;
+            sections.splice(at + 1, 0, Object.assign({}, x));
+        });
         const actions = ['section', 'category', 'gift', 'link', 'product', 'support'];
         const slides = (Array.isArray(hero.slides) ? hero.slides : d.hero.slides).slice(0, 10).map(function (x, i) {
             x = x || {};
@@ -96,7 +119,14 @@
             const f = plus.features[k] || {};
             if (/^\d{1,2}$/.test(k)) feats[k] = { state: ['enabled', 'coming_soon', 'hidden'].indexOf(f.state) > -1 ? f.state : 'enabled', featured: !!f.featured, customDescription: str(f.customDescription, 300) };
         });
-        const sender = c.sender || {};
+        const sender = c.sender || {}, dv = s.delivery || {}, by = s.buyer || {}, ds = s.discovery || {};
+        const BADGES = ['bestseller', 'inCarts', 'popularNow', 'lowStock'];
+        const overrides = {};
+        Object.keys(ds.badgeOverrides || {}).slice(0, 2000).forEach(function (k) {
+            const o = ds.badgeOverrides[k] || {}; if (!/^\d{1,9}$/.test(k)) return;
+            const f = (o.force || []).filter(function (b) { return BADGES.indexOf(b) > -1; }), h = (o.hide || []).filter(function (b) { return BADGES.indexOf(b) > -1; });
+            if (f.length || h.length) overrides[k] = { force: f, hide: h };
+        });
         return {
             version: 1,
             home: { sections: sections },
@@ -116,6 +146,23 @@
                 ga4Id: /^G-[A-Z0-9]{4,15}$/.test(str(m.ga4Id, 20)) ? str(m.ga4Id, 20) : '',
                 plausibleDomain: /^[a-z0-9.-]{3,100}$/i.test(str(m.plausibleDomain, 100)) ? str(m.plausibleDomain, 100).toLowerCase() : '',
                 metaPixelId: /^\d{6,20}$/.test(str(m.metaPixelId, 20)) ? str(m.metaPixelId, 20) : ''
+            },
+            delivery: {
+                enabled: bool(dv.enabled, true), showOnProduct: bool(dv.showOnProduct, true), showInCart: bool(dv.showInCart, true), showAtCheckout: bool(dv.showAtCheckout, true),
+                processingMin: num(dv.processingMin, 0, 60, 1), processingMax: Math.max(num(dv.processingMin, 0, 60, 1), num(dv.processingMax, 0, 90, 3)), cutoffHour: num(dv.cutoffHour, 0, 23, 14),
+                nonWorkingDays: (Array.isArray(dv.nonWorkingDays) ? dv.nonWorkingDays : d.delivery.nonWorkingDays).map(Number).filter(function (n) { return n >= 0 && n <= 6; }).filter(function (n, i, a) { return a.indexOf(n) === i; }).slice(0, 6),
+                holidays: (Array.isArray(dv.holidays) ? dv.holidays : []).map(date).filter(Boolean).filter(function (x, i, a) { return a.indexOf(x) === i; }).sort().slice(0, 120)
+            },
+            buyer: {
+                savedAddresses: bool(by.savedAddresses, true), rememberPayment: bool(by.rememberPayment, true), buyAgain: bool(by.buyAgain, true), giftTeaser: bool(by.giftTeaser, true),
+                teaserSubject: str(by.teaserSubject, 120, d.buyer.teaserSubject), teaserBody: str(by.teaserBody, 1200, d.buyer.teaserBody)
+            },
+            discovery: {
+                shipsFromFilter: bool(ds.shipsFromFilter, true), nearMe: bool(ds.nearMe, true),
+                bestseller: bool(ds.bestseller, true), inCarts: bool(ds.inCarts, true), popularNow: bool(ds.popularNow, true), lowStock: bool(ds.lowStock, true),
+                bestsellerMinSales: num(ds.bestsellerMinSales, 1, 1000, 3), inCartsMin: num(ds.inCartsMin, 1, 1000, 3), popularViews: num(ds.popularViews, 1, 100000, 10), lowStockMax: num(ds.lowStockMax, 1, 50, 3),
+                sellerOnCards: bool(ds.sellerOnCards, true), cardShopName: bool(ds.cardShopName, true), cardRating: bool(ds.cardRating, true), cardSales: bool(ds.cardSales, true), cardSince: bool(ds.cardSince, true),
+                badgeOverrides: overrides
             },
             courier: {
                 enabled: bool(c.enabled, true), labelSize: c.labelSize === 'a6' ? 'a6' : '4x6', defaultCourier: id(c.defaultCourier, 'ncm'),

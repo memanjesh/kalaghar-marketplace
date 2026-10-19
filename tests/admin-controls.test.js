@@ -41,18 +41,36 @@ test('analytics IDs and links are strictly validated before reaching the page', 
 test('unknown homepage sections are dropped and missing ones restored', function () {
     const KG = loadSettings();
     const s = KG.sanitizeSettings({ home: { sections: [{ key: 'faq', visible: false }, { key: 'not-a-section' }] } });
-    assert.equal(s.home.sections[0].key, 'faq');
-    assert.equal(s.home.sections[0].visible, false);
+    assert.equal(s.home.sections.find(function (x) { return x.key === 'faq'; }).visible, false);
     assert.ok(!s.home.sections.some(function (x) { return x.key === 'not-a-section'; }));
     assert.ok(s.home.sections.some(function (x) { return x.key === 'marketplace'; }));
 });
 
+test('new homepage sections slot in after their usual neighbour, keeping a saved order', function () {
+    const KG = loadSettings();
+    const saved = KG.HOME_SECTIONS.filter(function (x) { return x.key !== 'kgBuyAgain'; }).map(function (x) { return { key: x.key }; }).reverse();
+    const keys = KG.sanitizeSettings({ home: { sections: saved } }).home.sections.map(function (x) { return x.key; });
+    assert.equal(keys.indexOf('kgBuyAgain'), keys.indexOf('kgDiscoveryShelf') + 1);
+    assert.equal(keys[0], saved[0].key);
+});
+
+test('delivery, checkout and badge settings are clamped and validated', function () {
+    const KG = loadSettings();
+    const s = KG.sanitizeSettings({ delivery: { processingMin: 5, processingMax: 2, cutoffHour: 99, nonWorkingDays: [6, 6, 9, '0'], holidays: ['2026-10-22', 'nope'] }, discovery: { badgeOverrides: { 12: { force: ['bestseller', 'evil'], hide: ['lowStock'] }, 'x<y': { force: ['inCarts'] } } }, buyer: { teaserBody: 7 } });
+    assert.equal(s.delivery.processingMax, 5);
+    assert.equal(s.delivery.cutoffHour, 23);
+    assert.deepEqual(JSON.parse(JSON.stringify(s.delivery.nonWorkingDays)), [6, 0]);
+    assert.deepEqual(JSON.parse(JSON.stringify(s.delivery.holidays)), ['2026-10-22']);
+    assert.deepEqual(JSON.parse(JSON.stringify(s.discovery.badgeOverrides)), { 12: { force: ['bestseller'], hide: ['lowStock'] } });
+    assert.equal(typeof s.buyer.teaserBody, 'string');
+});
+
 test('every new feature module is loaded, started and has admin tabs', function () {
     const html = read('index.html'), init = read('assets/kg-init.js');
-    ['kg-settings', 'kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping'].forEach(function (m) { assert.match(html, new RegExp('assets/' + m + '\\.js\\?v=')); });
-    ['initCommerce', 'initShipping', 'initMarketing', 'initHome', 'initSettings'].forEach(function (f) { assert.match(init, new RegExp('KG\\.' + f + '\\(\\)')); });
-    const tabs = ['home-layout', 'hero-slider', 'plus-launch', 'shop-features', 'alerts', 'qa', 'vacations', 'feeds', 'seo-pages', 'analytics', 'shipping-labels'];
-    const all = ['kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping'].map(function (m) { return read('assets/' + m + '.js'); }).join('\n');
+    ['kg-settings', 'kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals'].forEach(function (m) { assert.match(html, new RegExp('assets/' + m + '\\.js\\?v=')); });
+    ['initCommerce', 'initShipping', 'initMarketing', 'initHome', 'initBuyer', 'initSignals', 'initSettings'].forEach(function (f) { assert.match(init, new RegExp('KG\\.' + f + '\\(\\)')); });
+    const tabs = ['home-layout', 'hero-slider', 'plus-launch', 'shop-features', 'alerts', 'qa', 'vacations', 'feeds', 'seo-pages', 'analytics', 'shipping-labels', 'delivery', 'checkout-gifting', 'shopping-signals'];
+    const all = ['kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals'].map(function (m) { return read('assets/' + m + '.js'); }).join('\n');
     tabs.forEach(function (t) { assert.match(all, new RegExp("addAdminTab\\('" + t + "'")); });
 });
 

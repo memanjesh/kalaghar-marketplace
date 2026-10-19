@@ -39,6 +39,12 @@
         "title": ""
       },
       {
+        "key": "kgBuyAgain",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
         "key": "spotlight",
         "visible": false,
         "mobile": true,
@@ -193,6 +199,45 @@
     "ga4Id": "",
     "plausibleDomain": "",
     "metaPixelId": ""
+  },
+  "delivery": {
+    "enabled": true,
+    "showOnProduct": true,
+    "showInCart": true,
+    "showAtCheckout": true,
+    "processingMin": 1,
+    "processingMax": 3,
+    "cutoffHour": 14,
+    "nonWorkingDays": [
+      6
+    ],
+    "holidays": []
+  },
+  "buyer": {
+    "savedAddresses": true,
+    "rememberPayment": true,
+    "buyAgain": true,
+    "giftTeaser": true,
+    "teaserSubject": "A gift is on its way to you!",
+    "teaserBody": "Namaste {recipient}! {sender} has sent you something handmade from Nepal for {occasion}. It should arrive around {arrival}. We won't spoil the surprise — keep an eye out for your parcel.\n\nMessage from {sender}: {message}"
+  },
+  "discovery": {
+    "shipsFromFilter": true,
+    "nearMe": true,
+    "bestseller": true,
+    "inCarts": true,
+    "popularNow": true,
+    "lowStock": true,
+    "bestsellerMinSales": 3,
+    "inCartsMin": 3,
+    "popularViews": 10,
+    "lowStockMax": 3,
+    "sellerOnCards": true,
+    "cardShopName": true,
+    "cardRating": true,
+    "cardSales": true,
+    "cardSince": true,
+    "badgeOverrides": {}
   },
   "courier": {
     "enabled": true,
