@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
     KG.initGrowth();
     KG.initOperations();
     KG.initPlatform();
+    // Admin-controlled features (settings load last so their admin tabs come after the others)
+    KG.initCommerce();
+    KG.initShipping();
+    KG.initMarketing();
+    KG.initHome();
+    KG.initSettings();
 
     // Re-draw the new sections whenever the language changes
     var origApplyLang = window.applyLang;

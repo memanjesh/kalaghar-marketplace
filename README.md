@@ -46,6 +46,20 @@ An Etsy-style marketplace for handmade crafts from Nepal: buyers shop by craft o
 - Category manager for adding, renaming, hiding, and safely deleting storefront categories
 - Responsive country, language, and currency preferences with matching regional flags
 
+**Admin-controlled features (publish once, every visitor sees them)**
+Changes in these tabs preview instantly in your browser; the yellow bar's **Publish to all visitors** button saves them to `content/site-settings.json` on GitHub.
+- **Homepage** — drag sections into any order, hide them, hide them on phones only, rename headings; "short homepage" preset
+- **Hero slider** — Etsy-style top banner: add/duplicate/reorder slides, headline, text, button target, photo (URL or upload), style, start/end dates, auto-play speed, height
+- **Launch mode** — one-click "launch set" for KalaGhar Plus (only services you can deliver), per-service Enabled / Coming soon / Hidden, hide the services hub
+- **Shopping features** — switch variants, back-in-stock and price-drop alerts, product Q&A (with pre-approval) and seller vacation mode on/off; edit any product's stock and variants
+- **Stock & price alerts** — subscribers, outbox of alert emails (send with one click from your email app), CSV export
+- **Product Q&A** — approve, hide, delete or answer customer questions (sellers answer from their dashboard)
+- **Seller vacations** — see who is away; start or end a shop's vacation
+- **Product feeds** — Google Shopping and Instagram/Facebook catalog feeds, choose products, download or publish to `feeds/`
+- **Google product pages** — publishes a real page per product (`p/…html`) with Google product data, plus `sitemap.xml` and `robots.txt`
+- **Analytics** — Google Analytics 4, Plausible and Meta pixel with a cookie-consent banner; the Privacy Policy updates itself to match
+- **Courier & labels** — book Nepal Can Move / Pathao / Export Hub pickups and print 4×6 or A6 labels with barcode and COD amount; sender details and defaults
+
 **Legal pages** (`pages/`) — Terms, Privacy, Return & Refund, Delivery, Purchase Protection, Export Hub, plus the footer business details and complaint form required by the E-Commerce Act 2081. Have a lawyer in Nepal review them before launch.
 
 ## Files

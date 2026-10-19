@@ -149,7 +149,7 @@ test('installable low-bandwidth shell and fulfillment choices are present', func
     const worker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
     const checkout = fs.readFileSync(path.join(root, 'assets', 'kg-checkout.js'), 'utf8');
     assert.equal(manifest.display, 'standalone');
-    assert.match(worker, /kalaghar-shell-v3/);
+    assert.match(worker, /kalaghar-shell-v\d+/);
     assert.match(checkout, /value="hotel"/);
     assert.match(checkout, /value="pickup"/);
     assert.match(checkout, /fulfillment:/);

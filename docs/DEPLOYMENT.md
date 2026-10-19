@@ -77,3 +77,17 @@ The AI endpoint is seller-authenticated when Supabase is configured, rate limite
 
 Run `npm test` and `npm run check` from the repository root. Also validate the SQL in a disposable Supabase project; local JavaScript tests cannot prove hosted RLS behavior.
 
+
+
+## Courier booking service (optional)
+
+Admin → **Courier & labels** works without any server: it creates a KalaGhar reference for the label and staff book the pickup on the courier's website. To book automatically, deploy a small endpoint (keep courier API keys on the server, never in `assets/`) and paste its HTTPS address into **Booking service address**.
+
+Request (`POST`, JSON):
+`{ "courier": "ncm" | "pathao", "orderId", "sender": {name, phone, address, city}, "recipient": {name, phone, line, city, district, postcode, country}, "weightG", "pieces", "codAmount", "fragile", "items": [{name, qty}] }`
+
+Response (`200`): `{ "trackingNumber": "…", "bookingId": "…", "labelUrl": "https://…" (optional) }` — any non-200 or a missing `trackingNumber` is shown to staff as a failed booking. Map these fields to the courier's own API using the documentation from your Nepal Can Move or Pathao business account.
+
+## Alert emails
+
+Back-in-stock and price-drop alerts are queued in Admin → **Stock & price alerts**. Until an email provider (e.g. Amazon SES, Postmark or Sparrow SMS for text messages) is connected on the server, staff send each queued message from their own email app with one click.
