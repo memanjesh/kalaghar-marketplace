@@ -8,7 +8,7 @@
     <meta property="og:description" content="Handmade in Nepal, shipped worldwide. Buy directly from verified artisans and cooperatives.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#b91c1c">
-    <link rel="stylesheet" href="assets/kg.css?v=20261019g">
+    <link rel="stylesheet" href="assets/kg.css?v=20261019h">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
@@ -75,88 +75,80 @@
         </div>
     </div>
 
-    <!-- HEADER -->
-    <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40 shadow-sm transition-colors">
-        <div class="max-w-7xl mx-auto px-3 sm:px-4 py-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-x-2 gap-y-2 sm:gap-x-3">
-            <a href="#" class="flex items-center gap-2 sm:gap-3 group shrink-0">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 kg-grad text-white rounded-2xl flex items-center justify-center font-bold text-lg sm:text-xl font-nepali shadow-md transition">क</div>
-                <div>
-                    <span class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight block leading-none">KalaGhar</span>
-                </div>
-            </a>
-
-            <!-- Categories menu (Etsy-style) -->
-            <div class="relative order-first md:order-none" id="kgCatMenuWrap">
+    <!-- HEADER (Etsy layout) -->
+    <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40 transition-colors">
+        <div class="max-w-[1440px] mx-auto px-4 lg:px-8 h-[72px] flex items-center gap-2 md:gap-4">
+            <!-- Categories (left of logo on phones, right of it on larger screens) -->
+            <div class="relative order-first md:order-2 shrink-0" id="kgCatMenuWrap">
                 <button id="kgCatBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="kgCatPanel"
-                        class="md:-ml-2 flex items-center gap-2 text-sm font-semibold text-gray-800 dark:text-gray-100 px-2.5 sm:px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                        class="flex items-center gap-2 h-10 px-2 md:px-3 rounded-full text-[15px] font-semibold text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                     <i class="fa-solid fa-bars text-base"></i><span class="hidden md:inline" data-i18n="kgCategories">Categories</span>
                 </button>
             </div>
 
-            <div class="relative w-full md:w-auto md:flex-1 order-last md:order-none">
-                <input id="searchInput" onkeyup="filterProductsBySearch()" type="text"
+            <!-- Logo -->
+            <a href="#" class="order-1 flex items-center gap-2 shrink-0" aria-label="KalaGhar home">
+                <span class="kg-grad w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-lg font-nepali shadow-sm">क</span>
+                <span class="text-[26px] font-extrabold tracking-tight text-gray-900 dark:text-white leading-none">KalaGhar</span>
+            </a>
+
+            <!-- Search -->
+            <form class="order-3 hidden md:block flex-1 min-w-0 relative" role="search" onsubmit="event.preventDefault();filterProductsBySearch();document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})">
+                <label for="searchInput" class="sr-only">Search</label>
+                <input id="searchInput" oninput="filterProductsBySearch()" type="search" autocomplete="off"
                        data-i18n-ph="searchPh" placeholder="Search for anything"
-                       class="w-full bg-white dark:bg-gray-800 border-2 border-gray-800 dark:border-gray-600 rounded-full py-3 pl-5 pr-14 text-base text-gray-800 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-red-700 focus:bg-white dark:focus:bg-gray-900 transition">
-                <button type="button" aria-label="Search" onclick="filterProductsBySearch();document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})" class="kg-grad absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-white flex items-center justify-center hover:brightness-95">
-                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                       class="w-full h-12 bg-white dark:bg-gray-800 border-2 border-gray-900 dark:border-gray-500 rounded-full pl-5 pr-14 text-base text-gray-800 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:shadow-[0_0_0_4px_rgba(217,119,6,.25)] transition">
+                <button type="submit" aria-label="Search" class="kg-grad absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-white flex items-center justify-center hover:brightness-110">
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-            </div>
+            </form>
 
-            <div class="flex items-center gap-1 sm:gap-2">
-                <!-- Become a Seller -->
-                <button onclick="openModal('artisanModal')" class="hidden items-center gap-2 text-xs font-bold tracking-wider text-red-700 dark:text-red-400 border-2 border-red-700 dark:border-red-500 px-3 py-1.5 rounded-full hover:bg-red-700 hover:text-white transition">
-                    <i class="fa-solid fa-hands-holding"></i>
-                    <span data-i18n="becomeSeller">BECOME A SELLER</span>
-                </button>
+            <!-- Right-side actions -->
+            <div class="order-4 ml-auto md:ml-0 flex items-center gap-0.5 sm:gap-1 shrink-0">
+                <button type="button" onclick="document.getElementById('kgMobileSearch').classList.toggle('hidden');document.getElementById('kgMobileSearchInput').focus()" aria-label="Search" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"><i class="fa-solid fa-magnifying-glass"></i></button>
 
-                <!-- Theme toggle -->
-                <button id="themeToggle" onclick="toggleTheme()" title="Toggle day / night"
-                        class="hidden text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                    <i id="themeIcon" class="fa-solid fa-moon"></i>
-                </button>
-
-                <!-- Language dropdown with flags -->
                 <div class="relative" id="langDropdownWrap">
-                    <button onclick="toggleLangDropdown()" title="Change language"
-                            class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 px-2 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition" aria-haspopup="true" aria-label="Change language">
-                        <i class="fa-solid fa-globe text-sm text-gray-500 dark:text-gray-400 hidden sm:inline"></i>
+                    <button onclick="toggleLangDropdown()" type="button" aria-haspopup="true" aria-label="Change language" class="flex items-center gap-1.5 h-10 px-2.5 rounded-full text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                         <img id="currentLangFlag" src="https://flagcdn.com/24x18/us.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
                         <span id="langLabel">ENG</span>
-                        <i class="fa-solid fa-chevron-down text-[9px] opacity-60"></i>
                     </button>
-                    <div id="langDropdown" class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden z-50">
-                        <button onclick="selectLang('en')" class="lang-option w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <img src="https://flagcdn.com/24x18/us.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
-                            <span><strong>ENG</strong> · English</span>
-                            <i class="fa-solid fa-check ml-auto text-red-700 dark:text-red-400 check-mark-en hidden"></i>
+                    <div id="langDropdown" class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl overflow-hidden z-50">
+                        <button onclick="selectLang('en')" class="lang-option w-full flex items-center gap-2.5 px-4 py-3 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <img src="https://flagcdn.com/24x18/us.png" alt="" class="w-5 h-3.5 rounded-sm object-cover"><span><strong>ENG</strong> · English</span>
+                            <i class="fa-solid fa-check ml-auto text-red-700 dark:text-amber-300 check-mark-en hidden"></i>
                         </button>
-                        <button onclick="selectLang('ne')" class="lang-option w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-t border-gray-100 dark:border-gray-800">
-                            <img src="https://flagcdn.com/24x18/np.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
-                            <span><strong>NEP</strong> · नेपाली</span>
-                            <i class="fa-solid fa-check ml-auto text-red-700 dark:text-red-400 check-mark-ne hidden"></i>
+                        <button onclick="selectLang('ne')" class="lang-option w-full flex items-center gap-2.5 px-4 py-3 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-t border-gray-100 dark:border-gray-800">
+                            <img src="https://flagcdn.com/24x18/np.png" alt="" class="w-5 h-3.5 rounded-sm object-cover"><span><strong>NEP</strong> · नेपाली</span>
+                            <i class="fa-solid fa-check ml-auto text-red-700 dark:text-amber-300 check-mark-ne hidden"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Sign In -->
-                <button onclick="openModal('customerAuthModal')" class="flex items-center gap-2 text-sm font-semibold text-gray-800 dark:text-gray-100 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                    <i class="fa-regular fa-user text-sm"></i>
+                <button onclick="openModal('customerAuthModal')" type="button" class="flex items-center gap-2 h-10 px-2.5 md:px-4 rounded-full text-[15px] font-semibold text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                    <i class="fa-regular fa-user md:hidden"></i>
                     <span id="userStatusLabel" data-i18n="signIn" class="hidden md:inline">Sign In</span>
                 </button>
 
-
-                <a href="#" class="hidden sm:block text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 text-lg p-1">
-                    <i class="fa-regular fa-heart"></i>
+                <a href="#" class="hidden sm:flex w-10 h-10 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition" title="Favorites"><i class="fa-regular fa-heart text-lg"></i></a>
+                <a href="#" class="relative w-10 h-10 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition" title="Bag"><i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cartCounter" class="absolute top-0.5 right-0.5 kg-grad text-white text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-bold">0</span>
                 </a>
-                <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 text-lg relative p-1">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                    <span id="cartCounter" class="absolute -top-1 -right-1 bg-red-700 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
-                </a>
+                <button id="themeToggle" type="button" class="hidden" aria-hidden="true" tabindex="-1"><i id="themeIcon"></i></button>
             </div>
         </div>
-        <!-- FEATURED LINKS (Etsy-style second row) -->
+
+        <!-- Phone search -->
+        <div id="kgMobileSearch" class="hidden md:hidden px-4 pb-3">
+            <form role="search" class="relative" onsubmit="event.preventDefault();var v=document.getElementById('kgMobileSearchInput').value;document.getElementById('searchInput').value=v;filterProductsBySearch();document.getElementById('marketplace').scrollIntoView({behavior:'smooth'})">
+                <label for="kgMobileSearchInput" class="sr-only">Search</label>
+                <input id="kgMobileSearchInput" type="search" placeholder="Search for anything" oninput="document.getElementById('searchInput').value=this.value;filterProductsBySearch()" class="w-full h-11 border-2 border-gray-900 dark:border-gray-500 dark:bg-gray-800 rounded-full pl-4 pr-12 text-base focus:outline-none">
+                <button type="submit" aria-label="Search" class="kg-grad absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full text-white flex items-center justify-center"><i class="fa-solid fa-magnifying-glass text-sm"></i></button>
+            </form>
+        </div>
+
+        <!-- Featured links (Etsy-style second row) -->
         <nav aria-label="Featured" class="kg-catnav overflow-x-auto">
-            <ul id="kgFeatured" class="flex w-max mx-auto items-center gap-5 lg:gap-7 px-4 pb-3 pt-1 whitespace-nowrap">
+            <ul id="kgFeatured" class="flex w-max items-center gap-6 lg:gap-8 px-4 pb-2.5 whitespace-nowrap">
                 <li><button type="button" onclick="KG.openGiftMode()" class="kg-feat"><i class="fa-solid fa-gift mr-1.5"></i>Gifts</button></li>
                 <li id="kgFestivalItem"><button type="button" onclick="document.getElementById('festival').scrollIntoView({behavior:'smooth'})" class="kg-feat">Dashain Gifts</button></li>
                 <li><button type="button" onclick="KG.goCategory('pashmina')" class="kg-feat" data-i18n="fPashmina">Himalayan Pashmina &amp; Wool</button></li>
@@ -1627,13 +1619,13 @@
     </script>
 
     <!-- KalaGhar feature modules -->
-    <script src="assets/config.js?v=20261019g"></script>
-    <script src="assets/kg-core.js?v=20261019g"></script>
-    <script src="assets/kg-shop.js?v=20261019g"></script>
-    <script src="assets/kg-checkout.js?v=20261019g"></script>
-    <script src="assets/kg-discover.js?v=20261019g"></script>
-    <script src="assets/kg-seller.js?v=20261019g"></script>
-    <script src="assets/kg-admin.js?v=20261019g"></script>
-    <script src="assets/kg-init.js?v=20261019g"></script>
+    <script src="assets/config.js?v=20261019h"></script>
+    <script src="assets/kg-core.js?v=20261019h"></script>
+    <script src="assets/kg-shop.js?v=20261019h"></script>
+    <script src="assets/kg-checkout.js?v=20261019h"></script>
+    <script src="assets/kg-discover.js?v=20261019h"></script>
+    <script src="assets/kg-seller.js?v=20261019h"></script>
+    <script src="assets/kg-admin.js?v=20261019h"></script>
+    <script src="assets/kg-init.js?v=20261019h"></script>
 </body>
 </html>

@@ -349,7 +349,7 @@
         if (heart) {
             const a = heart.closest('a'); a.classList.add('relative'); a.setAttribute('aria-label', 'Favorites');
             a.addEventListener('click', function (e) { e.preventDefault(); KG.openFavorites(); });
-            a.insertAdjacentHTML('beforeend', '<span id="kgFavCount" class="hidden absolute -top-1 -right-1 bg-red-700 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>');
+            a.insertAdjacentHTML('beforeend', '<span id="kgFavCount" class="hidden absolute top-0.5 right-0.5 kg-grad text-white text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-bold">0</span>');
         }
         const bag = document.getElementById('cartCounter');
         if (bag) { const a = bag.closest('a'); a.setAttribute('aria-label', 'Shopping bag'); a.addEventListener('click', function (e) { e.preventDefault(); KG.openCart(); }); }
@@ -384,7 +384,7 @@
         const panel = document.getElementById('kgCatPanel'), btn = document.getElementById('kgCatBtn');
         if (!panel || !btn) return;
         const cats = [{ id: 'all', en: 'All Crafts', ne: 'सबै शिल्प' }].concat(KG.CATEGORIES);
-        panel.innerHTML = '<div class="max-w-7xl mx-auto px-3 sm:px-4"><div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 flex overflow-hidden max-h-[70vh]">' +
+        panel.innerHTML = '<div class="max-w-[1440px] mx-auto px-4 lg:px-8"><div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 flex overflow-hidden max-h-[70vh]">' +
             '<ul class="w-72 shrink-0 border-r border-gray-100 dark:border-gray-800 py-2 overflow-y-auto">' + cats.map(function (c) {
                 return '<li><button type="button" role="menuitem" data-cat="' + c.id + '" class="kg-catitem w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left text-gray-800 dark:text-gray-100"><i class="fa-solid ' + (CAT_ICONS[c.id] || 'fa-border-all') + ' w-4 text-center text-gray-500"></i><span class="flex-1">' + esc(KG.tx(c.en, c.ne)) + '</span><i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i></button></li>';
             }).join('') + '</ul><div id="kgCatPreview" class="flex-1 p-6 overflow-y-auto"></div></div></div>';
