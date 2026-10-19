@@ -15,13 +15,16 @@
         window.cartCount = n;
     }
     KG.updateCartCount = updateCartCount;
-    KG.addToCart = function (id, qty, personalization, silent, packaging) {
+    KG.addToCart = function (id, qty, personalization, silent, packaging, variant) {
         const p = KG.product(id); if (!p) return;
+        variant = variant || '';
+        // Commerce rules (vacation mode, stock, required variant) may stop the add
+        if (KG.canAddToCart && !KG.canAddToCart(p, variant, silent)) return;
         qty = Math.max(1, +qty || 1);
         packaging = packaging || 'eco';
         const c = KG.cart();
-        const line = c.find(function (l) { return l.productId == id && (l.personalization || '') === (personalization || '') && (l.packaging || 'eco') === packaging; });
-        if (line) line.qty += qty; else c.push({ productId: +id, qty: qty, personalization: (personalization || '').trim(), packaging: packaging });
+        const line = c.find(function (l) { return l.productId == id && (l.variant || '') === variant && (l.personalization || '') === (personalization || '') && (l.packaging || 'eco') === packaging; });
+        if (line) line.qty += qty; else c.push({ productId: +id, qty: qty, personalization: (personalization || '').trim(), packaging: packaging, variant: variant });
         saveCart(c); KG.track('cart', +id);
         if (!silent) KG.toast((KG.lang() === 'ne' && p.nameNe ? p.nameNe : p.name) + ' — ' + KG.tx('added to bag', 'झोलामा थपियो'));
     };
@@ -33,7 +36,7 @@
     KG.setQty = function (i, q) { const c = KG.cart(); if (!c[i]) return; if (q <= 0) c.splice(i, 1); else c[i].qty = q; saveCart(c); KG.openCart(); };
 
     function cartLines() {
-        return KG.cart().map(function (l) { const p = KG.product(l.productId); return p ? Object.assign({}, l, { p: p, total: p.price * l.qty }) : null; }).filter(Boolean);
+        return KG.cart().map(function (l) { let p = KG.product(l.productId); if (p && KG.withVariant) p = KG.withVariant(p, l.variant); return p ? Object.assign({}, l, { p: p, total: p.price * l.qty }) : null; }).filter(Boolean);
     }
 
     KG.openCart = function () {
@@ -257,7 +260,7 @@
                 address: { line: form.address.value.trim(), city: form.city.value.trim(), district: form.district.value.trim(), postcode: form.postcode.value.trim(), country: form.country.value.trim() },
                 fulfillment: { type: (form.querySelector('input[name="fulfillment"]:checked') || {}).value || 'courier', details: form.fulfillmentDetails.value.trim(), pickupLocationId: null, confirmedAt: null },
                 gift: giftOn ? { recipient: form.rname.value.trim(), phone: form.rphone.value.trim(), occasion: form.occasion.value, message: form.giftMsg.value.trim(), hidePrices: form.hidePrices.checked } : null,
-                items: ls.map(function (l) { return { productId: l.p.id, name: l.p.name, price: l.p.price, qty: l.qty, personalization: l.personalization, packaging: l.packaging || 'eco', sellerId: sid }; }),
+                items: ls.map(function (l) { return { productId: l.p.id, variant: l.variant || '', name: l.p.name, price: l.p.price, qty: l.qty, personalization: l.personalization, packaging: l.packaging || 'eco', sellerId: sid }; }),
                 goods: goods, discount: discount, coupon: r.coupon && !r.cd.error ? r.coupon.code : '', shipping: ship, insurance: ins, total: total,
                 vat: C.tax.pricesIncludeVat ? Math.round((goods - discount) - (goods - discount) / (1 + C.tax.vatRate)) : 0,
                 zone: r.zone.id, courier: courier, tracking: '',
@@ -273,6 +276,7 @@
             order.items.forEach(function (i) { KG.track('buy', i.productId); });
         });
         KG.store.set('kg-order-seq', seq);
+        if (KG.onOrdersPlaced) KG.onOrdersPlaced(created);
         saveCart([]);
         if (!testMode && method !== 'cod') return startPayment(created, method);
         showConfirmation(created);

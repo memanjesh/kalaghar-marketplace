@@ -37,7 +37,7 @@
             ['earnings', 'fa-wallet', KG.tx('Earnings', 'आम्दानी')],
             ['marketing', 'fa-bullhorn', KG.tx('Promote & coupons', 'प्रचार र कुपन')],
             ['profile', 'fa-id-card', KG.tx('Shop profile', 'पसल प्रोफाइल')]
-        ];
+        ].concat(KG.extraSellerTabs ? KG.extraSellerTabs(s) : []);
         const body = KG.modal('kgSeller', '<i class="fa-solid fa-store text-red-700 mr-1"></i>' + esc(s.shopName) + ' <span class="text-xs font-normal text-gray-500">· ' + t('fSellerDash') + '</span>',
             (s.status !== 'approved' ? '<div class="mb-4 text-xs bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200 rounded-lg p-3"><i class="fa-solid fa-hourglass-half mr-1"></i>' + KG.tx('Your shop is awaiting verification. You can add listings now — they\'ll show the "Verified Artisan" badge once our team approves you.', 'तपाईंको पसल प्रमाणीकरणको प्रतीक्षामा छ। अहिले नै सूची थप्न सक्नुहुन्छ।') + '</div>' : '') +
             '<div class="flex flex-wrap gap-1.5 mb-5 border-b border-gray-100 dark:border-gray-800 pb-3">' + tabs.map(function (x) {
@@ -45,7 +45,7 @@
             }).join('') + '<button class="text-xs text-gray-500 hover:text-red-700 ml-auto" onclick="KG.closeModal(\'kgSeller\');KG.openShop(\'' + esc(s.id) + '\')"><i class="fa-solid fa-eye mr-1"></i>' + KG.tx('View my shop', 'मेरो पसल हेर्नुहोस्') + '</button></div>' +
             '<div id="kgSellerBody"></div>', 'full');
         const box = body.querySelector('#kgSellerBody');
-        ({ overview: overview, listings: listings, orders: ordersTab, custom: customRequests, messages: messagesTab, earnings: earnings, marketing: marketing, profile: profile })[tab](box, s);
+        (Object.assign({ overview: overview, listings: listings, orders: ordersTab, custom: customRequests, messages: messagesTab, earnings: earnings, marketing: marketing, profile: profile }, KG.extraSellerRenderers || {})[tab] || overview)(box, s);
     };
 
     function sellerOrders(sid) { return KG.store.get('kg-orders', []).filter(function (o) { return o.sellerId === sid; }).reverse(); }
