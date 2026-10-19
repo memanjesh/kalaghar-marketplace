@@ -144,7 +144,7 @@
 
     /* ---------------------------- categories ---------------------------- */
     KG.CATEGORIES = [
-        { id: 'pashmina',   en: 'Himalayan Pashmina & Wool', ne: 'हिमाली पश्मिना र ऊन', icon: 'fa-scarf' },
+        { id: 'pashmina',   en: 'Himalayan Pashmina & Wool', ne: 'हिमाली पश्मिना र ऊन', icon: 'fa-mitten' },
         { id: 'dhaka',      en: 'Palpali Dhaka',            ne: 'पाल्पाली ढाका' },
         { id: 'lokta',      en: 'Lokta Paper',              ne: 'लोक्ता कागज' },
         { id: 'metal',      en: 'Patan Statues',            ne: 'पाटनका मूर्ति' },

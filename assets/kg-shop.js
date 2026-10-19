@@ -84,7 +84,7 @@
                 '<p class="text-[11px] text-gray-500 dark:text-gray-400"><i class="fa-solid fa-location-dot mr-1 text-red-700/70"></i>' + esc(KG.regionName(p.region)) + '</p>' +
                 (r.count ? '<div class="mt-1 flex items-center gap-1">' + KG.stars(r.avg) + '<span class="text-[11px] text-gray-500">(' + r.count + ')</span></div>' : '') +
                 (badges.length ? '<div class="flex flex-wrap gap-1 mt-2">' + badges.map(function (b) { return KG.badgeHtml(b, true); }).join('') + '</div>' : '') +
-                '<div class="flex items-end justify-between mt-auto pt-3 gap-2">' +
+                '<div class="flex items-center justify-between mt-auto pt-3 gap-2">' +
                     '<div class="leading-tight">' + KG.priceHtml(p.price) + '</div>' +
                     '<button onclick="KG.addToCart(' + p.id + ')" class="kg-btn-soft px-3 py-2 rounded-full text-xs font-semibold transition shrink-0">' + t('addToBag') + '</button>' +
                 '</div>' +

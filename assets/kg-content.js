@@ -39,6 +39,7 @@
             size: 48,
             gap: 12,
             bottom: 20,
+            mobileCollapse: true,
             items: [
                 { id: 'support', text: 'Support Center', action: 'support', target: '', icon: 'fa-headset', iconStyle: 'solid', color: '#d97706', visible: true },
                 { id: 'call', text: 'Call Support', action: 'call', target: 'tel:+9779851022453', icon: 'fa-phone', iconStyle: 'solid', color: '#b91c1c', visible: true },
@@ -225,6 +226,7 @@
                 size: Math.max(36, Math.min(72, Number(floatingSupport.size) || DEFAULT_CONTENT.floatingSupport.size)),
                 gap: Math.max(4, Math.min(32, Number(floatingSupport.gap) || DEFAULT_CONTENT.floatingSupport.gap)),
                 bottom: Math.max(8, Math.min(120, Number(floatingSupport.bottom) || DEFAULT_CONTENT.floatingSupport.bottom)),
+                mobileCollapse: floatingSupport.mobileCollapse !== false,
                 items: (Array.isArray(floatingSupport.items) ? floatingSupport.items : DEFAULT_CONTENT.floatingSupport.items).slice(0, 8).map(cleanFloatingAction).filter(function (item) { return item.text; })
             },
             catalog: {
@@ -356,6 +358,23 @@
                 }
                 floatActions.appendChild(control);
             });
+            // Phones: fold the buttons into one so they don't cover the page
+            const collapse = cfg.mobileCollapse && visibleActions.length > 1;
+            floatActions.classList.toggle('kg-float-collapse', collapse);
+            floatActions.classList.remove('is-open');
+            if (collapse) {
+                const toggle = document.createElement('button');
+                toggle.type = 'button'; toggle.className = 'kg-float-toggle rounded-full text-white shadow-lg items-center justify-center';
+                toggle.style.width = cfg.size + 'px'; toggle.style.height = cfg.size + 'px'; toggle.style.backgroundColor = visibleActions[0].color;
+                toggle.setAttribute('aria-label', 'Contact and support'); toggle.setAttribute('aria-expanded', 'false');
+                toggle.innerHTML = '<i class="fa-solid fa-headset" aria-hidden="true"></i>';
+                toggle.addEventListener('click', function () {
+                    const open = floatActions.classList.toggle('is-open');
+                    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                    toggle.innerHTML = '<i class="fa-solid ' + (open ? 'fa-xmark' : 'fa-headset') + '" aria-hidden="true"></i>';
+                });
+                floatActions.appendChild(toggle);
+            }
             const hasChat = visibleActions.some(function (item) { return item.action === 'chat'; });
             const chatPanel = document.getElementById('chatPanel');
             if (!hasChat && chatPanel) { chatPanel.classList.add('hidden'); chatPanel.classList.remove('flex'); }

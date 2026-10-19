@@ -146,6 +146,7 @@
     "size": 48,
     "gap": 12,
     "bottom": 20,
+    "mobileCollapse": true,
     "items": [
       {
         "id": "support",
