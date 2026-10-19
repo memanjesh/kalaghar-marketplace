@@ -35,10 +35,11 @@
     ];
     KG.PLUS_FEATURES = FEATURES;
 
-    function featureSettings() { return KG.store.get('kg-feature-settings', {}); }
+    // Published (site-wide) feature states win; older browser-only states are kept as a fallback
+    function featureSettings() { return Object.assign({}, KG.store.get('kg-feature-settings', {}), (KG.siteSettings && KG.siteSettings().plus.features) || {}); }
     function featureState(id) { return Object.assign({ state: 'enabled', featured: [1, 2, 3, 7, 18, 22].indexOf(+id) > -1, customDescription: '' }, featureSettings()[id] || {}); }
     KG.featureEnabled = function (id) { return featureState(id).state !== 'hidden'; };
-    function saveFeatureState(id, patch) { const all = featureSettings(); all[id] = Object.assign({}, featureState(id), patch); KG.store.set('kg-feature-settings', all); }
+    function saveFeatureState(id, patch) { const next = Object.assign({}, featureState(id), patch); if (KG.updateSettings) KG.updateSettings(function (st) { st.plus.features[id] = next; }); else { const all = featureSettings(); all[id] = next; KG.store.set('kg-feature-settings', all); } }
     function records() { return KG.store.get('kg-feature-records', []); }
     function submit(featureId, type, data) {
         const user = KG.user(), item = { id: KG.uid('REQ-').toUpperCase(), featureId: featureId, featureName: FEATURES[featureId - 1].name, type: type, userId: user ? user.id : null, customerName: data.name || (user && user.name) || '', customerEmail: (data.email || (user && user.email) || '').toLowerCase(), status: 'new', priority: 'normal', assignedTo: '', adminNote: '', data: data, createdAt: KG.now(), updatedAt: KG.now() };
@@ -151,5 +152,6 @@
         const featured = FEATURES.filter(function (f) { return KG.featureEnabled(f.id) && featureState(f.id).featured; }).slice(0, 6); if (!featured.length) return;
         section = document.createElement('section'); section.id = 'kgPlusSection'; section.className = 'py-12 bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800'; section.innerHTML = '<div class="max-w-7xl mx-auto px-4"><div class="flex flex-wrap items-end justify-between gap-3 mb-6"><div><span class="kg-eyebrow text-xs font-bold uppercase tracking-widest">Beyond the marketplace</span><h2 class="text-2xl font-extrabold mt-1">More ways to experience Nepali craft</h2></div><button id="kgOpenPlusHub" class="' + ui.btn2 + '">Explore all 25 services</button></div><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">' + featured.map(featureCard).join('') + '</div></div>'; anchor.before(section); section.querySelector('#kgOpenPlusHub').addEventListener('click', KG.openPlusHub);
     }
+    KG.renderPlusHome = function () { renderHomeHub(); };
     KG.initPlatform = function () { addAdminTabs(); renderHomeHub(); window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); KG.installPrompt = e; }); if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) navigator.serviceWorker.register('./sw.js').catch(function () { /* offline mode remains optional */ }); };
 })();
