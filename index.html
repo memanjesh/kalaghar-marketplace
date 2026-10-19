@@ -179,14 +179,21 @@
         </div>
     </section>
 
-    <!-- CATEGORY FILTER BAR (Moved here, below Hero) -->
+    <!-- CATEGORY FILTER BAR (Moved here, below Hero, with larger fonts and new categories) -->
     <section class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-[64px] z-30 shadow-sm transition-colors">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-center gap-2" id="categoryButtons">
-            <button onclick="filterCategory('all')" class="cat-btn active bg-red-700 text-white text-xs px-4 py-2 rounded-full font-semibold transition shadow-sm" data-i18n="fAll">All Crafts</button>
-            <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-4 py-2 rounded-full font-semibold transition" data-i18n="fPashmina">Pashmina &amp; Cashmere</button>
-            <button onclick="filterCategory('dhaka')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-4 py-2 rounded-full font-semibold transition" data-i18n="fDhaka">Palpali Dhaka</button>
-            <button onclick="filterCategory('lokta')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-4 py-2 rounded-full font-semibold transition" data-i18n="fLokta">Lokta Paper</button>
-            <button onclick="filterCategory('metal')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-4 py-2 rounded-full font-semibold transition" data-i18n="fMetal">Patan Statues</button>
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-center gap-2 sm:gap-3" id="categoryButtons">
+            <button onclick="filterCategory('all')" class="cat-btn active bg-red-700 text-white text-sm px-5 py-2 rounded-full font-semibold transition shadow-sm" data-i18n="fAll">All Crafts</button>
+            <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fPashmina">Pashmina &amp; Cashmere</button>
+            <button onclick="filterCategory('dhaka')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fDhaka">Palpali Dhaka</button>
+            <button onclick="filterCategory('lokta')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fLokta">Lokta Paper</button>
+            <button onclick="filterCategory('metal')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fMetal">Patan Statues</button>
+            
+            <!-- New Categories -->
+            <button onclick="filterCategory('shoes')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fShoes">Shoes</button>
+            <button onclick="filterCategory('bags')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fBags">Bags</button>
+            <button onclick="filterCategory('homedecor')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fHomeDecor">Home Decor</button>
+            <button onclick="filterCategory('clothes')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fClothes">Clothes</button>
+            <button onclick="filterCategory('accessories')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fAccessories">Accessories</button>
         </div>
     </section>
 
@@ -286,7 +293,6 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="catalogTitle">Curated Heritage Collections</h2>
                 <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="catalogSub">Filter by authentic craft category</p>
             </div>
-            <!-- Removed buttons from here, they are now above -->
         </div>
 
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
@@ -386,7 +392,7 @@
         </div>
     </section>
 
-    <!-- FOOTER (Red/White Theme) -->
+    <!-- FOOTER -->
     <footer class="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 pt-16 pb-8 border-t border-gray-200 dark:border-gray-800 mt-auto transition-colors">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">
             
@@ -645,6 +651,11 @@
                             <option value="dhaka">Dhaka</option>
                             <option value="lokta">Lokta</option>
                             <option value="metal">Metal</option>
+                            <option value="shoes">Shoes</option>
+                            <option value="bags">Bags</option>
+                            <option value="homedecor">Home Decor</option>
+                            <option value="clothes">Clothes</option>
+                            <option value="accessories">Accessories</option>
                         </select>
                     </div>
                 </div>
@@ -731,6 +742,7 @@
             catalogTitle:"Curated Heritage Collections", catalogSub:"Filter by authentic craft category",
             fAll:"All Crafts", fPashmina:"Pashmina & Cashmere", fDhaka:"Palpali Dhaka",
             fLokta:"Lokta Paper", fMetal:"Patan Statues",
+            fShoes:"Shoes", fBags:"Bags", fHomeDecor:"Home Decor", fClothes:"Clothes", fAccessories:"Accessories",
             addToBag:"+ Add to Bag",
             artTag:"Direct Impact", artTitle:"Stories Behind the Craft",
             artSub:"Every order supports rural female weaving circles and heritage conservation.",
@@ -829,6 +841,7 @@
             catalogTitle:"क्युरेटेड सम्पदा संग्रह", catalogSub:"प्रामाणिक शिल्प श्रेणीअनुसार छान्नुहोस्",
             fAll:"सबै शिल्प", fPashmina:"पश्मिना र क्यास्मियर", fDhaka:"पाल्पाली ढाका",
             fLokta:"लोक्ता कागज", fMetal:"पाटनका मूर्ति",
+            fShoes:"जुत्ता", fBags:"झोला", fHomeDecor:"घर सजावट", fClothes:"लुगाफाटो", fAccessories:"एक्सेसरिज",
             addToBag:"+ झोलामा",
             artTag:"प्रत्यक्ष प्रभाव", artTitle:"सिपालु हातहरुको कथा",
             artSub:"हरेक अर्डरले ग्रामीण महिला बुनाई समूह र सम्पदा संरक्षणलाई सहयोग गर्छ।",
@@ -907,13 +920,19 @@
     function t(key) { return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en[key] || key); }
 
     /* =========================================================
-       PRODUCTS DATA
+       PRODUCTS DATA (Added new categories sample products)
        ========================================================= */
     const DEFAULT_PRODUCTS = [
         { id: 1, name: 'Pure Chyangra Pashmina Shawl', sub: '100% Hand-spun Cashmere', price: 12500, category: 'pashmina', tag: 'MUSTANG', tagClass: 'bg-red-700', image: 'https://images.pexels.com/photos/375880/pexels-photo-375880.jpeg?auto=compress&cs=tinysrgb&w=600' },
         { id: 2, name: 'Authentic Palpali Dhaka Scarf', sub: 'Traditional Wooden Loom Weave', price: 1800, category: 'dhaka', tag: 'PALPA', tagClass: 'bg-amber-800', image: 'https://images.pexels.com/photos/2292919/pexels-photo-2292919.jpeg?auto=compress&cs=tinysrgb&w=600' },
         { id: 3, name: 'Himalayan Bark Lokta Journal', sub: 'Handbound Eco-friendly Paper', price: 750, category: 'lokta', tag: 'ECO PAPER', tagClass: 'bg-green-800', image: 'https://images.pexels.com/photos/261763/pexels-photo-261763.jpeg?auto=compress&cs=tinysrgb&w=600' },
-        { id: 4, name: 'Hand-carved Bronze Buddha', sub: '45-Day Lost Wax Casting Process', price: 24000, category: 'metal', tag: 'PATAN CRAFT', tagClass: 'bg-yellow-800', image: 'https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&w=600' }
+        { id: 4, name: 'Hand-carved Bronze Buddha', sub: '45-Day Lost Wax Casting Process', price: 24000, category: 'metal', tag: 'PATAN CRAFT', tagClass: 'bg-yellow-800', image: 'https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&w=600' },
+        // New categories
+        { id: 5, name: 'Handcrafted Leather Sandals', sub: 'Traditional Nepali Style', price: 2500, category: 'shoes', tag: 'FOOTWEAR', tagClass: 'bg-blue-700', image: 'https://images.pexels.com/photos/267320/pexels-photo-267320.jpeg?auto=compress&cs=tinysrgb&w=600' },
+        { id: 6, name: 'Woven Hemp Tote Bag', sub: 'Eco-friendly & Durable', price: 1500, category: 'bags', tag: 'BAGS', tagClass: 'bg-purple-700', image: 'https://images.pexels.com/photos/2081199/pexels-photo-2081199.jpeg?auto=compress&cs=tinysrgb&w=600' },
+        { id: 7, name: 'Hand-painted Wooden Bowl', sub: 'Traditional Newari Art', price: 3500, category: 'homedecor', tag: 'HOME DECOR', tagClass: 'bg-indigo-700', image: 'https://images.pexels.com/photos/4207794/pexels-photo-4207794.jpeg?auto=compress&cs=tinysrgb&w=600' },
+        { id: 8, name: 'Handwoven Cotton Kurta', sub: 'Comfortable Summer Wear', price: 4500, category: 'clothes', tag: 'CLOTHING', tagClass: 'bg-pink-700', image: 'https://images.pexels.com/photos/7691162/pexels-photo-7691162.jpeg?auto=compress&cs=tinysrgb&w=600' },
+        { id: 9, name: 'Beaded Himalayan Necklace', sub: 'Handmade by Local Artisans', price: 1200, category: 'accessories', tag: 'ACCESSORIES', tagClass: 'bg-teal-700', image: 'https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&cs=tinysrgb&w=600' }
     ];
 
     const MOCK_ORDERS = [
@@ -1494,7 +1513,12 @@
             const newId = products.length ? Math.max(...products.map(function (p) { return p.id; })) + 1 : 1;
             const tagClass = category === 'pashmina' ? 'bg-red-700' :
                              category === 'dhaka' ? 'bg-amber-800' :
-                             category === 'lokta' ? 'bg-green-800' : 'bg-yellow-800';
+                             category === 'lokta' ? 'bg-green-800' : 
+                             category === 'metal' ? 'bg-yellow-800' :
+                             category === 'shoes' ? 'bg-blue-700' :
+                             category === 'bags' ? 'bg-purple-700' :
+                             category === 'homedecor' ? 'bg-indigo-700' :
+                             category === 'clothes' ? 'bg-pink-700' : 'bg-teal-700';
             products.push({ id: newId, name, sub, price, category, image, tag, tagClass });
         }
 
@@ -1510,10 +1534,4 @@
     document.addEventListener('DOMContentLoaded', function () {
         var saved = null;
         try { saved = localStorage.getItem('kg-lang'); } catch (e) {}
-        applyLang(saved === 'ne' ? 'ne' : 'en');
-        setThemeIcon();
-        calcShipping();
-    });
-    </script>
-</body>
-</html>
+        applyLang(saved === '
