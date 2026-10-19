@@ -380,7 +380,7 @@
       "paymentLabel": {
         "text": "We accept",
         "color": "#ffffff",
-        "fontSize": 10,
+        "fontSize": 12,
         "visible": true
       },
       "payments": [
