@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Tailwind CSS CDN --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- FontAwesome Icons --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Google Fonts --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: 'Plus Jakarta Sans', sans-serif; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.font-nepali { font-family: 'Mukta', sans-serif; }</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@keyframes marquee {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>0% { transform: translateX(0%); }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>100% { transform: translateX(-50%); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.animate-marquee {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 200%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>animation: marquee 20s linear infinite;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.animate-marquee:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>animation-play-state: paused;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- 1. ANIMATED ANNOUNCEMENT MARQUEE --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="bg-red-700 text-white text-xs py-2 overflow-hidden whitespace-nowrap relative z-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="marqueeContainer" class="animate-marquee flex items-center gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="flex items-center gap-2"&gt;🇳🇵 Empowering 1,200+ Nepali Artisans &amp; Rural Cooperatives&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="flex items-center gap-2"&gt;✨ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="flex items-center gap-2"&gt;🇳🇵 Empowering 1,200+ Nepali Artisans &amp; Rural Cooperatives&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="flex items-center gap-2"&gt;✨ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- 2. HEADER &amp; NAVIGATION --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">      </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Brand Logo --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;a href="#" class="flex items-center gap-3 group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="w-10 h-10 bg-red-700 rounded-full flex items-center justify-center text-amber-400 text-xl font-bold font-nepali shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>क</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h1 id="siteTitle" class="text-xl font-extrabold tracking-tight text-gray-900 group-hover:text-red-700 transition"&gt;KalaGhar&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p id="siteTagline" class="text-xs font-semibold text-amber-600 font-nepali -mt-1"&gt;कलाघर • NEPAL&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/a&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Search Bar --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="flex-1 max-w-2xl mx-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="text" placeholder="Search Pashmina, Dhaka, Statues, Lokta Paper..." class="w-full pl-10 pr-24 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-sm"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="absolute right-1 top-1 bottom-1 bg-red-700 hover:bg-red-800 text-white px-5 rounded-full text-xs font-semibold transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>Search</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- User Actions &amp; Cart --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="flex items-center gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="toggleModal('loginModal')" class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:text-red-700 bg-gray-100 hover:bg-gray-200 rounded-full transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fa-regular fa-circle-user text-sm"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span&gt;Login / Register&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="toggleModal('cartDrawer')" class="relative p-2 text-gray-700 hover:text-red-700 transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fa-solid fa-bag-shopping text-xl"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center"&gt;2&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- 3. MAIN HOMEPAGE HERO SECTION --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;main class="flex-grow"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;section class="bg-stone-900 text-white py-16 px-4 relative overflow-hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-8 items-center relative z-10"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Hero Text --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="md:col-span-7 space-y-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full border border-amber-500/30"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;i class="fa-solid fa-certificate"&gt;&lt;/i&gt; 100% Verified Authentic Craftsmanship</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h2 id="heroHeadline" class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>Bring Authentic &lt;span class="text-amber-400"&gt;Nepali Heritage&lt;/span&gt; To Your Doorstep</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p id="heroSubtext" class="text-gray-300 text-sm md:text-base max-w-xl leading-relaxed"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>Connecting master sculptors, female weavers, and traditional paper makers from Kathmandu, Bhaktapur, and Pokhara directly with conscious buyers worldwide.</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="flex flex-wrap gap-4 pt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#products" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-semibold text-sm transition shadow-lg flex items-center gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Explore Collection &lt;i class="fa-solid fa-arrow-down"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button onclick="toggleModal('artisanModal')" class="border border-amber-400 text-amber-400 hover:bg-amber-400/10 px-6 py-3 rounded-full font-semibold text-sm transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Apply as Artisan / Vendor</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Hero 2x2 Grid Cards --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="md:col-span-5 grid grid-cols-2 gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-stone-800/80 p-5 rounded-2xl border border-stone-700 hover:border-amber-400 transition cursor-pointer text-center group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto mb-3 text-xl group-hover:scale-110 transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;i class="fa-solid fa-gem"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h4 class="font-bold text-sm"&gt;Pashmina &amp; Silk&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-xs text-gray-400 mt-1"&gt;Chyangra Certified&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">          </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-stone-800/80 p-5 rounded-2xl border border-stone-700 hover:border-amber-400 transition cursor-pointer text-center group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto mb-3 text-xl group-hover:scale-110 transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;i class="fa-solid fa-scroll"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h4 class="font-bold text-sm"&gt;Lokta Craft&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-xs text-gray-400 mt-1"&gt;Eco-Friendly Paper&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-stone-800/80 p-5 rounded-2xl border border-stone-700 hover:border-amber-400 transition cursor-pointer text-center group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto mb-3 text-xl group-hover:scale-110 transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;i class="fa-solid fa-vest"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h4 class="font-bold text-sm"&gt;Dhaka Weave&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-xs text-gray-400 mt-1"&gt;Handloom Tradition&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-stone-800/80 p-5 rounded-2xl border border-stone-700 hover:border-amber-400 transition cursor-pointer text-center group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto mb-3 text-xl group-hover:scale-110 transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;i class="fa-solid fa-hammer"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h4 class="font-bold text-sm"&gt;Metal Statues&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-xs text-gray-400 mt-1"&gt;Patan Bronze Craft&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 4. PRODUCT SECTION --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;section id="products" class="max-w-7xl mx-auto px-4 py-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="flex items-center justify-between mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="text-2xl font-bold text-gray-900"&gt;Featured Nepali Crafts&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="text-sm text-gray-500"&gt;Handcrafted with love by verified Nepali artisans&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;select class="border border-gray-300 rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 bg-white"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option&gt;Sort By: Featured Artisans&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option&gt;Price: Low to High&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option&gt;Price: High to Low&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Product Grid --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Product Card 1 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="relative h-48 bg-stone-100 flex items-center justify-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="absolute top-2 left-2 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded"&gt;Handmade&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;i class="fa-solid fa-box-open text-4xl text-stone-300"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p class="text-xs text-amber-700 font-semibold mb-1"&gt;Patan Sculptors Guild&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;h4 class="font-bold text-gray-900 text-sm mb-2"&gt;Hand-carved Brass Singing Bowl&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p class="text-xs text-gray-500 line-clamp-2"&gt;Authentic meditation singing bowl made from 7 sacred metals in Patan.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-4 pt-0 flex items-center justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="text-xs font-bold text-gray-400"&gt;Price&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p class="text-base font-extrabold text-gray-900"&gt;NPR 4,500&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="bg-red-700 hover:bg-red-800 text-white text-xs font-semibold px-4 py-2 rounded-lg transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Add to Cart</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Product Card 2 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="relative h-48 bg-stone-100 flex items-center justify-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="absolute top-2 left-2 bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded"&gt;Chyangra Pashmina&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;i class="fa-solid fa-box-open text-4xl text-stone-300"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p class="text-xs text-amber-700 font-semibold mb-1"&gt;Himalayan Weavers Co-op&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;h4 class="font-bold text-gray-900 text-sm mb-2"&gt;Pure Chyangra Cashmere Stole&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p class="text-xs text-gray-500 line-clamp-2"&gt;100% authentic Himalayan goat wool hand-woven in Pokhara.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-4 pt-0 flex items-center justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="text-xs font-bold text-gray-400"&gt;Price&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p class="text-base font-extrabold text-gray-900"&gt;NPR 8,200&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="bg-red-700 hover:bg-red-800 text-white text-xs font-semibold px-4 py-2 rounded-lg transition"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Add to Cart</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- 5. FOOTER WITH ADMIN DASHBOARD LINK --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;footer class="bg-stone-900 text-stone-300 text-xs mt-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="flex items-center gap-2 mb-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="w-7 h-7 bg-red-700 rounded-full flex items-center justify-center text-amber-400 font-bold font-nepali"&gt;क&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="text-lg font-bold text-white"&gt;KalaGhar&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p id="footerBio" class="text-stone-400 leading-relaxed mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Nepal’s premier marketplace connecting local craftspeople, rural cooperatives, and ethical buyers worldwide.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h5 class="font-bold text-white mb-3 text-sm"&gt;Shop Categories&lt;/h5&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;ul class="space-y-2 text-stone-400"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;li&gt;&lt;a href="#" class="hover:text-amber-400"&gt;Pashmina &amp; Textiles&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;li&gt;&lt;a href="#" class="hover:text-amber-400"&gt;Lokta Paper Crafts&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;li&gt;&lt;a href="#" class="hover:text-amber-400"&gt;Wood &amp; Bronze Statues&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;li&gt;&lt;a href="#" class="hover:text-amber-400"&gt;Traditional Jewelry&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h5 class="font-bold text-white mb-3 text-sm"&gt;Artisan Support&lt;/h5&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;ul class="space-y-2 text-stone-400"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;li&gt;&lt;a href="#" class="hover:text-amber-400"&gt;Sell on KalaGhar&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;li&gt;&lt;a href="#" class="hover:text-amber-400"&gt;WhatsApp Onboarding Hub&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;li&gt;&lt;a href="#" class="hover:text-amber-400"&gt;Shipping &amp; Export Guidelines&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h5 class="font-bold text-white mb-3 text-sm"&gt;System Access&lt;/h5&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="toggleModal('adminModal')" class="inline-flex items-center gap-2 px-4 py-2 bg-stone-800 hover:bg-red-700 text-white rounded-lg transition border border-stone-700 text-xs font-semibold"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fa-solid fa-lock text-amber-400"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span&gt;🔐 Admin Dashboard&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="border-t border-stone-800 py-4 text-center text-stone-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p id="footerCopyright"&gt;© 2026 KalaGhar Nepal. All rights reserved. Built for local artisans.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/footer&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- MODALS CONTAINER --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Admin Modal --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="adminModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button onclick="toggleModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;i class="fa-solid fa-xmark text-xl"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h3 class="text-xl font-bold mb-4 flex items-center gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;i class="fa-solid fa-lock text-red-700"&gt;&lt;/i&gt; Admin Panel</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="text-xs text-gray-500 mb-4"&gt;Edit homepage branding, marquee texts, and store settings dynamically.&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">      </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="space-y-4 text-xs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="font-bold text-gray-700 block mb-1"&gt;Site Title&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input id="inputSiteTitle" type="text" value="KalaGhar" class="w-full p-2 border border-gray-300 rounded"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="font-bold text-gray-700 block mb-1"&gt;Hero Headline&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input id="inputHeroHeadline" type="text" value="Bring Authentic Nepali Heritage To Your Doorstep" class="w-full p-2 border border-gray-300 rounded"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="mt-6 flex justify-end gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="toggleModal('adminModal')" class="px-4 py-2 border rounded text-xs font-semibold"&gt;Cancel&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="saveAdminChanges()" class="px-4 py-2 bg-red-700 text-white rounded text-xs font-semibold"&gt;Save Changes&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function toggleModal(id) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const modal = document.getElementById(id);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (modal) modal.classList.toggle('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function saveAdminChanges() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const title = document.getElementById('inputSiteTitle').value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const headline = document.getElementById('inputHeroHeadline').value;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (title) document.getElementById('siteTitle').innerText = title;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (headline) document.getElementById('heroHeadline').innerText = headline;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>toggleModal('adminModal');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>alert('Admin updates saved successfully!');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
