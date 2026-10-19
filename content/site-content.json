@@ -37,7 +37,7 @@
     "items": [
       {
         "id": "kathmandu-dispatch",
-        "text": "Order today for dispatch from Kathmandu within 1–2 business days.",
+        "text": "Order today for dispatch within 1–2 business days.",
         "color": "#4b5563",
         "fontSize": 12,
         "visible": true
