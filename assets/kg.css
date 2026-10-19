@@ -58,3 +58,6 @@
 
 /* Pictures: consistent rounded corners everywhere */
 #productGrid img, #regions img, #makers img, #workshops img, .kg-modal img { border-radius: inherit; }
+
+/* Page sections always span the full width (the page body is a flex column) */
+body > section, body > footer, body > main, body > header { width: 100%; }

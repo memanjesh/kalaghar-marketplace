@@ -321,6 +321,11 @@
             wf.reset(); KG.toast(KG.tx('Thanks! We\'ll send a quote within 2 business days.', 'धन्यवाद! २ कार्यदिवसभित्र कोटेसन पठाउँछौं।'));
         });
         structuredData();
+        // item counts under the category circles
+        document.querySelectorAll('.kg-catcount').forEach(function (el) {
+            const n = KG.products().filter(function (p) { return p.category === el.dataset.cat; }).length;
+            el.textContent = n ? n + ' ' + KG.tx(n === 1 ? 'item' : 'items', 'वस्तु') : '';
+        });
     };
 
     KG.initDiscover = function () {

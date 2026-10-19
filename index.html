@@ -8,7 +8,7 @@
     <meta property="og:description" content="Handmade in Nepal, shipped worldwide. Buy directly from verified artisans and cooperatives.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#b91c1c">
-    <link rel="stylesheet" href="assets/kg.css?v=20261019c">
+    <link rel="stylesheet" href="assets/kg.css?v=20261019d">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
@@ -263,32 +263,127 @@
         </div>
     </section>
 
-    <!-- CATEGORY TILES -->
-    <section class="max-w-7xl mx-auto px-4 pb-4">
-        <div class="flex items-end justify-between mb-4">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="catsTitle">Shop Popular Categories</h2>
-            <a href="#marketplace" class="text-xs font-semibold text-red-700 dark:text-red-400 hover:underline" data-i18n="viewAll">View All →</a>
+    <!-- CATEGORY CIRCLES (Etsy-style) -->
+    <section id="popular-categories" class="w-full max-w-7xl mx-auto px-4 pt-6 pb-8">
+        <div class="flex flex-wrap items-end justify-between gap-2 mb-6">
+            <div>
+                <span class="kg-eyebrow font-bold text-xs uppercase tracking-widest">Handmade in Nepal</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-1" data-i18n="catsTitle">Shop Popular Categories</h2>
+            </div>
+            <button type="button" onclick="KG.goCategory('all')" class="text-sm font-semibold text-red-700 dark:text-amber-300 hover:underline" data-i18n="viewAll">View All →</button>
         </div>
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <button onclick="filterCategory('pashmina')" class="group relative h-40 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
-                <img src="https://images.pexels.com/photos/11733651/pexels-photo-11733651.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat1t">Himalayan Pashmina &amp; Wool</strong><span class="text-[11px] opacity-80" data-i18n="cat1s">Mustang</span></div>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
+            <button type="button" onclick="KG.goCategory('pashmina')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/11733651/pexels-photo-11733651.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_pashmina">Himalayan Pashmina &amp; Wool</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="pashmina"></span>
             </button>
-            <button onclick="filterCategory('dhaka')" class="group relative h-40 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
-                <img src="https://images.pexels.com/photos/11404647/pexels-photo-11404647.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat2t">Palpali Dhaka</strong><span class="text-[11px] opacity-80" data-i18n="cat2s">Palpa</span></div>
+            <button type="button" onclick="KG.goCategory('dhaka')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/11404647/pexels-photo-11404647.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_dhaka">Palpali Dhaka</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="dhaka"></span>
             </button>
-            <button onclick="filterCategory('lokta')" class="group relative h-40 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
-                <img src="https://images.pexels.com/photos/34079281/pexels-photo-34079281.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat3t">Lokta Paper</strong><span class="text-[11px] opacity-80" data-i18n="cat3s">Eco Paper</span></div>
+            <button type="button" onclick="KG.goCategory('lokta')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/34079281/pexels-photo-34079281.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_lokta">Lokta Paper</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="lokta"></span>
             </button>
-            <button onclick="filterCategory('metal')" class="group relative h-40 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
-                <img src="https://images.pexels.com/photos/18681553/pexels-photo-18681553.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat4t">Patan Statues</strong><span class="text-[11px] opacity-80" data-i18n="cat4s">Patan Craft</span></div>
+            <button type="button" onclick="KG.goCategory('metal')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/18681553/pexels-photo-18681553.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_metal">Patan Statues</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="metal"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('singingbowl')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/11889669/pexels-photo-11889669.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_singingbowl">Singing Bowls</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="singingbowl"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('thangka')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/11501256/pexels-photo-11501256.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_thangka">Thangka &amp; Paubha</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="thangka"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('felt')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/7612424/pexels-photo-7612424.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_felt">Felt Crafts</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="felt"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('tea')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/33118330/pexels-photo-33118330.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_tea">Tea &amp; Spices</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="tea"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('beads')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/10973354/pexels-photo-10973354.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_beads">Beads, Pote &amp; Jewelry</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="beads"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('wood')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/4611339/pexels-photo-4611339.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_wood">Wood Carving</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="wood"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('rugs')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/6118896/pexels-photo-6118896.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_rugs">Rugs &amp; Carpets</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="rugs"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('shoes')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/26925256/pexels-photo-26925256.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_shoes">Shoes</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="shoes"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('bags')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/8356401/pexels-photo-8356401.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_bags">Bags</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="bags"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('homedecor')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/6962803/pexels-photo-6962803.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_homedecor">Home Decor</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="homedecor"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('clothes')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/8483487/pexels-photo-8483487.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_clothes">Clothes</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="clothes"></span>
+            </button>
+            <button type="button" onclick="KG.goCategory('accessories')" class="kg-cattile group flex flex-col items-center text-center">
+                <span class="block w-full aspect-square rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-amber-500 group-focus-visible:ring-amber-500 shadow-md transition">
+                    <img src="https://images.pexels.com/photos/29218624/pexels-photo-29218624.jpeg?auto=compress&cs=tinysrgb&w=300" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                </span>
+                <span class="mt-2 text-sm font-semibold text-gray-800 dark:text-gray-100 leading-snug group-hover:text-red-700 dark:group-hover:text-amber-300" data-i18n="kgCat_accessories">Accessories</span>
+                <span class="kg-catcount text-[11px] text-gray-500 dark:text-gray-400" data-cat="accessories"></span>
             </button>
         </div>
     </section>
@@ -1528,13 +1623,13 @@
     </script>
 
     <!-- KalaGhar feature modules -->
-    <script src="assets/config.js?v=20261019c"></script>
-    <script src="assets/kg-core.js?v=20261019c"></script>
-    <script src="assets/kg-shop.js?v=20261019c"></script>
-    <script src="assets/kg-checkout.js?v=20261019c"></script>
-    <script src="assets/kg-discover.js?v=20261019c"></script>
-    <script src="assets/kg-seller.js?v=20261019c"></script>
-    <script src="assets/kg-admin.js?v=20261019c"></script>
-    <script src="assets/kg-init.js?v=20261019c"></script>
+    <script src="assets/config.js?v=20261019d"></script>
+    <script src="assets/kg-core.js?v=20261019d"></script>
+    <script src="assets/kg-shop.js?v=20261019d"></script>
+    <script src="assets/kg-checkout.js?v=20261019d"></script>
+    <script src="assets/kg-discover.js?v=20261019d"></script>
+    <script src="assets/kg-seller.js?v=20261019d"></script>
+    <script src="assets/kg-admin.js?v=20261019d"></script>
+    <script src="assets/kg-init.js?v=20261019d"></script>
 </body>
 </html>
