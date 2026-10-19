@@ -443,8 +443,10 @@
         const nav = ul.parentElement;
         if (window.innerWidth < 768) { ul.style.marginLeft = ''; ul.style.marginRight = ''; return; }
         ul.style.marginLeft = '0'; ul.style.marginRight = '0';
-        const left = input.parentElement.getBoundingClientRect().left - nav.getBoundingClientRect().left;
-        const want = Math.round(left) + 14;                                 // start a little inside the search bar's edge
+        // Line "Gifts" up with the Categories button's icon
+        const cat = document.getElementById('kgCatBtn');
+        const anchor = cat && cat.offsetParent ? cat.getBoundingClientRect().left + parseFloat(getComputedStyle(cat).paddingLeft) : input.parentElement.getBoundingClientRect().left + 14;
+        const want = Math.round(anchor - nav.getBoundingClientRect().left) - 2;   // -2 = the link's own side padding
         const fit = nav.clientWidth - ul.scrollWidth - 16;                  // …but never push links off the right edge
         ul.style.marginLeft = Math.max(0, Math.min(want, fit)) + 'px';
     };
