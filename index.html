@@ -8,7 +8,7 @@
     <meta property="og:description" content="Handmade in Nepal, shipped worldwide. Buy directly from verified artisans and cooperatives.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#b91c1c">
-    <link rel="stylesheet" href="assets/kg.css?v=20261019d">
+    <link rel="stylesheet" href="assets/kg.css?v=20261019e">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
@@ -82,7 +82,6 @@
                 <div class="w-9 h-9 sm:w-10 sm:h-10 kg-grad text-white rounded-2xl flex items-center justify-center font-bold text-lg sm:text-xl font-nepali shadow-md transition">क</div>
                 <div>
                     <span class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight block leading-none">KalaGhar</span>
-                    <span class="text-[10px] sm:text-xs text-red-700 dark:text-red-400 font-nepali font-semibold tracking-wider">कलाघर नेपाल</span>
                 </div>
             </a>
 
@@ -117,22 +116,23 @@
                 </button>
 
                 <!-- Language dropdown with flags -->
-                <div class="relative hidden" id="langDropdownWrap">
+                <div class="relative" id="langDropdownWrap">
                     <button onclick="toggleLangDropdown()" title="Change language"
-                            class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-2 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
-                        <img id="currentLangFlag" src="https://flagcdn.com/24x18/us.png" alt="US flag" class="w-5 h-3.5 rounded-sm object-cover">
-                        <span id="langLabel" class="hidden sm:inline">English</span>
+                            class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 px-2 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition" aria-haspopup="true" aria-label="Change language">
+                        <i class="fa-solid fa-globe text-sm text-gray-500 dark:text-gray-400 hidden sm:inline"></i>
+                        <img id="currentLangFlag" src="https://flagcdn.com/24x18/us.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
+                        <span id="langLabel">ENG</span>
                         <i class="fa-solid fa-chevron-down text-[9px] opacity-60"></i>
                     </button>
                     <div id="langDropdown" class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden z-50">
                         <button onclick="selectLang('en')" class="lang-option w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800">
                             <img src="https://flagcdn.com/24x18/us.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
-                            <span>English</span>
+                            <span><strong>ENG</strong> · English</span>
                             <i class="fa-solid fa-check ml-auto text-red-700 dark:text-red-400 check-mark-en hidden"></i>
                         </button>
                         <button onclick="selectLang('ne')" class="lang-option w-full flex items-center gap-2.5 px-3 py-2.5 text-xs text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-t border-gray-100 dark:border-gray-800">
                             <img src="https://flagcdn.com/24x18/np.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
-                            <span>नेपाली</span>
+                            <span><strong>NEP</strong> · नेपाली</span>
                             <i class="fa-solid fa-check ml-auto text-red-700 dark:text-red-400 check-mark-ne hidden"></i>
                         </button>
                     </div>
@@ -1623,13 +1623,13 @@
     </script>
 
     <!-- KalaGhar feature modules -->
-    <script src="assets/config.js?v=20261019d"></script>
-    <script src="assets/kg-core.js?v=20261019d"></script>
-    <script src="assets/kg-shop.js?v=20261019d"></script>
-    <script src="assets/kg-checkout.js?v=20261019d"></script>
-    <script src="assets/kg-discover.js?v=20261019d"></script>
-    <script src="assets/kg-seller.js?v=20261019d"></script>
-    <script src="assets/kg-admin.js?v=20261019d"></script>
-    <script src="assets/kg-init.js?v=20261019d"></script>
+    <script src="assets/config.js?v=20261019e"></script>
+    <script src="assets/kg-core.js?v=20261019e"></script>
+    <script src="assets/kg-shop.js?v=20261019e"></script>
+    <script src="assets/kg-checkout.js?v=20261019e"></script>
+    <script src="assets/kg-discover.js?v=20261019e"></script>
+    <script src="assets/kg-seller.js?v=20261019e"></script>
+    <script src="assets/kg-admin.js?v=20261019e"></script>
+    <script src="assets/kg-init.js?v=20261019e"></script>
 </body>
 </html>

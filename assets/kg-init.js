@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         KG.renderDiscover();
         KG.renderFeatured();
         KG.updateLocaleLabel();
+        var ll = document.getElementById('langLabel'); if (ll) ll.textContent = KG.lang() === 'ne' ? 'NEP' : 'ENG';
         KG.refreshAccountLabel();
         KG.updateCartCount();
     };
