@@ -47,6 +47,7 @@
         return item;
     }
     function success(item, extra) { return '<div class="text-center py-6"><div class="w-14 h-14 mx-auto rounded-full bg-green-100 text-green-700 flex items-center justify-center text-2xl"><i class="fa-solid fa-check"></i></div><h4 class="font-bold text-lg mt-3">Request received</h4><p class="text-sm mt-2">Reference <code class="font-bold">' + esc(item.id) + '</code></p><p class="' + ui.muted + ' mt-2">' + esc(extra || 'The KalaGhar team can review this request in Admin → Feature requests.') + '</p></div>'; }
+    function option(value, current, label) { value = String(value); return '<option value="' + esc(value) + '"' + (value === String(current) ? ' selected' : '') + '>' + esc(label || value.replace(/_/g, ' ')) + '</option>'; }
     function field(id, label, type, value, attrs) { return '<div><label class="' + ui.label + '" for="' + id + '">' + label + '</label><input id="' + id + '" type="' + (type || 'text') + '" value="' + esc(value || '') + '" ' + (attrs || '') + ' class="' + ui.input + '"></div>'; }
     function customerFields(prefix) { const u = KG.user(); return '<div class="grid sm:grid-cols-2 gap-3">' + field(prefix + '-name', 'Name', 'text', u ? u.name : '', 'required') + field(prefix + '-email', 'Email', 'email', u ? u.email : '', 'required') + '</div>'; }
     function standardRequest(feature, title, fieldsHtml, collect, note) {
