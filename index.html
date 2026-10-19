@@ -183,7 +183,7 @@
     <section class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-[64px] z-30 shadow-sm transition-colors">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-center gap-2 sm:gap-3" id="categoryButtons">
             <button onclick="filterCategory('all')" class="cat-btn active bg-red-700 text-white text-sm px-5 py-2 rounded-full font-semibold transition shadow-sm" data-i18n="fAll">All Crafts</button>
-            <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fPashmina">Pashmina &amp; Cashmere</button>
+            <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fPashmina">Himalayan Pashmina &amp; Wool</button>
             <button onclick="filterCategory('dhaka')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fDhaka">Palpali Dhaka</button>
             <button onclick="filterCategory('lokta')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fLokta">Lokta Paper</button>
             <button onclick="filterCategory('metal')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fMetal">Patan Statues</button>
@@ -266,7 +266,7 @@
             <button onclick="filterCategory('pashmina')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/375880/pexels-photo-375880.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat1t">Pashmina &amp; Cashmere</strong><span class="text-[11px] opacity-80" data-i18n="cat1s">Mustang</span></div>
+                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold" data-i18n="cat1t">Himalayan Pashmina &amp; Wool</strong><span class="text-[11px] opacity-80" data-i18n="cat1s">Mustang</span></div>
             </button>
             <button onclick="filterCategory('dhaka')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/2292919/pexels-photo-2292919.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
@@ -423,7 +423,7 @@
                 <h4 class="font-bold text-gray-900 dark:text-white mb-4 text-sm" data-i18n="expTitle">Explore</h4>
                 <ul class="space-y-3 text-sm">
                     <li><a href="#" class="footer-link" data-i18n="fAll">All Crafts</a></li>
-                    <li><a href="#" class="footer-link" data-i18n="fPashmina">Pashmina &amp; Cashmere</a></li>
+                    <li><a href="#" class="footer-link" data-i18n="fPashmina">Himalayan Pashmina &amp; Wool</a></li>
                     <li><a href="#" class="footer-link" data-i18n="fDhaka">Palpali Dhaka</a></li>
                     <li><a href="#" class="footer-link" data-i18n="fLokta">Lokta Paper</a></li>
                     <li><a href="#" class="footer-link" data-i18n="fMetal">Patan Statues</a></li>
@@ -543,7 +543,7 @@
                 <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Craft Category</label>
                     <select required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                         <option value="">Select…</option>
-                        <option>Pashmina &amp; Cashmere</option><option>Palpali Dhaka</option>
+                        <option>Himalayan Pashmina &amp; Wool</option><option>Palpali Dhaka</option>
                         <option>Lokta Paper</option><option>Patan Statues</option>
                     </select></div>
                 <div><label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email</label>
@@ -647,7 +647,7 @@
                     <div>
                         <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminProductCategory">Category</label>
                         <select id="pfCategory" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                            <option value="pashmina">Pashmina</option>
+                            <option value="pashmina">Himalayan Pashmina &amp; Wool</option>
                             <option value="dhaka">Dhaka</option>
                             <option value="lokta">Lokta</option>
                             <option value="metal">Metal</option>
@@ -735,12 +735,12 @@
             cowTag:"Craft of the Week", cowTitle:"Authentic Palpali Dhaka Scarf",
             cowSub:"Traditional Wooden Loom Weave", cowCta:"View this craft",
             catsTitle:"Shop Popular Categories", viewAll:"View All →",
-            cat1t:"Pashmina & Cashmere", cat1s:"Mustang",
+            cat1t:"Himalayan Pashmina & Wool", cat1s:"Mustang",
             cat2t:"Palpali Dhaka", cat2s:"Palpa",
             cat3t:"Lokta Paper", cat3s:"Eco Paper",
             cat4t:"Patan Statues", cat4s:"Patan Craft",
             catalogTitle:"Curated Heritage Collections", catalogSub:"Filter by authentic craft category",
-            fAll:"All Crafts", fPashmina:"Pashmina & Cashmere", fDhaka:"Palpali Dhaka",
+            fAll:"All Crafts", fPashmina:"Himalayan Pashmina & Wool", fDhaka:"Palpali Dhaka",
             fLokta:"Lokta Paper", fMetal:"Patan Statues",
             fShoes:"Shoes", fBags:"Bags", fHomeDecor:"Home Decor", fClothes:"Clothes", fAccessories:"Accessories",
             addToBag:"+ Add to Bag",
@@ -834,12 +834,12 @@
             cowTag:"साताको शिल्प", cowTitle:"प्रामाणिक पाल्पाली ढाका स्कार्फ",
             cowSub:"परम्परागत काठको तानामा बुनिएको", cowCta:"यो शिल्प हेर्नुहोस्",
             catsTitle:"लोकप्रिय श्रेणीहरू", viewAll:"सबै हेर्नुहोस् →",
-            cat1t:"पश्मिना र क्यास्मियर", cat1s:"मुस्ताङ",
+            cat1t:"हिमाली पश्मिना र ऊन", cat1s:"मुस्ताङ",
             cat2t:"पाल्पाली ढाका", cat2s:"पाल्पा",
             cat3t:"लोक्ता कागज", cat3s:"इको पेपर",
             cat4t:"पाटनका मूर्ति", cat4s:"पाटन शिल्प",
             catalogTitle:"क्युरेटेड सम्पदा संग्रह", catalogSub:"प्रामाणिक शिल्प श्रेणीअनुसार छान्नुहोस्",
-            fAll:"सबै शिल्प", fPashmina:"पश्मिना र क्यास्मियर", fDhaka:"पाल्पाली ढाका",
+            fAll:"सबै शिल्प", fPashmina:"हिमाली पश्मिना र ऊन", fDhaka:"पाल्पाली ढाका",
             fLokta:"लोक्ता कागज", fMetal:"पाटनका मूर्ति",
             fShoes:"जुत्ता", fBags:"झोला", fHomeDecor:"घर सजावट", fClothes:"लुगाफाटो", fAccessories:"एक्सेसरिज",
             addToBag:"+ झोलामा",
@@ -944,7 +944,7 @@
     const MOCK_ARTISANS = [
         { name: 'Sunita Shrestha', craft: 'Palpali Dhaka', location: 'Palpa', status: 'approved', date: '2026-09-20' },
         { name: 'Purna Shakya', craft: 'Patan Statues', location: 'Patan', status: 'approved', date: '2026-09-25' },
-        { name: 'Maya Gurung', craft: 'Pashmina & Cashmere', location: 'Mustang', status: 'pending', date: '2026-10-10' }
+        { name: 'Maya Gurung', craft: 'Himalayan Pashmina & Wool', location: 'Mustang', status: 'pending', date: '2026-10-10' }
     ];
 
     function loadProducts() {
