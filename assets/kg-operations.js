@@ -264,8 +264,6 @@
 
     KG.initOperations = function () {
         addTabs(); syncComplaints();
-        const float = document.querySelector('#kgFloat > .flex.items-center');
-        if (float && !document.getElementById('kgSupportButton')) { const b = document.createElement('button'); b.id = 'kgSupportButton'; b.className = 'w-12 h-12 rounded-full bg-amber-600 hover:bg-amber-700 text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105'; b.title = 'Support center'; b.setAttribute('aria-label', 'Open support center'); b.innerHTML = '<i class="fa-solid fa-headset"></i>'; b.addEventListener('click', function () { KG.openSupportCenter(); }); float.prepend(b); }
         const help = document.getElementById('kgFooterHelpLinks');
         if (help && !document.getElementById('kgSupportFooterLink')) { const li = document.createElement('li'); li.innerHTML = '<a id="kgSupportFooterLink" href="#support" class="kg-flink"><i class="fa-solid fa-headset mr-1"></i>Support Center</a>'; li.querySelector('a').addEventListener('click', function (e) { e.preventDefault(); KG.openSupportCenter(); }); help.prepend(li); }
         document.querySelectorAll('a[href="#account"]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); if (KG.user()) KG.openAccount('orders'); else KG.openSupportCenter('track-order'); }); });

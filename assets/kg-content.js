@@ -8,7 +8,7 @@
     const CONTENT_PATH = 'content/site-content.json';
     const API = 'https://api.github.com/repos/' + REPOSITORY;
     const DEFAULT_CONTENT = {
-        version: 2,
+        version: 3,
         header: {
             brand: { text: 'KalaGhar', color: '#111827', fontSize: 26, visible: true },
             featuredNav: { visible: true, useThemeBackground: true, backgroundColor: '#ffffff', gap: 32 },
@@ -32,6 +32,19 @@
             visible: true,
             backgroundColor: '#ffffff',
             items: [{ id: 'kathmandu-dispatch', text: 'Order today for dispatch from Kathmandu within 1–2 business days.', color: '#4b5563', fontSize: 12, visible: true }]
+        },
+        floatingSupport: {
+            visible: true,
+            position: 'right',
+            size: 48,
+            gap: 12,
+            bottom: 20,
+            items: [
+                { id: 'support', text: 'Support Center', action: 'support', target: '', icon: 'fa-headset', iconStyle: 'solid', color: '#d97706', visible: true },
+                { id: 'call', text: 'Call Support', action: 'call', target: 'tel:+9779851022453', icon: 'fa-phone', iconStyle: 'solid', color: '#b91c1c', visible: true },
+                { id: 'whatsapp', text: 'WhatsApp support', action: 'whatsapp', target: 'https://wa.me/9779851022453?text=Namaste%20KalaGhar%2C%20I%20have%20a%20question', icon: 'fa-whatsapp', iconStyle: 'brands', color: '#25d366', visible: true },
+                { id: 'chat', text: 'Live chat', action: 'chat', target: '', icon: 'fa-comment-dots', iconStyle: 'solid', color: '#b91c1c', visible: true }
+            ]
         },
         catalog: {
             categories: [
@@ -156,10 +169,26 @@
             visible: source.visible !== false
         };
     }
+    function cleanFloatingAction(item, index) {
+        const source = item && typeof item === 'object' ? item : {};
+        const actions = ['support', 'call', 'whatsapp', 'chat', 'link'];
+        const action = actions.indexOf(source.action) > -1 ? source.action : 'link';
+        return {
+            id: cleanId(source.id, 'contact', index),
+            text: cleanText(source.text, 80),
+            action: action,
+            target: action === 'support' || action === 'chat' ? '' : cleanHref(source.target),
+            icon: /^fa-[a-z0-9-]+$/i.test(String(source.icon || '')) ? source.icon : 'fa-circle-question',
+            iconStyle: source.iconStyle === 'brands' ? 'brands' : 'solid',
+            color: cleanColor(source.color, '#b91c1c'),
+            visible: source.visible !== false
+        };
+    }
     function sanitize(raw) {
         const source = raw && typeof raw === 'object' ? raw : {};
         const header = source.header && typeof source.header === 'object' ? source.header : {};
         const dispatch = source.dispatch && typeof source.dispatch === 'object' ? source.dispatch : {};
+        const floatingSupport = source.floatingSupport && typeof source.floatingSupport === 'object' ? source.floatingSupport : {};
         const catalog = source.catalog && typeof source.catalog === 'object' ? source.catalog : {};
         const footer = source.footer && typeof source.footer === 'object' ? source.footer : {};
         const bottom = footer.bottom && typeof footer.bottom === 'object' ? footer.bottom : {};
@@ -168,7 +197,7 @@
         const copyrightSource = bottom.copyright && typeof bottom.copyright === 'object' ? bottom.copyright : {};
         const paymentLabelSource = bottom.paymentLabel && typeof bottom.paymentLabel === 'object' ? bottom.paymentLabel : {};
         return {
-            version: 2,
+            version: 3,
             header: {
                 brand: {
                     text: cleanText(brandSource.text || DEFAULT_CONTENT.header.brand.text, 60),
@@ -189,6 +218,14 @@
                 visible: dispatch.visible !== false,
                 backgroundColor: cleanColor(dispatch.backgroundColor, DEFAULT_CONTENT.dispatch.backgroundColor),
                 items: (Array.isArray(dispatch.items) ? dispatch.items : DEFAULT_CONTENT.dispatch.items).slice(0, 8).map(function (item, index) { return cleanItem(item, index, 'dispatch', false); })
+            },
+            floatingSupport: {
+                visible: !source.floatingSupport || floatingSupport.visible !== false,
+                position: floatingSupport.position === 'left' ? 'left' : 'right',
+                size: Math.max(36, Math.min(72, Number(floatingSupport.size) || DEFAULT_CONTENT.floatingSupport.size)),
+                gap: Math.max(4, Math.min(32, Number(floatingSupport.gap) || DEFAULT_CONTENT.floatingSupport.gap)),
+                bottom: Math.max(8, Math.min(120, Number(floatingSupport.bottom) || DEFAULT_CONTENT.floatingSupport.bottom)),
+                items: (Array.isArray(floatingSupport.items) ? floatingSupport.items : DEFAULT_CONTENT.floatingSupport.items).slice(0, 8).map(cleanFloatingAction).filter(function (item) { return item.text; })
             },
             catalog: {
                 categories: (Array.isArray(catalog.categories) ? catalog.categories : DEFAULT_CONTENT.catalog.categories).slice(0, 40).map(cleanCategory).filter(function (item) { return item.en; })
@@ -287,6 +324,41 @@
             });
             dispatch.style.backgroundColor = content.dispatch.backgroundColor;
             dispatch.hidden = !content.dispatch.visible || visibleDispatch.length === 0;
+        }
+
+        const float = document.getElementById('kgFloat'), floatActions = document.getElementById('kgFloatActions');
+        if (float && floatActions) {
+            const cfg = content.floatingSupport;
+            const visibleActions = cfg.items.filter(function (item) { return item.visible; });
+            float.hidden = !cfg.visible || visibleActions.length === 0;
+            float.style.bottom = cfg.bottom + 'px';
+            float.style.right = cfg.position === 'right' ? '20px' : 'auto';
+            float.style.left = cfg.position === 'left' ? '20px' : 'auto';
+            float.classList.toggle('items-end', cfg.position === 'right');
+            float.classList.toggle('items-start', cfg.position === 'left');
+            floatActions.style.gap = cfg.gap + 'px';
+            floatActions.replaceChildren();
+            visibleActions.forEach(function (item) {
+                const isLink = item.action === 'call' || item.action === 'whatsapp' || item.action === 'link';
+                const control = document.createElement(isLink ? 'a' : 'button');
+                control.className = 'rounded-full text-white shadow-lg flex items-center justify-center transition hover:scale-105';
+                control.style.width = cfg.size + 'px'; control.style.height = cfg.size + 'px'; control.style.backgroundColor = item.color;
+                control.title = item.text; control.setAttribute('aria-label', item.text); control.dataset.floatingAction = item.action;
+                if (item.action === 'support') control.id = 'kgSupportButton';
+                const icon = document.createElement('i'); icon.className = 'fa-' + item.iconStyle + ' ' + item.icon; icon.setAttribute('aria-hidden', 'true'); control.appendChild(icon);
+                if (isLink) {
+                    control.href = cleanHref(item.target);
+                    if (item.action === 'whatsapp' || item.action === 'link') { control.target = '_blank'; control.rel = 'noopener'; }
+                } else if (item.action === 'support') {
+                    control.type = 'button'; control.addEventListener('click', function () { if (window.KG && KG.openSupportCenter) KG.openSupportCenter(); });
+                } else if (item.action === 'chat') {
+                    control.type = 'button'; control.addEventListener('click', function () { if (window.toggleChat) window.toggleChat(); });
+                }
+                floatActions.appendChild(control);
+            });
+            const hasChat = visibleActions.some(function (item) { return item.action === 'chat'; });
+            const chatPanel = document.getElementById('chatPanel');
+            if (!hasChat && chatPanel) { chatPanel.classList.add('hidden'); chatPanel.classList.remove('flex'); }
         }
 
         const about = document.getElementById('kgFooterAbout');
@@ -409,7 +481,7 @@
                 method: 'PUT',
                 headers: Object.assign({ 'Content-Type': 'application/json' }, headers()),
                 body: JSON.stringify({
-                    message: 'Update header, footer and dispatch content',
+                    message: 'Update site content and contact buttons',
                     content: encodeBase64(JSON.stringify(clean, null, 2) + '\n'),
                     sha: contentSha,
                     branch: defaultBranch

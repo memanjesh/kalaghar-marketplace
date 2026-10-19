@@ -42,6 +42,7 @@ An Etsy-style marketplace for handmade crafts from Nepal: buyers shop by craft o
 - Coupons, payouts to transfer, festival override, printable tourist QR codes, launch checklist
 - Repository-backed Site Content editor for announcements, footer sections, payment methods, legal links, and the dispatch banner
 - Full editor for the highlighted mobile shortcut strip: add, rename, hide, remove, duplicate, reorder, recolor, resize and retarget links
+- Full editor for the floating Support, Call, WhatsApp, Chat and custom-link buttons, including visibility, order, icon, color, destination, size, spacing and screen position
 - Category manager for adding, renaming, hiding, and safely deleting storefront categories
 - Responsive country, language, and currency preferences with matching regional flags
 

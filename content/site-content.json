@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "header": {
     "brand": {
       "text": "KalaGhar",
@@ -137,6 +137,55 @@
         "color": "#4b5563",
         "fontSize": 12,
         "visible": false
+      }
+    ]
+  },
+  "floatingSupport": {
+    "visible": true,
+    "position": "right",
+    "size": 48,
+    "gap": 12,
+    "bottom": 20,
+    "items": [
+      {
+        "id": "support",
+        "text": "Support Center",
+        "action": "support",
+        "target": "",
+        "icon": "fa-headset",
+        "iconStyle": "solid",
+        "color": "#d97706",
+        "visible": true
+      },
+      {
+        "id": "call",
+        "text": "Call Support",
+        "action": "call",
+        "target": "tel:+9779851022453",
+        "icon": "fa-phone",
+        "iconStyle": "solid",
+        "color": "#b91c1c",
+        "visible": true
+      },
+      {
+        "id": "whatsapp",
+        "text": "WhatsApp support",
+        "action": "whatsapp",
+        "target": "https://wa.me/9779851022453?text=Namaste%20KalaGhar%2C%20I%20have%20a%20question",
+        "icon": "fa-whatsapp",
+        "iconStyle": "brands",
+        "color": "#25d366",
+        "visible": true
+      },
+      {
+        "id": "chat",
+        "text": "Live chat",
+        "action": "chat",
+        "target": "",
+        "icon": "fa-comment-dots",
+        "iconStyle": "solid",
+        "color": "#b91c1c",
+        "visible": true
       }
     ]
   },

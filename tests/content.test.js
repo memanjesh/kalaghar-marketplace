@@ -37,6 +37,8 @@ test('content manager exposes safe defaults with the FAQ label', function () {
     assert.equal(defaults.header.featuredLinks.length, 8);
     assert.equal(defaults.catalog.categories.length, 16);
     assert.equal(defaults.footer.bottom.payments.length, 7);
+    assert.equal(defaults.floatingSupport.items.length, 4);
+    assert.equal(defaults.floatingSupport.items.some(function (item) { return item.action === 'whatsapp'; }), true);
 });
 
 test('content validation clamps sizes and rejects unsafe colors and links', function () {
@@ -48,6 +50,10 @@ test('content validation clamps sizes and rejects unsafe colors and links', func
     value.footer.items[0].text = '<img src=x onerror=alert(1)>';
     value.catalog.categories[0].icon = 'fa-gem" onclick="alert(1)';
     value.header.featuredLinks[0].action = 'javascript';
+    value.floatingSupport.size = 999;
+    value.floatingSupport.items[0].action = 'javascript';
+    value.floatingSupport.items[0].target = 'javascript:alert(1)';
+    value.floatingSupport.items[0].icon = 'fa-phone\" onclick=\"alert(1)';
     const clean = manager.apply(value);
     assert.equal(clean.header.brand.fontSize, 48);
     assert.equal(clean.header.brand.color, '#111827');
@@ -55,6 +61,10 @@ test('content validation clamps sizes and rejects unsafe colors and links', func
     assert.equal(clean.footer.items[0].text, '<img src=x onerror=alert(1)>');
     assert.equal(clean.catalog.categories[0].icon, 'fa-border-all');
     assert.equal(clean.header.featuredLinks[0].action, 'section');
+    assert.equal(clean.floatingSupport.size, 72);
+    assert.equal(clean.floatingSupport.items[0].action, 'link');
+    assert.equal(clean.floatingSupport.items[0].target, '#');
+    assert.equal(clean.floatingSupport.items[0].icon, 'fa-circle-question');
 });
 
 test('authentication secrets are memory-only', function () {

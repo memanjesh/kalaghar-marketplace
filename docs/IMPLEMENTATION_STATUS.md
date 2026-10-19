@@ -70,6 +70,7 @@ Every item below has a public entry point in the **KalaGhar Plus** hub and an ad
 - **All features:** availability and custom description for each of the 25 additional features, plus links to related admin queues.
 - **Feature requests:** one searchable workflow for new service applications and requests.
 - **Highlighted mobile shortcut strip:** rename, add, remove, hide/show, duplicate, reorder, bold, icon, destination, color, size, spacing, strip visibility and background/theme settings.
+- **Floating contact buttons:** add, rename, remove, hide/show, duplicate and reorder Support Center, Call, WhatsApp, Chat or custom-link buttons; edit their icon, icon type, color, destination, size, spacing, side and bottom position.
 
 ## Never represented as live
 

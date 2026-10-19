@@ -1,6 +1,6 @@
 /* KalaGhar offline shell. Dynamic account, order and payment requests remain network-only. */
 'use strict';
-const CACHE = 'kalaghar-shell-v2';
+const CACHE = 'kalaghar-shell-v3';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './assets/icon.svg', './assets/kg.css', './assets/config.js', './assets/kg-content.js', './assets/kg-core.js', './assets/kg-shop.js', './assets/kg-checkout.js', './assets/kg-discover.js', './assets/kg-seller.js', './assets/kg-admin.js', './assets/kg-growth.js', './assets/kg-operations.js', './assets/kg-platform.js', './assets/kg-init.js', './content/site-content.json', './pages/delivery.html', './pages/returns.html', './pages/privacy.html', './pages/terms.html', './pages/purchase-protection.html'];
 self.addEventListener('install', function (event) { event.waitUntil(caches.open(CACHE).then(function (cache) { return cache.addAll(SHELL); }).then(function () { return self.skipWaiting(); })); });
 self.addEventListener('activate', function (event) { event.waitUntil(caches.keys().then(function (keys) { return Promise.all(keys.filter(function (key) { return key !== CACHE; }).map(function (key) { return caches.delete(key); })); }).then(function () { return self.clients.claim(); })); });

@@ -149,7 +149,7 @@ test('installable low-bandwidth shell and fulfillment choices are present', func
     const worker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
     const checkout = fs.readFileSync(path.join(root, 'assets', 'kg-checkout.js'), 'utf8');
     assert.equal(manifest.display, 'standalone');
-    assert.match(worker, /kalaghar-shell-v2/);
+    assert.match(worker, /kalaghar-shell-v3/);
     assert.match(checkout, /value="hotel"/);
     assert.match(checkout, /value="pickup"/);
     assert.match(checkout, /fulfillment:/);
@@ -158,4 +158,21 @@ test('installable low-bandwidth shell and fulfillment choices are present', func
 test('FAQ navigation has a real anchor for the services shelf and footer link', function () {
     assert.match(html, /<section id="faq"/);
     assert.match(html, /href="#faq"/);
+});
+
+test('floating support, call, WhatsApp and chat buttons are fully editable from admin', function () {
+    const admin = fs.readFileSync(path.join(root, 'assets', 'kg-admin.js'), 'utf8');
+    const contentManager = fs.readFileSync(path.join(root, 'assets', 'kg-content.js'), 'utf8');
+    const content = JSON.parse(fs.readFileSync(path.join(root, 'content', 'site-content.json'), 'utf8'));
+    assert.equal(content.floatingSupport.visible, true);
+    assert.deepEqual(content.floatingSupport.items.map(function (item) { return item.action; }), ['support', 'call', 'whatsapp', 'chat']);
+    assert.match(html, /id="kgFloatActions"/);
+    assert.match(admin, /Floating contact &amp; support buttons/);
+    assert.match(admin, /move-floating/);
+    assert.match(admin, /duplicate-floating/);
+    assert.match(admin, /kgFloatingVisible/);
+    assert.match(admin, /Add contact button/);
+    assert.match(contentManager, /dataset\.floatingAction/);
+    assert.match(contentManager, /item\.action === 'whatsapp'/);
+    assert.match(contentManager, /KG\.openSupportCenter/);
 });
