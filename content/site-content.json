@@ -40,7 +40,7 @@
         "text": "Order today for dispatch within 1–2 business days.",
         "color": "#4b5563",
         "fontSize": 12,
-        "visible": true
+        "visible": false
       }
     ]
   },
