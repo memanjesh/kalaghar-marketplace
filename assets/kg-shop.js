@@ -436,6 +436,29 @@
         if (g) g.innerHTML = '<i class="fa-solid fa-gift mr-1.5"></i>' + KG.tx('Gifts', 'उपहार');
     };
 
+    // Etsy lines the row up with the search bar: first link starts under its left edge
+    KG.alignFeatured = function () {
+        const ul = document.getElementById('kgFeatured'), input = document.getElementById('searchInput');
+        if (!ul || !input) return;
+        const nav = ul.parentElement;
+        if (window.innerWidth < 768) { ul.style.marginLeft = ''; ul.style.marginRight = ''; return; }
+        ul.style.marginLeft = '0'; ul.style.marginRight = '0';
+        const left = input.parentElement.getBoundingClientRect().left - nav.getBoundingClientRect().left;
+        const want = Math.round(left) + 14;                                 // start a little inside the search bar's edge
+        const fit = nav.clientWidth - ul.scrollWidth - 16;                  // …but never push links off the right edge
+        ul.style.marginLeft = Math.max(0, Math.min(want, fit)) + 'px';
+    };
+    window.addEventListener('resize', function () { KG.alignFeatured(); });
+
+    // Lift the floating call / WhatsApp / chat buttons above the footer's bottom bar
+    KG.watchFloat = function () {
+        const fl = document.getElementById('kgFloat'), bar = document.querySelector('footer .bg-black\\/15');
+        if (!fl || !bar || !('IntersectionObserver' in window)) return;
+        new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) { fl.style.transform = e.isIntersecting ? 'translateY(-' + (bar.offsetHeight + 4) + 'px)' : ''; });
+        }).observe(bar);
+    };
+
     /* ---------------------------- language / currency (footer, like Etsy) ---------------------------- */
     KG.updateLocaleLabel = function () {
         const el = document.getElementById('kgLocaleLabel');
@@ -459,7 +482,8 @@
     };
 
     KG.initShop = function () {
-        upgradeHeader(); wireCatMenu(); upgradeShippingCalculator();
+        upgradeHeader(); wireCatMenu(); upgradeShippingCalculator(); KG.watchFloat();
+        KG.alignFeatured(); setTimeout(KG.alignFeatured, 600); if (document.fonts) document.fonts.ready.then(KG.alignFeatured);
         const pf = document.getElementById('pfCategory');
         if (pf && !pf.dataset.kg) { pf.dataset.kg = '1'; KG.CATEGORIES.filter(function (c) { return c.isNew; }).forEach(function (c) { pf.insertAdjacentHTML('beforeend', '<option value="' + c.id + '">' + esc(c.en) + '</option>'); }); }
         KG.updateFavCount();

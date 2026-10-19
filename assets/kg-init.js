@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         origApplyLang(lang);
         KG.renderDiscover();
         KG.renderFeatured();
+        KG.alignFeatured();
         KG.updateLocaleLabel();
         var ll = document.getElementById('langLabel'); if (ll) ll.textContent = KG.lang() === 'ne' ? 'NEP' : 'ENG';
         KG.refreshAccountLabel();

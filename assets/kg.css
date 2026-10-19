@@ -61,3 +61,13 @@
 
 /* Page sections always span the full width (the page body is a flex column) */
 body > section, body > footer, body > main, body > header { width: 100%; }
+
+/* Footer contact block */
+.kg-contact { display: flex; align-items: flex-start; gap: 10px; color: rgba(255, 255, 255, .92); }
+a.kg-contact:hover { color: #fff; }
+a.kg-contact:hover .kg-cicon { background: rgba(255, 255, 255, .28); }
+.kg-cicon { flex: none; width: 36px; height: 36px; border-radius: 12px; background: rgba(255, 255, 255, .16); display: flex; align-items: center; justify-content: center; color: #fff; transition: background .15s; }
+.kg-clabel { display: block; font-size: 10px; font-weight: 700; letter-spacing: .12em; color: rgba(255, 255, 255, .7); }
+
+/* Floating help buttons step aside when they would cover footer links */
+#kgFloat { transition: transform .2s ease; }

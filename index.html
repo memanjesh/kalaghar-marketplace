@@ -8,7 +8,7 @@
     <meta property="og:description" content="Handmade in Nepal, shipped worldwide. Buy directly from verified artisans and cooperatives.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#b91c1c">
-    <link rel="stylesheet" href="assets/kg.css?v=20261019e">
+    <link rel="stylesheet" href="assets/kg.css?v=20261019f">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
@@ -156,7 +156,7 @@
         </div>
         <!-- FEATURED LINKS (Etsy-style second row) -->
         <nav aria-label="Featured" class="kg-catnav overflow-x-auto">
-            <ul id="kgFeatured" class="flex w-max mx-auto items-center gap-5 lg:gap-9 px-4 pb-3 pt-1 whitespace-nowrap">
+            <ul id="kgFeatured" class="flex w-max mx-auto items-center gap-5 lg:gap-7 px-4 pb-3 pt-1 whitespace-nowrap">
                 <li><button type="button" onclick="KG.openGiftMode()" class="kg-feat"><i class="fa-solid fa-gift mr-1.5"></i>Gifts</button></li>
                 <li id="kgFestivalItem"><button type="button" onclick="document.getElementById('festival').scrollIntoView({behavior:'smooth'})" class="kg-feat">Dashain Gifts</button></li>
                 <li><button type="button" onclick="KG.goCategory('pashmina')" class="kg-feat" data-i18n="fPashmina">Himalayan Pashmina &amp; Wool</button></li>
@@ -505,11 +505,17 @@
                     </a>
                     <p class="text-sm leading-relaxed mt-4 max-w-sm text-white/85" data-i18n="footerAbout">Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.</p>
                     <p class="text-sm mt-4 flex items-center gap-2"><i class="fa-solid fa-hand-holding-heart text-amber-200"></i><span data-i18n="ftHandmade">100% handmade in Nepal</span></p>
-                    <div class="flex gap-3 mt-5">
+                    <h4 class="kg-fhead mt-7" data-i18n="conTitle">Contact</h4>
+                    <ul class="grid sm:grid-cols-2 gap-3 max-w-md text-sm">
+                        <li><a href="tel:+9779851022453" class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-phone"></i></span><span><span class="kg-clabel" data-i18n="phoneLabel">PHONE</span><span class="block">+977 9851022453</span></span></a></li>
+                        <li><a href="https://wa.me/9779851022453" target="_blank" rel="noopener" class="kg-contact"><span class="kg-cicon"><i class="fa-brands fa-whatsapp"></i></span><span><span class="kg-clabel">WHATSAPP</span><span class="block">+977 9851022453</span></span></a></li>
+                        <li><a href="mailto:support@kalanepal.com" class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-envelope"></i></span><span><span class="kg-clabel" data-i18n="emailLabel">EMAIL</span><span class="block break-all">support@kalanepal.com</span></span></a></li>
+                        <li><span class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-location-dot"></i></span><span><span class="kg-clabel" data-i18n="addressLabel">ADDRESS</span><span class="block" data-i18n="contactAddress">Kathmandu- 14, Nepal</span></span></span></li>
+                    </ul>
+                    <div class="flex gap-3 mt-6">
                         <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-brands fa-instagram"></i></a>
                         <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
                         <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://wa.me/9779851022453" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
                 </div>
                 <div class="lg:col-span-2">
@@ -538,9 +544,7 @@
                         <li><a href="#makers" class="kg-flink" data-i18n="kgMakersTitle">Meet the Makers</a></li>
                         <li><a href="#impact" class="kg-flink" data-i18n="fImpact">Our Impact</a></li>
                         <li><a href="#workshops" class="kg-flink" data-i18n="fWorkshops">Workshops</a></li>
-                        <li><a href="tel:+9779851022453" class="kg-flink">+977 9851022453</a></li>
-                        <li><a href="mailto:support@kalanepal.com" class="kg-flink">support@kalanepal.com</a></li>
-                        <li class="text-white/80" data-i18n="contactAddress">Kathmandu- 14, Nepal</li>
+                        <li><a href="pages/export-hub.html" class="kg-flink" data-i18n="fExportHub">Export Hub for Artisans</a></li>
                     </ul>
                 </div>
                 <div class="lg:col-span-2">
@@ -569,7 +573,7 @@
 
             <!-- Bottom bar -->
             <div class="bg-black/15">
-                <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+                <div class="max-w-7xl mx-auto px-4 pt-4 pb-24 md:pb-4 md:pr-60 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
                     <button type="button" onclick="KG.openLocale()" class="flex items-center gap-2 rounded-full border border-white/25 hover:bg-white/10 px-3 py-1.5 text-white">
                         <img src="https://flagcdn.com/24x18/np.png" alt="" class="w-5 h-3.5 rounded-sm object-cover">
                         <span id="kgLocaleLabel">Nepal | English | NPR</span>
@@ -759,7 +763,7 @@
     </div>
 
     <!-- FLOATING SUPPORT -->
-    <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+    <div id="kgFloat" class="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
         <div id="chatPanel" class="hidden w-80 max-w-[calc(100vw-2.5rem)] h-96 flex-col bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
             <div class="bg-red-700 text-white px-4 py-3 flex items-start justify-between">
                 <div>
@@ -1623,13 +1627,13 @@
     </script>
 
     <!-- KalaGhar feature modules -->
-    <script src="assets/config.js?v=20261019e"></script>
-    <script src="assets/kg-core.js?v=20261019e"></script>
-    <script src="assets/kg-shop.js?v=20261019e"></script>
-    <script src="assets/kg-checkout.js?v=20261019e"></script>
-    <script src="assets/kg-discover.js?v=20261019e"></script>
-    <script src="assets/kg-seller.js?v=20261019e"></script>
-    <script src="assets/kg-admin.js?v=20261019e"></script>
-    <script src="assets/kg-init.js?v=20261019e"></script>
+    <script src="assets/config.js?v=20261019f"></script>
+    <script src="assets/kg-core.js?v=20261019f"></script>
+    <script src="assets/kg-shop.js?v=20261019f"></script>
+    <script src="assets/kg-checkout.js?v=20261019f"></script>
+    <script src="assets/kg-discover.js?v=20261019f"></script>
+    <script src="assets/kg-seller.js?v=20261019f"></script>
+    <script src="assets/kg-admin.js?v=20261019f"></script>
+    <script src="assets/kg-init.js?v=20261019f"></script>
 </body>
 </html>
