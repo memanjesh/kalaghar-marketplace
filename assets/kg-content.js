@@ -470,6 +470,41 @@
             }
         },
         logout: function () { adminToken = ''; adminUser = ''; contentSha = ''; },
+        /* Generic repository files (site settings, product feeds, product pages). */
+        readFile: async function (path) {
+            if (!adminToken) throw new Error('Sign in first.');
+            const response = await fetch(API + '/contents/' + path.split('/').map(encodeURIComponent).join('/') + '?ref=' + encodeURIComponent(defaultBranch), { headers: headers(), cache: 'no-store' });
+            if (response.status === 404) return null;
+            const file = await response.json().catch(function () { return {}; });
+            if (!response.ok) throw new Error(file.message || ('GitHub request failed (' + response.status + ')'));
+            return { text: decodeBase64(file.content), sha: file.sha };
+        },
+        // isBase64: pass already-encoded binary (e.g. an uploaded image)
+        putFile: async function (path, text, message, isBase64) {
+            if (!adminToken) throw new Error('Sign in first.');
+            const existing = await manager.readFile(path);
+            const result = await githubJson(API + '/contents/' + path.split('/').map(encodeURIComponent).join('/'), {
+                method: 'PUT',
+                headers: Object.assign({ 'Content-Type': 'application/json' }, headers()),
+                body: JSON.stringify({ message: message || ('Update ' + path), content: isBase64 ? text : encodeBase64(text), sha: existing ? existing.sha : undefined, branch: defaultBranch })
+            });
+            return { commitUrl: result.commit && result.commit.html_url ? result.commit.html_url : '' };
+        },
+        // Several files in ONE commit (Git Data API). files: [{ path, content }]; content null deletes the file.
+        commitFiles: async function (files, message) {
+            if (!adminToken) throw new Error('Sign in first.');
+            if (!files.length) throw new Error('Nothing to publish.');
+            const ref = await githubJson(API + '/git/ref/heads/' + encodeURIComponent(defaultBranch), { headers: headers(), cache: 'no-store' });
+            const parent = await githubJson(API + '/git/commits/' + ref.object.sha, { headers: headers(), cache: 'no-store' });
+            const jsonHeaders = Object.assign({ 'Content-Type': 'application/json' }, headers());
+            const tree = await githubJson(API + '/git/trees', {
+                method: 'POST', headers: jsonHeaders,
+                body: JSON.stringify({ base_tree: parent.tree.sha, tree: files.map(function (f) { return f.content === null ? { path: f.path, mode: '100644', type: 'blob', sha: null } : { path: f.path, mode: '100644', type: 'blob', content: f.content }; }) })
+            });
+            const commit = await githubJson(API + '/git/commits', { method: 'POST', headers: jsonHeaders, body: JSON.stringify({ message: message, tree: tree.sha, parents: [ref.object.sha] }) });
+            await githubJson(API + '/git/refs/heads/' + encodeURIComponent(defaultBranch), { method: 'PATCH', headers: jsonHeaders, body: JSON.stringify({ sha: commit.sha }) });
+            return { commitUrl: commit.html_url || ('https://github.com/' + REPOSITORY + '/commit/' + commit.sha), files: files.length };
+        },
         refresh: async function () {
             if (!adminToken) throw new Error('Sign in first.');
             const next = await readFromGitHub(); apply(next); return clone(next);

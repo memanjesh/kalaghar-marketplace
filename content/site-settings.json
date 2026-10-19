@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "home": {
+    "sections": [
+      {
+        "key": "hero-slider",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "festival",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "hero",
+        "visible": false,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "popular-categories",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "marketplace",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "kgDiscoveryShelf",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "spotlight",
+        "visible": false,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "craft-of-week",
+        "visible": false,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "regions",
+        "visible": true,
+        "mobile": false,
+        "title": ""
+      },
+      {
+        "key": "makers",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "send-home",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "why-shop",
+        "visible": false,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "artisan-stories",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "kgPlusSection",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "workshops",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "impact",
+        "visible": true,
+        "mobile": false,
+        "title": ""
+      },
+      {
+        "key": "wholesale",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "shipping-calc",
+        "visible": false,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "faq",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      }
+    ]
+  },
+  "hero": {
+    "autoplay": true,
+    "interval": 6,
+    "height": "medium",
+    "slides": [
+      {
+        "id": "heritage",
+        "visible": true,
+        "eyebrow": "Authentic Nepali Heritage Crafts",
+        "title": "Handcrafted Heritage, Nepal's Identity",
+        "text": "Buy directly from master weavers, bronze sculptors and paper artisans. Certified origin & fair trade.",
+        "buttonText": "Explore the catalog",
+        "action": "section",
+        "target": "marketplace",
+        "image": "https://images.pexels.com/photos/6634555/pexels-photo-6634555.jpeg?auto=compress&cs=tinysrgb&w=1200",
+        "theme": "gradient",
+        "start": "",
+        "end": ""
+      },
+      {
+        "id": "pashmina",
+        "visible": true,
+        "eyebrow": "Mustang · Chyangra goats",
+        "title": "Himalayan Pashmina & Wool",
+        "text": "Hand-spun at 14,000 ft and woven on wooden looms.",
+        "buttonText": "Shop pashmina",
+        "action": "category",
+        "target": "pashmina",
+        "image": "https://images.pexels.com/photos/11733651/pexels-photo-11733651.jpeg?auto=compress&cs=tinysrgb&w=1200",
+        "theme": "image",
+        "start": "",
+        "end": ""
+      },
+      {
+        "id": "gift-home",
+        "visible": true,
+        "eyebrow": "For Nepalis abroad",
+        "title": "Send a gift home this festival",
+        "text": "Pay by card, we deliver to your family anywhere in Nepal with your message.",
+        "buttonText": "Send a gift",
+        "action": "gift",
+        "target": "",
+        "image": "https://images.pexels.com/photos/18681553/pexels-photo-18681553.jpeg?auto=compress&cs=tinysrgb&w=1200",
+        "theme": "image",
+        "start": "",
+        "end": ""
+      }
+    ]
+  },
+  "plus": {
+    "hubVisible": true,
+    "homeSection": true,
+    "features": {}
+  },
+  "shopping": {
+    "variants": true,
+    "backInStock": true,
+    "priceDrop": true,
+    "priceDropMinPercent": 5,
+    "qa": true,
+    "qaRequireApproval": true,
+    "vacation": true
+  },
+  "marketing": {
+    "siteUrl": "https://memanjesh.github.io/kalaghar-marketplace/",
+    "feedsEnabled": true,
+    "feedExcluded": [],
+    "feedBrandFallback": "KalaGhar",
+    "feedCondition": "new",
+    "seoPagesEnabled": true,
+    "analyticsEnabled": false,
+    "consentBanner": true,
+    "ga4Id": "",
+    "plausibleDomain": "",
+    "metaPixelId": ""
+  },
+  "courier": {
+    "enabled": true,
+    "labelSize": "4x6",
+    "defaultCourier": "ncm",
+    "defaultWeightG": 500,
+    "sender": {
+      "name": "KalaGhar Marketplace",
+      "phone": "+977 9851022453",
+      "address": "Kathmandu-14",
+      "city": "Kathmandu"
+    },
+    "showCodOnLabel": true,
+    "bookingEndpoint": ""
+  }
+}
