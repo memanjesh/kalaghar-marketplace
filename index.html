@@ -5,74 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' };</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+    /* Apply saved theme before paint to avoid a flash */
+    (function () {
+        try {
+            var t = localStorage.getItem('kg-theme');
+            if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        } catch (e) {}
+    })();
+    </script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-nepali { font-family: 'Mukta', sans-serif; }
-
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-            display: flex;
-            width: 200%;
-            animation: marquee 25s linear infinite;
-        }
+        @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { display: flex; width: 200%; animation: marquee 25s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
-
-        .cat-btn.active { background-color: #b91c1c; color: #fff; }
-        .cat-btn:not(.active) { background-color: #f3f4f6; color: #374151; }
-        .cat-btn:not(.active):hover { background-color: #e5e7eb; }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details > summary::after { content: "+"; float: right; color: #b91c1c; font-weight: 700; }
+        details[open] > summary::after { content: "−"; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen transition-colors duration-200">
 
     <!-- 1. ANNOUNCEMENT MARQUEE -->
-    <div class="bg-red-800 text-white text-xs py-2 overflow-hidden whitespace-nowrap relative z-50 shadow-inner">
+    <div class="bg-red-800 dark:bg-red-900 text-white text-xs py-2 overflow-hidden whitespace-nowrap relative z-50 shadow-inner">
         <div class="animate-marquee flex items-center gap-8 font-medium">
-            <span class="flex items-center gap-2">✨ Empowering 1,200+ Nepali Artisans &amp; Rural Cooperatives</span>
-            <span class="flex items-center gap-2">✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery</span>
-            <span class="flex items-center gap-2">📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan &amp; Palpa</span>
-            <span class="flex items-center gap-2">✨ Empowering 1,200+ Nepali Artisans &amp; Rural Cooperatives</span>
-            <span class="flex items-center gap-2">✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery</span>
-            <span class="flex items-center gap-2">📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan &amp; Palpa</span>
+            <span class="flex items-center gap-2" data-i18n="t1">✨ Empowering 1,200+ Nepali Artisans &amp; Rural Cooperatives</span>
+            <span class="flex items-center gap-2" data-i18n="t2">✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery</span>
+            <span class="flex items-center gap-2" data-i18n="t3">📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan &amp; Palpa</span>
+            <span class="flex items-center gap-2" data-i18n="t1">✨ Empowering 1,200+ Nepali Artisans &amp; Rural Cooperatives</span>
+            <span class="flex items-center gap-2" data-i18n="t2">✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery</span>
+            <span class="flex items-center gap-2" data-i18n="t3">📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan &amp; Palpa</span>
         </div>
     </div>
 
     <!-- 2. HEADER -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-            <a href="#" class="flex items-center gap-3 group">
+    <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40 shadow-sm transition-colors">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+            <a href="#" class="flex items-center gap-3 group shrink-0">
                 <div class="w-10 h-10 bg-red-700 text-white rounded-lg flex items-center justify-center font-bold text-xl font-nepali shadow-md group-hover:bg-red-800 transition">क</div>
                 <div>
-                    <span class="text-2xl font-extrabold text-gray-900 tracking-tight block leading-none">KalaGhar</span>
-                    <span class="text-xs text-red-700 font-nepali font-semibold tracking-wider">कलाघर नेपाल</span>
+                    <span class="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight block leading-none">KalaGhar</span>
+                    <span class="text-xs text-red-700 dark:text-red-400 font-nepali font-semibold tracking-wider">कलाघर नेपाल</span>
                 </div>
             </a>
 
             <div class="flex-1 max-w-xl relative hidden md:block">
-                <input id="searchInput" onkeyup="filterProductsBySearch()" type="text" placeholder="Search handcrafted pashmina, dhaka, bronze statues, lokta paper..."
-                       class="w-full bg-gray-100 border border-gray-300 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-red-700 focus:bg-white transition">
-                <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-700">
+                <input id="searchInput" onkeyup="filterProductsBySearch()" type="text"
+                       data-i18n-ph="searchPh" placeholder="Search handcrafted pashmina, dhaka, bronze statues, lokta paper..."
+                       class="w-full bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full py-2 pl-4 pr-10 text-sm text-gray-800 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-red-700 focus:bg-white dark:focus:bg-gray-900 transition">
+                <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-red-700 dark:hover:text-red-400">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </div>
 
-            <div class="flex items-center gap-3 sm:gap-4">
-                <button onclick="openModal('artisanModal')" class="hidden lg:flex items-center gap-2 text-xs font-bold tracking-wider text-red-700 border-2 border-red-700 px-3 py-1.5 rounded-full hover:bg-red-700 hover:text-white transition">
-                    <i class="fa-solid fa-hands-holding"></i> BECOME A SELLER
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- Theme toggle -->
+                <button id="themeToggle" onclick="toggleTheme()" title="Toggle day / night"
+                        class="text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
                 </button>
-                <button onclick="openModal('customerAuthModal')" class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 hover:text-red-700 border border-gray-300 px-3 py-1.5 rounded-lg hover:border-red-700 transition">
+
+                <!-- Language toggle -->
+                <button id="langToggle" onclick="toggleLang()" title="Change language"
+                        class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-2.5 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
+                    <i class="fa-solid fa-language text-sm"></i>
+                    <span id="langLabel">नेपाली</span>
+                </button>
+
+                <button onclick="openModal('artisanModal')" class="hidden lg:flex items-center gap-2 text-xs font-bold tracking-wider text-red-700 dark:text-red-400 border-2 border-red-700 dark:border-red-500 px-3 py-1.5 rounded-full hover:bg-red-700 hover:text-white transition">
+                    <i class="fa-solid fa-hands-holding"></i>
+                    <span data-i18n="becomeSeller">BECOME A SELLER</span>
+                </button>
+
+                <button onclick="openModal('customerAuthModal')" class="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 px-3 py-1.5 rounded-lg hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 transition">
                     <i class="fa-regular fa-user text-sm"></i>
-                    <span id="userStatusLabel" class="hidden sm:inline">Sign In</span>
+                    <span id="userStatusLabel" data-i18n="signIn" class="hidden sm:inline">Sign In</span>
                 </button>
-                <button onclick="openModal('adminModal')" title="Admin Control Console" class="text-gray-600 hover:text-red-700 p-2 text-base rounded-lg hover:bg-gray-100 transition">
+
+                <button onclick="openModal('adminModal')" title="Admin Control Console"
+                        class="text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 p-2 text-base rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                     <i class="fa-solid fa-user-gear"></i>
                 </button>
-                <a href="#" class="text-gray-600 hover:text-red-700 text-lg relative p-1"><i class="fa-regular fa-heart"></i></a>
-                <a href="#" class="text-gray-600 hover:text-red-700 text-lg relative p-1">
+
+                <a href="#" class="hidden sm:block text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 text-lg p-1">
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+                <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-400 text-lg relative p-1">
                     <i class="fa-solid fa-bag-shopping"></i>
                     <span id="cartCounter" class="absolute -top-1 -right-1 bg-red-700 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
                 </a>
@@ -80,9 +105,10 @@
         </div>
     </header>
 
-    <!-- 3. DISPATCH NOTICE (new — Puff2Door delivery-window bar) -->
-    <div class="bg-white border-b border-gray-200 text-center text-xs text-gray-600 py-2 px-4">
-        Order today for dispatch from Kathmandu within <strong class="text-red-700">1–2 business days</strong>.
+    <!-- 3. DISPATCH NOTICE -->
+    <div class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 text-center text-xs text-gray-600 dark:text-gray-400 py-2 px-4 transition-colors"
+         data-i18n-html="dispatch">
+        Order today for dispatch from Kathmandu within <strong class="text-red-700 dark:text-red-400">1–2 business days</strong>.
     </div>
 
     <!-- 4. HERO -->
@@ -90,12 +116,14 @@
         <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div class="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-8 items-center">
             <div>
-                <span class="inline-block bg-amber-900/80 text-amber-200 text-xs font-semibold px-3 py-1 rounded-full mb-3 border border-amber-700">Authentic Nepali Heritage Crafts</span>
-                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4 font-nepali">हस्तकलाको संसार, नेपालको पहिचान</h1>
-                <p class="text-amber-100 text-sm md:text-base mb-6 max-w-lg leading-relaxed">Connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally. Certified origin &amp; fair trade.</p>
+                <span class="inline-block bg-amber-900/80 text-amber-200 text-xs font-semibold px-3 py-1 rounded-full mb-3 border border-amber-700" data-i18n="heroBadge">Authentic Nepali Heritage Crafts</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4 font-nepali" data-i18n="heroTitle">हस्तकलाको संसार, नेपालको पहिचान</h1>
+                <p class="text-amber-100 text-sm md:text-base mb-6 max-w-lg leading-relaxed" data-i18n="heroSub">Connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally. Certified origin &amp; fair trade.</p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="#marketplace" class="bg-red-700 hover:bg-red-800 text-white font-semibold text-sm px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-2">Explore Catalog <i class="fa-solid fa-arrow-down"></i></a>
-                    <button onclick="openModal('artisanModal')" class="bg-amber-800/80 hover:bg-amber-800 border border-amber-600 text-white font-semibold text-sm px-5 py-3 rounded-lg transition">Register as Artisan</button>
+                    <a href="#marketplace" class="bg-red-700 hover:bg-red-800 text-white font-semibold text-sm px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-2">
+                        <span data-i18n="exploreCatalog">Explore Catalog</span> <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                    <button onclick="openModal('artisanModal')" class="bg-amber-800/80 hover:bg-amber-800 border border-amber-600 text-white font-semibold text-sm px-5 py-3 rounded-lg transition" data-i18n="registerArtisan">Register as Artisan</button>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-4">
@@ -109,341 +137,376 @@
         </div>
     </section>
 
-    <!-- 5. FEATURED SPOTLIGHT (new) -->
+    <!-- 5. FEATURED SPOTLIGHT -->
     <section class="max-w-7xl mx-auto px-4 py-10">
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden grid md:grid-cols-2">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden grid md:grid-cols-2 transition-colors">
             <div class="h-64 md:h-auto overflow-hidden">
                 <img src="https://images.pexels.com/photos/375880/pexels-photo-375880.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Pure Chyangra Pashmina Shawl" class="w-full h-full object-cover">
             </div>
             <div class="p-6 md:p-10 flex flex-col justify-center">
-                <span class="text-red-700 font-bold text-xs uppercase tracking-widest mb-2">Mustang</span>
-                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2">Pure Chyangra Pashmina Shawl</h2>
-                <p class="text-sm text-gray-500 mb-5">100% Hand-spun Cashmere</p>
+                <span class="text-red-700 dark:text-red-400 font-bold text-xs uppercase tracking-widest mb-2" data-i18n="featuredTag">Mustang</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white mb-2" data-i18n="featuredTitle">Pure Chyangra Pashmina Shawl</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-5" data-i18n="featuredSub">100% Hand-spun Cashmere</p>
                 <div class="flex flex-wrap items-center gap-4">
-                    <span class="text-xl font-bold text-red-700">NPR 12,500</span>
-                    <button onclick="addToCart('Pure Chyangra Pashmina Shawl')" class="bg-red-700 hover:bg-red-800 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">Shop this craft</button>
+                    <span class="text-xl font-bold text-red-700 dark:text-red-400">NPR 12,500</span>
+                    <button onclick="addToCart('Pure Chyangra Pashmina Shawl')" class="bg-red-700 hover:bg-red-800 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition" data-i18n="shopThisCraft">Shop this craft</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 6. WHY SHOP WITH KALAGHAR (new) -->
-    <section class="bg-white border-y border-gray-200 py-10 px-4">
+    <!-- 6. WHY SHOP WITH KALAGHAR -->
+    <section class="bg-white dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800 py-10 px-4 transition-colors">
         <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="flex gap-3 items-start">
-                <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 text-red-700 flex items-center justify-center"><i class="fa-solid fa-hands-holding"></i></div>
-                <div><h4 class="font-bold text-sm text-gray-900">Empowering 1,200+ Artisans</h4><p class="text-xs text-gray-500">Nepali artisans &amp; rural cooperatives</p></div>
+                <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 flex items-center justify-center"><i class="fa-solid fa-hands-holding"></i></div>
+                <div>
+                    <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b1t">Empowering 1,200+ Artisans</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b1s">Nepali artisans &amp; rural cooperatives</p>
+                </div>
             </div>
             <div class="flex gap-3 items-start">
-                <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 text-red-700 flex items-center justify-center"><i class="fa-solid fa-truck-fast"></i></div>
-                <div><h4 class="font-bold text-sm text-gray-900">Free Shipping across Nepal</h4><p class="text-xs text-gray-500">On orders over NPR 3,000</p></div>
+                <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 flex items-center justify-center"><i class="fa-solid fa-truck-fast"></i></div>
+                <div>
+                    <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b2t">Free Shipping across Nepal</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b2s">On orders over NPR 3,000</p>
+                </div>
             </div>
             <div class="flex gap-3 items-start">
-                <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 text-red-700 flex items-center justify-center"><i class="fa-solid fa-plane-up"></i></div>
-                <div><h4 class="font-bold text-sm text-gray-900">Global Express Delivery</h4><p class="text-xs text-gray-500">Shipped worldwide from Kathmandu</p></div>
+                <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 flex items-center justify-center"><i class="fa-solid fa-plane-up"></i></div>
+                <div>
+                    <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b3t">Global Express Delivery</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b3s">Shipped worldwide from Kathmandu</p>
+                </div>
             </div>
             <div class="flex gap-3 items-start">
-                <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 text-red-700 flex items-center justify-center"><i class="fa-solid fa-certificate"></i></div>
-                <div><h4 class="font-bold text-sm text-gray-900">100% Certified Authentic</h4><p class="text-xs text-gray-500">Kathmandu, Patan &amp; Palpa</p></div>
+                <div class="w-10 h-10 shrink-0 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 flex items-center justify-center"><i class="fa-solid fa-certificate"></i></div>
+                <div>
+                    <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="b4t">100% Certified Authentic</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="b4s">Kathmandu, Patan &amp; Palpa</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 7. CRAFT OF THE WEEK (new) -->
+    <!-- 7. CRAFT OF THE WEEK -->
     <section class="max-w-7xl mx-auto px-4 py-10">
-        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 md:p-8 grid md:grid-cols-2 gap-6 items-center">
+        <div class="bg-amber-50 dark:bg-gray-900 border border-amber-200 dark:border-gray-800 rounded-2xl p-6 md:p-8 grid md:grid-cols-2 gap-6 items-center transition-colors">
             <div class="h-56 rounded-xl overflow-hidden">
                 <img src="https://images.pexels.com/photos/2292919/pexels-photo-2292919.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Authentic Palpali Dhaka Scarf" class="w-full h-full object-cover">
             </div>
             <div>
-                <span class="text-red-700 font-bold text-xs uppercase tracking-widest">Craft of the Week</span>
-                <h3 class="text-2xl font-extrabold text-gray-900 mt-1 mb-2">Authentic Palpali Dhaka Scarf</h3>
-                <p class="text-sm text-gray-600 mb-4">Traditional Wooden Loom Weave</p>
-                <div id="countdown" class="text-xs font-semibold text-red-700 mb-4" aria-live="polite"></div>
+                <span class="text-red-700 dark:text-red-400 font-bold text-xs uppercase tracking-widest" data-i18n="cowTag">Craft of the Week</span>
+                <h3 class="text-2xl font-extrabold text-gray-900 dark:text-white mt-1 mb-2" data-i18n="cowTitle">Authentic Palpali Dhaka Scarf</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4" data-i18n="cowSub">Traditional Wooden Loom Weave</p>
+                <div id="countdown" class="text-xs font-semibold text-red-700 dark:text-red-400 mb-4" aria-live="polite"></div>
                 <div class="flex flex-wrap items-center gap-4">
-                    <span class="text-xl font-bold text-red-700">NPR 1,800</span>
-                    <button onclick="addToCart('Authentic Palpali Dhaka Scarf')" class="bg-red-700 hover:bg-red-800 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">View this craft</button>
+                    <span class="text-xl font-bold text-red-700 dark:text-red-400">NPR 1,800</span>
+                    <button onclick="addToCart('Authentic Palpali Dhaka Scarf')" class="bg-red-700 hover:bg-red-800 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition" data-i18n="cowCta">View this craft</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 8. CATEGORY TILES (new) -->
+    <!-- 8. CATEGORY TILES -->
     <section class="max-w-7xl mx-auto px-4 pb-4">
         <div class="flex items-end justify-between mb-4">
-            <h2 class="text-2xl font-bold text-gray-900">Shop Popular Categories</h2>
-            <a href="#marketplace" class="text-xs font-semibold text-red-700 hover:underline">View All →</a>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="catsTitle">Shop Popular Categories</h2>
+            <a href="#marketplace" class="text-xs font-semibold text-red-700 dark:text-red-400 hover:underline" data-i18n="viewAll">View All →</a>
         </div>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <button onclick="filterCategory('pashmina')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 text-left">
+            <button onclick="filterCategory('pashmina')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/375880/pexels-photo-375880.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold">Pashmina &amp; Cashmere</strong><span class="text-[11px] opacity-80">Mustang</span></div>
+                <div class="absolute bottom-3 left-3 text-white">
+                    <strong class="block text-sm font-bold" data-i18n="cat1t">Pashmina &amp; Cashmere</strong>
+                    <span class="text-[11px] opacity-80" data-i18n="cat1s">Mustang</span>
+                </div>
             </button>
-            <button onclick="filterCategory('dhaka')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 text-left">
+            <button onclick="filterCategory('dhaka')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/2292919/pexels-photo-2292919.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold">Palpali Dhaka</strong><span class="text-[11px] opacity-80">Palpa</span></div>
+                <div class="absolute bottom-3 left-3 text-white">
+                    <strong class="block text-sm font-bold" data-i18n="cat2t">Palpali Dhaka</strong>
+                    <span class="text-[11px] opacity-80" data-i18n="cat2s">Palpa</span>
+                </div>
             </button>
-            <button onclick="filterCategory('lokta')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 text-left">
+            <button onclick="filterCategory('lokta')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/261763/pexels-photo-261763.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold">Lokta Paper</strong><span class="text-[11px] opacity-80">Eco Paper</span></div>
+                <div class="absolute bottom-3 left-3 text-white">
+                    <strong class="block text-sm font-bold" data-i18n="cat3t">Lokta Paper</strong>
+                    <span class="text-[11px] opacity-80" data-i18n="cat3s">Eco Paper</span>
+                </div>
             </button>
-            <button onclick="filterCategory('metal')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 text-left">
+            <button onclick="filterCategory('metal')" class="group relative h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 text-left">
                 <img src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&w=500" alt="" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-3 left-3 text-white"><strong class="block text-sm font-bold">Patan Statues</strong><span class="text-[11px] opacity-80">Patan Craft</span></div>
+                <div class="absolute bottom-3 left-3 text-white">
+                    <strong class="block text-sm font-bold" data-i18n="cat4t">Patan Statues</strong>
+                    <span class="text-[11px] opacity-80" data-i18n="cat4s">Patan Craft</span>
+                </div>
             </button>
         </div>
     </section>
 
-    <!-- 9. CATALOG (your original, unchanged) -->
+    <!-- 9. CATALOG -->
     <section id="marketplace" class="max-w-7xl mx-auto px-4 py-10">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-200 pb-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-200 dark:border-gray-800 pb-4">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900">Curated Heritage Collections</h2>
-                <p class="text-xs text-gray-500">Filter by authentic craft category</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="catalogTitle">Curated Heritage Collections</h2>
+                <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="catalogSub">Filter by authentic craft category</p>
             </div>
             <div class="flex flex-wrap gap-2" id="categoryButtons">
-                <button onclick="filterCategory('all')" class="cat-btn active bg-red-700 text-white text-xs px-3.5 py-1.5 rounded-full font-semibold transition">All Crafts</button>
-                <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs px-3.5 py-1.5 rounded-full font-semibold transition">Pashmina &amp; Cashmere</button>
-                <button onclick="filterCategory('dhaka')" class="cat-btn bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs px-3.5 py-1.5 rounded-full font-semibold transition">Palpali Dhaka</button>
-                <button onclick="filterCategory('lokta')" class="cat-btn bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs px-3.5 py-1.5 rounded-full font-semibold transition">Lokta Paper</button>
-                <button onclick="filterCategory('metal')" class="cat-btn bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs px-3.5 py-1.5 rounded-full font-semibold transition">Patan Statues</button>
+                <button onclick="filterCategory('all')" class="cat-btn active bg-red-700 text-white text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fAll">All Crafts</button>
+                <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fPashmina">Pashmina &amp; Cashmere</button>
+                <button onclick="filterCategory('dhaka')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fDhaka">Palpali Dhaka</button>
+                <button onclick="filterCategory('lokta')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fLokta">Lokta Paper</button>
+                <button onclick="filterCategory('metal')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs px-3.5 py-1.5 rounded-full font-semibold transition" data-i18n="fMetal">Patan Statues</button>
             </div>
         </div>
 
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <div class="product-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition" data-category="pashmina">
+            <div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="pashmina">
                 <div class="h-48 overflow-hidden relative">
                     <img src="https://images.pexels.com/photos/375880/pexels-photo-375880.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Chyangra Pashmina" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     <span class="absolute top-2 left-2 bg-red-700 text-white text-[10px] font-bold px-2 py-0.5 rounded">MUSTANG</span>
                 </div>
                 <div class="p-4">
-                    <h3 class="font-bold text-gray-900 text-sm group-hover:text-red-700 transition">Pure Chyangra Pashmina Shawl</h3>
-                    <p class="text-xs text-gray-500 mb-2">100% Hand-spun Cashmere</p>
+                    <h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition" data-i18n="p1t">Pure Chyangra Pashmina Shawl</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="p1s">100% Hand-spun Cashmere</p>
                     <div class="flex items-center justify-between mt-3">
-                        <span class="text-sm font-bold text-red-700">NPR 12,500</span>
-                        <button onclick="addToCart('Pure Chyangra Pashmina Shawl')" class="bg-gray-100 hover:bg-red-700 hover:text-white text-gray-700 p-2 rounded-lg text-xs font-semibold transition">+ Add to Bag</button>
+                        <span class="text-sm font-bold text-red-700 dark:text-red-400">NPR 12,500</span>
+                        <button onclick="addToCart('Pure Chyangra Pashmina Shawl')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition" data-i18n="addToBag">+ Add to Bag</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition" data-category="dhaka">
+            <div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="dhaka">
                 <div class="h-48 overflow-hidden relative">
                     <img src="https://images.pexels.com/photos/2292919/pexels-photo-2292919.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Dhaka Topi & Scarf" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     <span class="absolute top-2 left-2 bg-amber-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">PALPA</span>
                 </div>
                 <div class="p-4">
-                    <h3 class="font-bold text-gray-900 text-sm group-hover:text-red-700 transition">Authentic Palpali Dhaka Scarf</h3>
-                    <p class="text-xs text-gray-500 mb-2">Traditional Wooden Loom Weave</p>
+                    <h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition" data-i18n="p2t">Authentic Palpali Dhaka Scarf</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="p2s">Traditional Wooden Loom Weave</p>
                     <div class="flex items-center justify-between mt-3">
-                        <span class="text-sm font-bold text-red-700">NPR 1,800</span>
-                        <button onclick="addToCart('Authentic Palpali Dhaka Scarf')" class="bg-gray-100 hover:bg-red-700 hover:text-white text-gray-700 p-2 rounded-lg text-xs font-semibold transition">+ Add to Bag</button>
+                        <span class="text-sm font-bold text-red-700 dark:text-red-400">NPR 1,800</span>
+                        <button onclick="addToCart('Authentic Palpali Dhaka Scarf')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition" data-i18n="addToBag">+ Add to Bag</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition" data-category="lokta">
+            <div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="lokta">
                 <div class="h-48 overflow-hidden relative">
                     <img src="https://images.pexels.com/photos/261763/pexels-photo-261763.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Lokta Journal" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     <span class="absolute top-2 left-2 bg-green-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">ECO PAPER</span>
                 </div>
                 <div class="p-4">
-                    <h3 class="font-bold text-gray-900 text-sm group-hover:text-red-700 transition">Himalayan Bark Lokta Journal</h3>
-                    <p class="text-xs text-gray-500 mb-2">Handbound Eco-friendly Paper</p>
+                    <h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition" data-i18n="p3t">Himalayan Bark Lokta Journal</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="p3s">Handbound Eco-friendly Paper</p>
                     <div class="flex items-center justify-between mt-3">
-                        <span class="text-sm font-bold text-red-700">NPR 750</span>
-                        <button onclick="addToCart('Himalayan Bark Lokta Journal')" class="bg-gray-100 hover:bg-red-700 hover:text-white text-gray-700 p-2 rounded-lg text-xs font-semibold transition">+ Add to Bag</button>
+                        <span class="text-sm font-bold text-red-700 dark:text-red-400">NPR 750</span>
+                        <button onclick="addToCart('Himalayan Bark Lokta Journal')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition" data-i18n="addToBag">+ Add to Bag</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg transition" data-category="metal">
+            <div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition" data-category="metal">
                 <div class="h-48 overflow-hidden relative">
                     <img src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Patan Bronze" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                     <span class="absolute top-2 left-2 bg-yellow-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">PATAN CRAFT</span>
                 </div>
                 <div class="p-4">
-                    <h3 class="font-bold text-gray-900 text-sm group-hover:text-red-700 transition">Hand-carved Bronze Buddha</h3>
-                    <p class="text-xs text-gray-500 mb-2">45-Day Lost Wax Casting Process</p>
+                    <h3 class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-red-700 dark:group-hover:text-red-400 transition" data-i18n="p4t">Hand-carved Bronze Buddha</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="p4s">45-Day Lost Wax Casting Process</p>
                     <div class="flex items-center justify-between mt-3">
-                        <span class="text-sm font-bold text-red-700">NPR 24,000</span>
-                        <button onclick="addToCart('Hand-carved Bronze Buddha')" class="bg-gray-100 hover:bg-red-700 hover:text-white text-gray-700 p-2 rounded-lg text-xs font-semibold transition">+ Add to Bag</button>
+                        <span class="text-sm font-bold text-red-700 dark:text-red-400">NPR 24,000</span>
+                        <button onclick="addToCart('Hand-carved Bronze Buddha')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition" data-i18n="addToBag">+ Add to Bag</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 10. ARTISAN SPOTLIGHT (your original, unchanged) -->
-    <section class="bg-amber-50 border-y border-amber-200 py-12 px-4">
+    <!-- 10. ARTISAN SPOTLIGHT -->
+    <section class="bg-amber-50 dark:bg-gray-900 border-y border-amber-200 dark:border-gray-800 py-12 px-4 transition-colors">
         <div class="max-w-7xl mx-auto">
             <div class="text-center max-w-2xl mx-auto mb-10">
-                <span class="text-red-700 font-bold text-xs uppercase tracking-widest">Direct Impact</span>
-                <h2 class="text-3xl font-extrabold text-gray-900 mt-1 font-nepali">सिपालु हातहरुको कथा (Stories Behind the Craft)</h2>
-                <p class="text-xs text-gray-600 mt-2">Every order supports rural female weaving circles and heritage conservation.</p>
+                <span class="text-red-700 dark:text-red-400 font-bold text-xs uppercase tracking-widest" data-i18n="artTag">Direct Impact</span>
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mt-1 font-nepali" data-i18n="artTitle">सिपालु हातहरुको कथा (Stories Behind the Craft)</h2>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-2" data-i18n="artSub">Every order supports rural female weaving circles and heritage conservation.</p>
             </div>
             <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl p-6 border border-amber-100 shadow-sm">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-amber-100 dark:border-gray-700 shadow-sm">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">S</div>
-                        <div><h4 class="font-bold text-sm text-gray-900">Sunita Shrestha</h4><p class="text-[11px] text-gray-500">Master Dhaka Weaver, Palpa</p></div>
+                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 flex items-center justify-center font-bold">S</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar1n">Sunita Shrestha</h4>
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar1r">Master Dhaka Weaver, Palpa</p>
+                        </div>
                     </div>
-                    <p class="text-xs text-gray-600 leading-relaxed italic">"I have been hand-weaving traditional Dhaka on wooden looms for 22 years. KalaGhar allows us to connect directly with buyers."</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic" data-i18n="ar1q">"I have been hand-weaving traditional Dhaka on wooden looms for 22 years. KalaGhar allows us to connect directly with buyers."</p>
                 </div>
-                <div class="bg-white rounded-xl p-6 border border-amber-100 shadow-sm">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-amber-100 dark:border-gray-700 shadow-sm">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">P</div>
-                        <div><h4 class="font-bold text-sm text-gray-900">Purna Shakya</h4><p class="text-[11px] text-gray-500">Bronze Sculptor, Patan</p></div>
+                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 flex items-center justify-center font-bold">P</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar2n">Purna Shakya</h4>
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar2r">Bronze Sculptor, Patan</p>
+                        </div>
                     </div>
-                    <p class="text-xs text-gray-600 leading-relaxed italic">"Lost-wax sculpting is passed down through generations in Patan. Each statue takes over a month of focused metalwork."</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic" data-i18n="ar2q">"Lost-wax sculpting is passed down through generations in Patan. Each statue takes over a month of focused metalwork."</p>
                 </div>
-                <div class="bg-white rounded-xl p-6 border border-amber-100 shadow-sm">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-amber-100 dark:border-gray-700 shadow-sm">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">M</div>
-                        <div><h4 class="font-bold text-sm text-gray-900">Maya Gurung</h4><p class="text-[11px] text-gray-500">Mustang Cashmere Spinner</p></div>
+                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 flex items-center justify-center font-bold">M</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ar3n">Maya Gurung</h4>
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="ar3r">Mustang Cashmere Spinner</p>
+                        </div>
                     </div>
-                    <p class="text-xs text-gray-600 leading-relaxed italic">"Chyangra goats live above 14,000 ft. We comb their undercoat by hand each spring to spin soft, authentic cashmere."</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic" data-i18n="ar3q">"Chyangra goats live above 14,000 ft. We comb their undercoat by hand each spring to spin soft, authentic cashmere."</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 11. SHIPPING CALCULATOR (your original, unchanged) -->
+    <!-- 11. SHIPPING CALCULATOR -->
     <section class="max-w-7xl mx-auto px-4 py-12">
-        <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 md:p-8 shadow-sm transition-colors">
             <div class="max-w-xl">
-                <span class="text-red-700 font-bold text-xs uppercase tracking-wider">Logistics &amp; Express Shipping</span>
-                <h3 class="text-2xl font-bold text-gray-900 mt-1">Estimate Delivery &amp; Rates</h3>
+                <span class="text-red-700 dark:text-red-400 font-bold text-xs uppercase tracking-wider" data-i18n="shipTag">Logistics &amp; Express Shipping</span>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1" data-i18n="shipTitle">Estimate Delivery &amp; Rates</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Destination</label>
-                        <select id="shippingDest" onchange="calcShipping()" class="w-full border border-gray-300 rounded p-2 text-sm">
-                            <option value="nepal">Nepal (Domestic Express)</option>
-                            <option value="usa">United States / Canada</option>
-                            <option value="europe">Europe / UK</option>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="destLabel">Destination</label>
+                        <select id="shippingDest" onchange="calcShipping()" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2 text-sm">
+                            <option value="nepal" data-i18n="destNepal">Nepal (Domestic Express)</option>
+                            <option value="usa" data-i18n="destUsa">United States / Canada</option>
+                            <option value="europe" data-i18n="destEurope">Europe / UK</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Order Amount (NPR)</label>
-                        <input id="shippingValue" type="number" value="3500" oninput="calcShipping()" class="w-full border border-gray-300 rounded p-2 text-sm">
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="amountLabel">Order Amount (NPR)</label>
+                        <input id="shippingValue" type="number" value="3500" oninput="calcShipping()" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2 text-sm">
                     </div>
                 </div>
-                <div id="shippingResult" class="bg-green-50 border border-green-200 rounded p-3 text-xs text-green-900">
-                    🚚 <strong>Free Domestic Delivery Eligible!</strong> Delivered within 2-3 business days.
-                </div>
+                <div id="shippingResult"></div>
             </div>
         </div>
     </section>
 
-    <!-- 12. FAQ (new) -->
+    <!-- 12. FAQ -->
     <section class="max-w-4xl mx-auto px-4 pb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center" data-i18n="faqTitle">Frequently Asked Questions</h2>
         <div class="space-y-3">
-            <details class="bg-white border border-gray-200 rounded-xl p-4" open>
-                <summary class="cursor-pointer font-semibold text-sm text-gray-900">Are the crafts certified authentic?</summary>
-                <p class="text-xs text-gray-600 mt-3">Yes — 100% Certified Authentic Craftsmanship from Kathmandu, Patan &amp; Palpa.</p>
+            <details class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4" open>
+                <summary class="cursor-pointer font-semibold text-sm text-gray-900 dark:text-white" data-i18n="q1">Are the crafts certified authentic?</summary>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-3" data-i18n="a1">Yes — 100% Certified Authentic Craftsmanship from Kathmandu, Patan &amp; Palpa.</p>
             </details>
-            <details class="bg-white border border-gray-200 rounded-xl p-4">
-                <summary class="cursor-pointer font-semibold text-sm text-gray-900">What are the shipping rates and delivery times?</summary>
-                <p class="text-xs text-gray-600 mt-3">Free Shipping across Nepal over NPR 3,000. Domestic orders are delivered within 2-3 business days. Global Express Delivery is available worldwide.</p>
+            <details class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
+                <summary class="cursor-pointer font-semibold text-sm text-gray-900 dark:text-white" data-i18n="q2">What are the shipping rates and delivery times?</summary>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-3" data-i18n="a2">Free Shipping across Nepal over NPR 3,000. Domestic orders are delivered within 2-3 business days. Global Express Delivery is available worldwide.</p>
             </details>
-            <details class="bg-white border border-gray-200 rounded-xl p-4">
-                <summary class="cursor-pointer font-semibold text-sm text-gray-900">Does my purchase support artisans directly?</summary>
-                <p class="text-xs text-gray-600 mt-3">Yes. Every order supports rural female weaving circles and heritage conservation, connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally.</p>
+            <details class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
+                <summary class="cursor-pointer font-semibold text-sm text-gray-900 dark:text-white" data-i18n="q3">Does my purchase support artisans directly?</summary>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-3" data-i18n="a3">Yes. Every order supports rural female weaving circles and heritage conservation, connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally.</p>
             </details>
         </div>
     </section>
 
-    <!-- 13. NEWSLETTER (new) -->
+    <!-- 13. NEWSLETTER -->
     <section class="max-w-7xl mx-auto px-4 pb-12">
         <div class="bg-red-700 rounded-2xl p-6 md:p-10 grid md:grid-cols-2 gap-6 items-center">
             <div class="text-white">
-                <h2 class="text-2xl font-extrabold mb-1">Join the KalaGhar community</h2>
-                <p class="text-sm text-red-100">New collections, artisan stories, and shipping updates.</p>
+                <h2 class="text-2xl font-extrabold mb-1" data-i18n="nlTitle">Join the KalaGhar community</h2>
+                <p class="text-sm text-red-100" data-i18n="nlSub">New collections, artisan stories, and shipping updates.</p>
             </div>
             <form onsubmit="handleNewsletter(event)" class="flex flex-wrap gap-3">
-                <input type="email" required placeholder="Your email address" aria-label="Email address"
+                <input type="email" required data-i18n-ph="nlPh" placeholder="Your email address" aria-label="Email address"
                        class="flex-1 min-w-[200px] bg-white/15 border border-white/30 text-white placeholder-red-100 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:bg-white/25">
-                <button type="submit" class="bg-white text-red-700 font-semibold text-sm px-6 py-2.5 rounded-lg hover:bg-red-50 transition">Subscribe</button>
+                <button type="submit" class="bg-white text-red-700 font-semibold text-sm px-6 py-2.5 rounded-lg hover:bg-red-50 transition" data-i18n="nlBtn">Subscribe</button>
             </form>
-            <p id="newsletterMsg" class="text-xs text-red-100 md:col-span-2 hidden">Thanks — you're subscribed.</p>
+            <p id="newsletterMsg" class="text-xs text-red-100 md:col-span-2 hidden" data-i18n="nlMsg">Thanks — you're subscribed.</p>
         </div>
     </section>
 
-    <!-- 14. FOOTER (your original, unchanged) -->
-    <footer class="bg-gray-900 text-gray-400 mt-auto py-10 border-t border-gray-800">
+    <!-- 14. FOOTER -->
+    <footer class="bg-gray-900 dark:bg-black text-gray-400 mt-auto py-10 border-t border-gray-800 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-sm">
             <div>
                 <h4 class="text-white font-bold mb-3">KalaGhar Marketplace</h4>
-                <p class="text-xs leading-relaxed">Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.</p>
+                <p class="text-xs leading-relaxed" data-i18n="footerAbout">Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.</p>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-3">Categories</h4>
+                <h4 class="text-white font-bold mb-3" data-i18n="fCategories">Categories</h4>
                 <ul class="space-y-1.5 text-xs">
-                    <li><a href="#marketplace" onclick="filterCategory('pashmina')" class="hover:text-white">Pashmina Shawls</a></li>
-                    <li><a href="#marketplace" onclick="filterCategory('dhaka')" class="hover:text-white">Palpali Dhaka</a></li>
-                    <li><a href="#marketplace" onclick="filterCategory('lokta')" class="hover:text-white">Lokta Stationery</a></li>
-                    <li><a href="#marketplace" onclick="filterCategory('metal')" class="hover:text-white">Patan Statues</a></li>
+                    <li><a href="#marketplace" onclick="filterCategory('pashmina')" class="hover:text-white" data-i18n="fPashmina">Pashmina &amp; Cashmere</a></li>
+                    <li><a href="#marketplace" onclick="filterCategory('dhaka')" class="hover:text-white" data-i18n="fDhaka">Palpali Dhaka</a></li>
+                    <li><a href="#marketplace" onclick="filterCategory('lokta')" class="hover:text-white" data-i18n="fLokta">Lokta Paper</a></li>
+                    <li><a href="#marketplace" onclick="filterCategory('metal')" class="hover:text-white" data-i18n="fMetal">Patan Statues</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-3">Customer Support</h4>
+                <h4 class="text-white font-bold mb-3" data-i18n="fSupport">Customer Support</h4>
                 <ul class="space-y-1.5 text-xs">
-                    <li><a href="#" class="hover:text-white">Shipping &amp; Customs Info</a></li>
-                    <li><a href="#" class="hover:text-white">Certificate of Origin</a></li>
-                    <li><a href="#" class="hover:text-white">Track Package</a></li>
+                    <li><a href="#" class="hover:text-white" data-i18n="fShippingInfo">Shipping &amp; Customs Info</a></li>
+                    <li><a href="#" class="hover:text-white" data-i18n="fCert">Certificate of Origin</a></li>
+                    <li><a href="#" class="hover:text-white" data-i18n="fTrack">Track Package</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-3">Portals</h4>
+                <h4 class="text-white font-bold mb-3" data-i18n="fPortals">Portals</h4>
                 <div class="flex flex-col gap-2">
-                    <button onclick="openModal('artisanModal')" class="bg-red-700 text-white text-xs px-3 py-2 rounded font-semibold hover:bg-red-800 transition text-left"><i class="fa-solid fa-hands-holding mr-1"></i> Seller Application</button>
-                    <button onclick="openModal('adminModal')" class="bg-gray-800 text-gray-300 text-xs px-3 py-2 rounded font-semibold hover:bg-gray-700 transition text-left"><i class="fa-solid fa-lock mr-1"></i> Admin Console</button>
+                    <button onclick="openModal('artisanModal')" class="bg-red-700 text-white text-xs px-3 py-2 rounded font-semibold hover:bg-red-800 transition text-left">
+                        <i class="fa-solid fa-hands-holding mr-1"></i> <span data-i18n="fSellerApp">Seller Application</span>
+                    </button>
+                    <button onclick="openModal('adminModal')" class="bg-gray-800 text-gray-300 text-xs px-3 py-2 rounded font-semibold hover:bg-gray-700 transition text-left">
+                        <i class="fa-solid fa-lock mr-1"></i> <span data-i18n="fAdmin">Admin Console</span>
+                    </button>
                 </div>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-gray-800 text-xs text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-2">
-            <p>&copy; 2026 KalaGhar Marketplace. All rights reserved.</p>
+            <p data-i18n="fRights">&copy; 2026 KalaGhar Marketplace. All rights reserved.</p>
             <p class="text-gray-500 font-nepali">कलाघर - नेपालको पहिचान</p>
         </div>
     </footer>
 
-    <!-- MODAL 1: CUSTOMER AUTH (completed) -->
+    <!-- MODAL 1: CUSTOMER AUTH -->
     <div id="customerAuthModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeModal('customerAuthModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="flex border-b border-gray-200 mb-6">
-                <button id="loginTabBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700">Customer Sign In</button>
+        <div class="bg-white dark:bg-gray-900 rounded-xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('customerAuthModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+                <button id="loginTabBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700 dark:text-red-400">Customer Sign In</button>
                 <button id="signupTabBtn" onclick="switchAuthTab('signup')" class="flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-gray-500">Create Account</button>
             </div>
 
             <form id="loginForm" onsubmit="handleCustomerLogin(event)" class="space-y-4 text-sm">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
-                    <input type="email" required placeholder="buyer@example.com" class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                    <input type="email" required placeholder="buyer@example.com" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
-                    <input type="password" required class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition">Sign In</button>
             </form>
 
             <form id="signupForm" onsubmit="handleCustomerLogin(event)" class="space-y-4 text-sm hidden">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Full Name</label>
-                    <input type="text" required placeholder="Your name" class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <input type="text" required placeholder="Your name" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
-                    <input type="email" required placeholder="buyer@example.com" class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                    <input type="email" required placeholder="buyer@example.com" class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
-                    <input type="password" required class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition">Create Account</button>
             </form>
@@ -452,18 +515,18 @@
 
     <!-- MODAL 2: ARTISAN APPLICATION -->
     <div id="artisanModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeModal('artisanModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-xl font-bold text-gray-900 mb-1">Become a Seller</h3>
-            <p class="text-xs text-gray-500 mb-5">Artisan &amp; cooperative application</p>
+        <div class="bg-white dark:bg-gray-900 rounded-xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('artisanModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Become a Seller</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-5">Artisan &amp; cooperative application</p>
             <form onsubmit="handleArtisanApply(event)" class="space-y-4 text-sm">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Artisan / Cooperative Name</label>
-                    <input type="text" required class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Artisan / Cooperative Name</label>
+                    <input type="text" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Craft Category</label>
-                    <select required class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Craft Category</label>
+                    <select required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                         <option value="">Select…</option>
                         <option>Pashmina &amp; Cashmere</option>
                         <option>Palpali Dhaka</option>
@@ -472,8 +535,8 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Email</label>
-                    <input type="email" required class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition">Submit Application</button>
             </form>
@@ -482,108 +545,378 @@
 
     <!-- MODAL 3: ADMIN -->
     <div id="adminModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeModal('adminModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-xl font-bold text-gray-900 mb-1">Admin Console</h3>
-            <p class="text-xs text-gray-500 mb-5">Restricted access</p>
+        <div class="bg-white dark:bg-gray-900 rounded-xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('adminModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Admin Console</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-5">Restricted access</p>
             <form onsubmit="handleAdminLogin(event)" class="space-y-4 text-sm">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Admin Email</label>
-                    <input type="email" required class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Admin Email</label>
+                    <input type="email" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
-                    <input type="password" required class="w-full border border-gray-300 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded p-2.5 text-sm focus:border-red-700 focus:outline-none">
                 </div>
                 <button type="submit" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-2.5 rounded-lg transition">Enter Console</button>
             </form>
         </div>
     </div>
 
+    <!-- 15. FLOATING SUPPORT: WHATSAPP + LIVE CHAT -->
+    <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+
+        <!-- Chat panel -->
+        <div id="chatPanel" class="hidden w-80 max-w-[calc(100vw-2.5rem)] h-96 flex-col bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-red-700 text-white px-4 py-3 flex items-start justify-between">
+                <div>
+                    <p class="font-bold text-sm" data-i18n="chatTitle">KalaGhar Support</p>
+                    <p class="text-[11px] text-red-100" data-i18n="chatSub">We usually reply in a few minutes</p>
+                </div>
+                <button onclick="toggleChat(false)" class="text-white/80 hover:text-white mt-0.5" aria-label="Close chat">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="chatMessages" class="flex-1 overflow-y-auto p-3 space-y-2 bg-gray-50 dark:bg-gray-950"></div>
+            <form onsubmit="sendChat(event)" class="p-2 border-t border-gray-200 dark:border-gray-800 flex gap-2 bg-white dark:bg-gray-900">
+                <input id="chatInput" data-i18n-ph="chatPh" placeholder="Type your message..." aria-label="Message"
+                       class="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-400 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-red-700">
+                <button type="submit" class="bg-red-700 hover:bg-red-800 text-white px-3 rounded-lg text-sm" aria-label="Send">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex items-center gap-2">
+            <a href="https://wa.me/9779800000000?text=Namaste%20KalaGhar%2C%20I%20have%20a%20question"
+               target="_blank" rel="noopener" aria-label="WhatsApp support" title="WhatsApp support"
+               class="w-12 h-12 rounded-full bg-green-600 hover:bg-green-700 text-white shadow-lg flex items-center justify-center text-2xl transition hover:scale-105">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <button onclick="toggleChat()" aria-label="Live chat" title="Live chat"
+                    class="w-12 h-12 rounded-full bg-red-700 hover:bg-red-800 text-white shadow-lg flex items-center justify-center text-lg transition hover:scale-105">
+                <i class="fa-solid fa-comments"></i>
+            </button>
+        </div>
+    </div>
+
     <script>
-    /* ---------- MODALS ---------- */
+    /* =========================================================
+       TRANSLATIONS
+       ========================================================= */
+    const I18N = {
+        en: {
+            t1: "✨ Empowering 1,200+ Nepali Artisans & Rural Cooperatives",
+            t2: "✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery",
+            t3: "📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa",
+            dispatch: 'Order today for dispatch from Kathmandu within <strong class="text-red-700 dark:text-red-400">1–2 business days</strong>.',
+            becomeSeller: "BECOME A SELLER",
+            signIn: "Sign In",
+            myAccount: "My Account",
+            searchPh: "Search handcrafted pashmina, dhaka, bronze statues, lokta paper...",
+            heroBadge: "Authentic Nepali Heritage Crafts",
+            heroTitle: "Handcrafted Heritage, Nepal's Identity",
+            heroSub: "Connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally. Certified origin & fair trade.",
+            exploreCatalog: "Explore Catalog",
+            registerArtisan: "Register as Artisan",
+            featuredTag: "Mustang",
+            featuredTitle: "Pure Chyangra Pashmina Shawl",
+            featuredSub: "100% Hand-spun Cashmere",
+            shopThisCraft: "Shop this craft",
+            b1t: "Empowering 1,200+ Artisans", b1s: "Nepali artisans & rural cooperatives",
+            b2t: "Free Shipping across Nepal", b2s: "On orders over NPR 3,000",
+            b3t: "Global Express Delivery", b3s: "Shipped worldwide from Kathmandu",
+            b4t: "100% Certified Authentic", b4s: "Kathmandu, Patan & Palpa",
+            cowTag: "Craft of the Week",
+            cowTitle: "Authentic Palpali Dhaka Scarf",
+            cowSub: "Traditional Wooden Loom Weave",
+            cowCta: "View this craft",
+            catsTitle: "Shop Popular Categories",
+            viewAll: "View All →",
+            cat1t: "Pashmina & Cashmere", cat1s: "Mustang",
+            cat2t: "Palpali Dhaka", cat2s: "Palpa",
+            cat3t: "Lokta Paper", cat3s: "Eco Paper",
+            cat4t: "Patan Statues", cat4s: "Patan Craft",
+            catalogTitle: "Curated Heritage Collections",
+            catalogSub: "Filter by authentic craft category",
+            fAll: "All Crafts", fPashmina: "Pashmina & Cashmere", fDhaka: "Palpali Dhaka",
+            fLokta: "Lokta Paper", fMetal: "Patan Statues",
+            p1t: "Pure Chyangra Pashmina Shawl", p1s: "100% Hand-spun Cashmere",
+            p2t: "Authentic Palpali Dhaka Scarf", p2s: "Traditional Wooden Loom Weave",
+            p3t: "Himalayan Bark Lokta Journal", p3s: "Handbound Eco-friendly Paper",
+            p4t: "Hand-carved Bronze Buddha", p4s: "45-Day Lost Wax Casting Process",
+            addToBag: "+ Add to Bag",
+            artTag: "Direct Impact",
+            artTitle: "Stories Behind the Craft",
+            artSub: "Every order supports rural female weaving circles and heritage conservation.",
+            ar1n: "Sunita Shrestha", ar1r: "Master Dhaka Weaver, Palpa",
+            ar1q: '"I have been hand-weaving traditional Dhaka on wooden looms for 22 years. KalaGhar allows us to connect directly with buyers."',
+            ar2n: "Purna Shakya", ar2r: "Bronze Sculptor, Patan",
+            ar2q: '"Lost-wax sculpting is passed down through generations in Patan. Each statue takes over a month of focused metalwork."',
+            ar3n: "Maya Gurung", ar3r: "Mustang Cashmere Spinner",
+            ar3q: '"Chyangra goats live above 14,000 ft. We comb their undercoat by hand each spring to spin soft, authentic cashmere."',
+            shipTag: "Logistics & Express Shipping",
+            shipTitle: "Estimate Delivery & Rates",
+            destLabel: "Destination",
+            destNepal: "Nepal (Domestic Express)",
+            destUsa: "United States / Canada",
+            destEurope: "Europe / UK",
+            amountLabel: "Order Amount (NPR)",
+            faqTitle: "Frequently Asked Questions",
+            q1: "Are the crafts certified authentic?",
+            a1: "Yes — 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa.",
+            q2: "What are the shipping rates and delivery times?",
+            a2: "Free Shipping across Nepal over NPR 3,000. Domestic orders are delivered within 2-3 business days. Global Express Delivery is available worldwide.",
+            q3: "Does my purchase support artisans directly?",
+            a3: "Yes. Every order supports rural female weaving circles and heritage conservation, connecting master weavers, bronze sculptors, and paper artisans directly with buyers globally.",
+            nlTitle: "Join the KalaGhar community",
+            nlSub: "New collections, artisan stories, and shipping updates.",
+            nlPh: "Your email address",
+            nlBtn: "Subscribe",
+            nlMsg: "Thanks — you're subscribed.",
+            footerAbout: "Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.",
+            fCategories: "Categories",
+            fSupport: "Customer Support",
+            fPortals: "Portals",
+            fShippingInfo: "Shipping & Customs Info",
+            fCert: "Certificate of Origin",
+            fTrack: "Track Package",
+            fSellerApp: "Seller Application",
+            fAdmin: "Admin Console",
+            fRights: "© 2026 KalaGhar Marketplace. All rights reserved.",
+            chatTitle: "KalaGhar Support",
+            chatSub: "We usually reply in a few minutes",
+            chatPh: "Type your message...",
+            chatWelcome: "Namaste! 🙏 How can we help you today?",
+            chatAuto: "Thanks for reaching out! Our team will reply shortly.",
+            srFree: "🚚 Free Domestic Delivery Eligible! Delivered within 2-3 business days.",
+            srAdd: "📦 Domestic shipping: NPR 200. Add NPR 3,000 more for free delivery.",
+            srUsa: "✈️ Global Express to US/Canada: NPR 2,500, 5–8 business days.",
+            srEurope: "✈️ Global Express to Europe/UK: NPR 2,200, 5–7 business days."
+        },
+        ne: {
+            t1: "✨ १,२००+ नेपाली शिल्पी र ग्रामीण सहकारीको सशक्तीकरण",
+            t2: "✈️ नेपालभर NPR ३,००० माथिको अर्डरमा निःशुल्क ढुवानी | विश्वव्यापी एक्सप्रेस डेलिभरी",
+            t3: "📜 काठमाडौं, पाटन र पाल्पाको १००% प्रमाणित प्रामाणिक शिल्प",
+            dispatch: 'आजै अर्डर गर्नुहोस् — काठमाडौंबाट <strong class="text-red-700 dark:text-red-400">१–२ कार्यदिवस</strong>भित्र पठाइनेछ।',
+            becomeSeller: "शिल्पी बन्नुहोस्",
+            signIn: "साइन इन",
+            myAccount: "मेरो खाता",
+            searchPh: "पश्मिना, ढाका, काँसको मूर्ति, लोक्ता कागज खोज्नुहोस्...",
+            heroBadge: "प्रामाणिक नेपाली सम्पदा शिल्प",
+            heroTitle: "हस्तकलाको संसार, नेपालको पहिचान",
+            heroSub: "मुख्य बुनकर, काँसका मूर्तिकार र कागज शिल्पीलाई सिधै विश्वभरका खरिदकर्तासँग जोड्दै। प्रमाणित उत्पत्ति र न्यायपूर्ण व्यापार।",
+            exploreCatalog: "क्याटलग हेर्नुहोस्",
+            registerArtisan: "शिल्पीको रूपमा दर्ता हुनुहोस्",
+            featuredTag: "मुस्ताङ",
+            featuredTitle: "शुद्ध च्याङ्ग्रा पश्मिना शल",
+            featuredSub: "१००% हातले कातेको क्यास्मियर",
+            shopThisCraft: "यो शिल्प किन्नुहोस्",
+            b1t: "१,२००+ शिल्पीको सशक्तीकरण", b1s: "नेपाली शिल्पी र ग्रामीण सहकारी",
+            b2t: "नेपालभर निःशुल्क ढुवानी", b2s: "NPR ३,००० माथिको अर्डरमा",
+            b3t: "विश्वव्यापी एक्सप्रेस डेलिभरी", b3s: "काठमाडौंबाट विश्वभर पठाइन्छ",
+            b4t: "१००% प्रमाणित प्रामाणिक", b4s: "काठमाडौं, पाटन र पाल्पा",
+            cowTag: "साताको शिल्प",
+            cowTitle: "प्रामाणिक पाल्पाली ढाका स्कार्फ",
+            cowSub: "परम्परागत काठको तानामा बुनिएको",
+            cowCta: "यो शिल्प हेर्नुहोस्",
+            catsTitle: "लोकप्रिय श्रेणीहरू",
+            viewAll: "सबै हेर्नुहोस् →",
+            cat1t: "पश्मिना र क्यास्मियर", cat1s: "मुस्ताङ",
+            cat2t: "पाल्पाली ढाका", cat2s: "पाल्पा",
+            cat3t: "लोक्ता कागज", cat3s: "इको पेपर",
+            cat4t: "पाटनका मूर्ति", cat4s: "पाटन शिल्प",
+            catalogTitle: "क्युरेटेड सम्पदा संग्रह",
+            catalogSub: "प्रामाणिक शिल्प श्रेणीअनुसार छान्नुहोस्",
+            fAll: "सबै शिल्प", fPashmina: "पश्मिना र क्यास्मियर", fDhaka: "पाल्पाली ढाका",
+            fLokta: "लोक्ता कागज", fMetal: "पाटनका मूर्ति",
+            p1t: "शुद्ध च्याङ्ग्रा पश्मिना शल", p1s: "१००% हातले कातेको क्यास्मियर",
+            p2t: "प्रामाणिक पाल्पाली ढाका स्कार्फ", p2s: "परम्परागत काठको तानामा बुनिएको",
+            p3t: "हिमाली लोक्ता जर्नल", p3s: "हातले बाँधिएको वातावरणमैत्री कागज",
+            p4t: "हातले कोरिएको काँसको बुद्ध", p4s: "४५ दिनको लस्ट वैक्स ढलाइ प्रक्रिया",
+            addToBag: "+ झोलामा",
+            artTag: "प्रत्यक्ष प्रभाव",
+            artTitle: "सिपालु हातहरुको कथा",
+            artSub: "हरेक अर्डरले ग्रामीण महिला बुनाई समूह र सम्पदा संरक्षणलाई सहयोग गर्छ।",
+            ar1n: "सुनिता श्रेष्ठ", ar1r: "मुख्य ढाका बुनकर, पाल्पा",
+            ar1q: '"मैले २२ वर्षदेखि काठको तानामा परम्परागत ढाका बुन्दै आएकी छु। कलाघरले हामीलाई सिधै खरिदकर्तासँग जोड्न दिन्छ।"',
+            ar2n: "पूर्ण शाक्य", ar2r: "काँस मूर्तिकार, पाटन",
+            ar2q: '"पाटनमा लस्ट-वैक्स मूर्तिकला पुस्तौंदेखि हस्तान्तरण भएको छ। हरेक मूर्तिमा एक महिनाभन्दा बढी समय लाग्छ।"',
+            ar3n: "माया गुरुङ", ar3r: "मुस्ताङ क्यास्मियर कात्ने",
+            ar3q: '"च्याङ्ग्रा बाख्रा १४,००० फिटभन्दा माथि बस्छन्। हामी हरेक वसन्तमा हातले भुत्ला कोरेर नरम क्यास्मियर कात्छौं।"',
+            shipTag: "लजिस्टिक्स र एक्सप्रेस ढुवानी",
+            shipTitle: "डेलिभरी र दर अनुमान",
+            destLabel: "गन्तव्य",
+            destNepal: "नेपाल (घरेलु एक्सप्रेस)",
+            destUsa: "अमेरिका / क्यानडा",
+            destEurope: "युरोप / बेलायत",
+            amountLabel: "अर्डर रकम (NPR)",
+            faqTitle: "बारम्बार सोधिने प्रश्नहरू",
+            q1: "के शिल्पहरू प्रमाणित प्रामाणिक छन्?",
+            a1: "हो — काठमाडौं, पाटन र पाल्पाको १००% प्रमाणित प्रामाणिक शिल्प।",
+            q2: "ढुवानी दर र डेलिभरी समय कति हो?",
+            a2: "NPR ३,००० माथि नेपालभर निःशुल्क ढुवानी। घरेलु अर्डर २–३ कार्यदिवसभित्र डेलिभरी। विश्वव्यापी एक्सप्रेस डेलिभरी उपलब्ध।",
+            q3: "के मेरो खरिदले शिल्पीलाई सिधै सहयोग गर्छ?",
+            a3: "हो। हरेक अर्डरले ग्रामीण महिला बुनाई समूह र सम्पदा संरक्षणलाई सहयोग गर्छ, र मुख्य बुनकर, काँस मूर्तिकार र कागज शिल्पीलाई विश्वभरका खरिदकर्तासँग जोड्छ।",
+            nlTitle: "कलाघर समुदायमा सामेल हुनुहोस्",
+            nlSub: "नयाँ संग्रह, शिल्पीका कथा र ढुवानी अपडेट।",
+            nlPh: "तपाईंको इमेल ठेगाना",
+            nlBtn: "सदस्यता लिनुहोस्",
+            nlMsg: "धन्यवाद — तपाईं सदस्यता लिनुभयो।",
+            footerAbout: "प्रामाणिक नेपाली शिल्पको प्रवर्द्धन, स्थानीय बुनकरको सशक्तीकरण र सम्पदा सामग्री विश्वभर डेलिभरी।",
+            fCategories: "श्रेणीहरू",
+            fSupport: "ग्राहक सहायता",
+            fPortals: "पोर्टलहरू",
+            fShippingInfo: "ढुवानी र भन्सार जानकारी",
+            fCert: "उत्पत्ति प्रमाणपत्र",
+            fTrack: "प्याकेज ट्र्याक",
+            fSellerApp: "शिल्पी आवेदन",
+            fAdmin: "एडमिन कन्सोल",
+            fRights: "© २०२६ कलाघर मार्केटप्लेस। सर्वाधिकार सुरक्षित।",
+            chatTitle: "कलाघर सहायता",
+            chatSub: "हामी सामान्यतया केही मिनेटमै जवाफ दिन्छौं",
+            chatPh: "तपाईंको सन्देश लेख्नुहोस्...",
+            chatWelcome: "नमस्ते! 🙏 आज हामी कसरी सहयोग गर्न सक्छौं?",
+            chatAuto: "सम्पर्क गर्नुभएकोमा धन्यवाद! हाम्रो टिमले चाँडै जवाफ दिनेछ।",
+            srFree: "🚚 निःशुल्क घरेलु डेलिभरी! २–३ कार्यदिवसभित्र पुग्नेछ।",
+            srAdd: "📦 घरेलु ढुवानी: NPR २००। निःशुल्क डेलिभरीका लागि NPR ३,००० पुर्याउनुहोस्।",
+            srUsa: "✈️ अमेरिका/क्यानडा एक्सप्रेस: NPR २,५००, ५–८ कार्यदिवस।",
+            srEurope: "✈️ युरोप/बेलायत एक्सप्रेस: NPR २,२००, ५–७ कार्यदिवस।"
+        }
+    };
+
+    let currentLang = 'en';
+
+    function t(key) {
+        return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en[key] || key);
+    }
+
+    /* =========================================================
+       LANGUAGE
+       ========================================================= */
+    function applyLang(lang) {
+        currentLang = (lang === 'ne') ? 'ne' : 'en';
+        document.documentElement.lang = currentLang;
+
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+            el.textContent = t(el.dataset.i18n);
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+            el.innerHTML = t(el.dataset.i18nHtml);
+        });
+        document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
+            el.placeholder = t(el.dataset.i18nPh);
+        });
+
+        // Toggle button shows the OTHER language
+        document.getElementById('langLabel').textContent = currentLang === 'en' ? 'नेपाली' : 'English';
+
+        calcShipping();
+        try { localStorage.setItem('kg-lang', currentLang); } catch (e) {}
+    }
+
+    function toggleLang() {
+        applyLang(currentLang === 'en' ? 'ne' : 'en');
+    }
+
+    /* =========================================================
+       THEME
+       ========================================================= */
+    function setThemeIcon() {
+        var dark = document.documentElement.classList.contains('dark');
+        var icon = document.getElementById('themeIcon');
+        if (icon) icon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+
+    function toggleTheme() {
+        var dark = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('kg-theme', dark ? 'dark' : 'light'); } catch (e) {}
+        setThemeIcon();
+    }
+
+    /* =========================================================
+       MODALS
+       ========================================================= */
     function openModal(id) {
-        const m = document.getElementById(id);
+        var m = document.getElementById(id);
         if (!m) return;
         m.classList.remove('hidden');
         m.classList.add('flex');
         document.body.style.overflow = 'hidden';
     }
     function closeModal(id) {
-        const m = document.getElementById(id);
+        var m = document.getElementById(id);
         if (!m) return;
         m.classList.add('hidden');
         m.classList.remove('flex');
         document.body.style.overflow = '';
     }
     document.querySelectorAll('.fixed.inset-0').forEach(function (m) {
-        m.addEventListener('click', function (e) {
-            if (e.target === m) closeModal(m.id);
-        });
+        m.addEventListener('click', function (e) { if (e.target === m) closeModal(m.id); });
     });
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             document.querySelectorAll('.fixed.inset-0').forEach(function (m) { closeModal(m.id); });
+            toggleChat(false);
         }
     });
 
-    /* ---------- AUTH TABS ---------- */
     function switchAuthTab(which) {
-        const loginForm = document.getElementById('loginForm');
-        const signupForm = document.getElementById('signupForm');
-        const loginBtn = document.getElementById('loginTabBtn');
-        const signupBtn = document.getElementById('signupTabBtn');
+        var loginForm = document.getElementById('loginForm');
+        var signupForm = document.getElementById('signupForm');
+        var loginBtn = document.getElementById('loginTabBtn');
+        var signupBtn = document.getElementById('signupTabBtn');
         if (which === 'login') {
             loginForm.classList.remove('hidden');
             signupForm.classList.add('hidden');
-            loginBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700';
+            loginBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700 dark:text-red-400';
             signupBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-gray-500';
         } else {
             signupForm.classList.remove('hidden');
             loginForm.classList.add('hidden');
-            signupBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700';
+            signupBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-red-700 text-red-700 dark:text-red-400';
             loginBtn.className = 'flex-1 py-2 font-bold text-sm border-b-2 border-transparent text-gray-500';
         }
     }
 
     function handleCustomerLogin(e) {
         e.preventDefault();
-        const label = document.getElementById('userStatusLabel');
-        if (label) label.textContent = 'My Account';
+        var label = document.getElementById('userStatusLabel');
+        if (label) { label.dataset.i18n = 'myAccount'; label.textContent = t('myAccount'); }
         closeModal('customerAuthModal');
     }
-
     function handleArtisanApply(e) {
-        e.preventDefault();
-        e.target.reset();
-        closeModal('artisanModal');
-        alert('Application received. Our team will contact you within 3 business days.');
+        e.preventDefault(); e.target.reset(); closeModal('artisanModal');
+        alert(currentLang === 'ne'
+            ? 'आवेदन प्राप्त भयो। हाम्रो टिमले ३ कार्यदिवसभित्र सम्पर्क गर्नेछ।'
+            : 'Application received. Our team will contact you within 3 business days.');
     }
-
     function handleAdminLogin(e) {
-        e.preventDefault();
-        closeModal('adminModal');
-        alert('Admin console is not connected yet.');
+        e.preventDefault(); closeModal('adminModal');
+        alert(currentLang === 'ne' ? 'एडमिन कन्सोल अझै जोडिएको छैन।' : 'Admin console is not connected yet.');
     }
-
     function handleNewsletter(e) {
         e.preventDefault();
-        const msg = document.getElementById('newsletterMsg');
+        var msg = document.getElementById('newsletterMsg');
         if (msg) msg.classList.remove('hidden');
         e.target.reset();
     }
 
-    /* ---------- CATEGORY FILTER ---------- */
+    /* =========================================================
+       FILTERS / SEARCH / CART
+       ========================================================= */
     function filterCategory(cat) {
         document.querySelectorAll('.cat-btn').forEach(function (b) {
-            b.classList.remove('active', 'bg-red-700', 'text-white');
-            b.classList.add('bg-gray-100', 'text-gray-700');
+            b.classList.remove('bg-red-700', 'text-white');
+            b.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-200');
         });
-        const btn = Array.from(document.querySelectorAll('.cat-btn'))
-            .find(function (b) { return b.getAttribute('onclick').indexOf("'" + cat + "'") > -1; });
+        var btn = Array.from(document.querySelectorAll('.cat-btn')).find(function (b) {
+            return (b.getAttribute('onclick') || '').indexOf("'" + cat + "'") > -1;
+        });
         if (btn) {
-            btn.classList.add('active', 'bg-red-700', 'text-white');
-            btn.classList.remove('bg-gray-100', 'text-gray-700');
+            btn.classList.add('bg-red-700', 'text-white');
+            btn.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-200');
         }
         document.querySelectorAll('.product-card').forEach(function (card) {
             card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
@@ -593,72 +926,133 @@
         }
     }
 
-    /* ---------- SEARCH ---------- */
     function filterProductsBySearch() {
-        const q = document.getElementById('searchInput').value.toLowerCase().trim();
+        var q = document.getElementById('searchInput').value.toLowerCase().trim();
         document.querySelectorAll('.product-card').forEach(function (card) {
             card.style.display = card.textContent.toLowerCase().indexOf(q) > -1 ? '' : 'none';
         });
     }
 
-    /* ---------- CART ---------- */
-    let cartCount = 0;
+    var cartCount = 0;
     function addToCart(name) {
         cartCount++;
-        const el = document.getElementById('cartCounter');
+        var el = document.getElementById('cartCounter');
         if (el) el.textContent = cartCount;
         console.log('Added to bag:', name);
     }
 
-    /* ---------- SHIPPING CALCULATOR ---------- */
+    /* =========================================================
+       SHIPPING CALCULATOR
+       ========================================================= */
     function calcShipping() {
-        const dest = document.getElementById('shippingDest').value;
-        const val = parseFloat(document.getElementById('shippingValue').value) || 0;
-        const out = document.getElementById('shippingResult');
-        let html = '';
+        var dest = document.getElementById('shippingDest').value;
+        var val = parseFloat(document.getElementById('shippingValue').value) || 0;
+        var out = document.getElementById('shippingResult');
+        var html = '';
+
         if (dest === 'nepal') {
             if (val >= 3000) {
-                html = '<div class="bg-green-50 border border-green-200 rounded p-3 text-xs text-green-900">🚚 <strong>Free Domestic Delivery Eligible!</strong> Delivered within 2-3 business days.</div>';
+                html = '<div class="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded p-3 text-xs text-green-900 dark:text-green-200">' + t('srFree') + '</div>';
             } else {
-                const fee = 200;
-                html = '<div class="bg-amber-50 border border-amber-200 rounded p-3 text-xs text-amber-900">📦 Domestic shipping: <strong>NPR ' + fee +
-                       '</strong>. Add NPR ' + (3000 - val) + ' more for free delivery.</div>';
+                var remaining = 3000 - val;
+                var msg = currentLang === 'ne'
+                    ? '📦 घरेलु ढुवानी: NPR २००। निःशुल्क डेलिभरीका लागि NPR ' + remaining + ' थप्नुहोस्।'
+                    : '📦 Domestic shipping: NPR 200. Add NPR ' + remaining + ' more for free delivery.';
+                html = '<div class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded p-3 text-xs text-amber-900 dark:text-amber-200">' + msg + '</div>';
             }
         } else if (dest === 'usa') {
-            html = '<div class="bg-blue-50 border border-blue-200 rounded p-3 text-xs text-blue-900">✈️ Global Express to US/Canada: <strong>NPR 2,500</strong>, 5–8 business days.</div>';
+            html = '<div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded p-3 text-xs text-blue-900 dark:text-blue-200">' + t('srUsa') + '</div>';
         } else {
-            html = '<div class="bg-blue-50 border border-blue-200 rounded p-3 text-xs text-blue-900">✈️ Global Express to Europe/UK: <strong>NPR 2,200</strong>, 5–7 business days.</div>';
+            html = '<div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded p-3 text-xs text-blue-900 dark:text-blue-200">' + t('srEurope') + '</div>';
         }
         out.innerHTML = html;
     }
 
-    /* ---------- COUNTDOWN ---------- */
+    /* =========================================================
+       COUNTDOWN
+       ========================================================= */
     (function countdown() {
-        const el = document.getElementById('countdown');
+        var el = document.getElementById('countdown');
         if (!el) return;
         function nextSunday() {
-            const d = new Date();
+            var d = new Date();
             d.setDate(d.getDate() + ((7 - d.getDay()) % 7 || 7));
             d.setHours(23, 59, 59, 0);
             return d;
         }
-        const end = nextSunday();
+        var end = nextSunday();
         function tick() {
-            const diff = end - new Date();
-            if (diff <= 0) { el.textContent = 'Offer ended'; return; }
-            const d = Math.floor(diff / 864e5);
-            const h = Math.floor(diff % 864e5 / 36e5);
-            const m = Math.floor(diff % 36e5 / 6e4);
-            const s = Math.floor(diff % 6e4 / 1000);
-            el.textContent = 'Ends in ' + d + 'd ' + String(h).padStart(2, '0') + 'h ' +
-                             String(m).padStart(2, '0') + 'm ' + String(s).padStart(2, '0') + 's';
+            var diff = end - new Date();
+            if (diff <= 0) {
+                el.textContent = currentLang === 'ne' ? 'अफर समाप्त' : 'Offer ended';
+                return;
+            }
+            var d = Math.floor(diff / 864e5);
+            var h = Math.floor(diff % 864e5 / 36e5);
+            var m = Math.floor(diff % 36e5 / 6e4);
+            var s = Math.floor(diff % 6e4 / 1000);
+            var pad = function (n) { return String(n).padStart(2, '0'); };
+            el.textContent = currentLang === 'ne'
+                ? 'बाँकी ' + d + 'दि ' + pad(h) + 'घ ' + pad(m) + 'मि ' + pad(s) + 'से'
+                : 'Ends in ' + d + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
         }
         tick();
         setInterval(tick, 1000);
     })();
 
-    /* ---------- INIT ---------- */
-    calcShipping();
+    /* =========================================================
+       LIVE CHAT
+       ========================================================= */
+    var chatOpen = false;
+    var chatStarted = false;
+
+    function toggleChat(force) {
+        var panel = document.getElementById('chatPanel');
+        chatOpen = (typeof force === 'boolean') ? force : !chatOpen;
+        panel.classList.toggle('hidden', !chatOpen);
+        panel.classList.toggle('flex', chatOpen);
+        if (chatOpen) {
+            if (!chatStarted) { addChatMessage('bot', t('chatWelcome')); chatStarted = true; }
+            setTimeout(function () { document.getElementById('chatInput').focus(); }, 50);
+        }
+    }
+
+    function addChatMessage(who, text) {
+        var box = document.getElementById('chatMessages');
+        var wrap = document.createElement('div');
+        wrap.className = who === 'user' ? 'flex justify-end' : 'flex justify-start';
+
+        var bubble = document.createElement('div');
+        bubble.className = who === 'user'
+            ? 'max-w-[80%] bg-red-700 text-white text-xs rounded-2xl rounded-br-sm px-3 py-2'
+            : 'max-w-[80%] bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700 text-xs rounded-2xl rounded-bl-sm px-3 py-2';
+        bubble.textContent = text;
+
+        wrap.appendChild(bubble);
+        box.appendChild(wrap);
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function sendChat(e) {
+        e.preventDefault();
+        var input = document.getElementById('chatInput');
+        var msg = input.value.trim();
+        if (!msg) return;
+        addChatMessage('user', msg);
+        input.value = '';
+        setTimeout(function () { addChatMessage('bot', t('chatAuto')); }, 900);
+    }
+
+    /* =========================================================
+       INIT
+       ========================================================= */
+    document.addEventListener('DOMContentLoaded', function () {
+        var saved = null;
+        try { saved = localStorage.getItem('kg-lang'); } catch (e) {}
+        applyLang(saved === 'ne' ? 'ne' : 'en');
+        setThemeIcon();
+        calcShipping();
+    });
     </script>
 </body>
 </html>
