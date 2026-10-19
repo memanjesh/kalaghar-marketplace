@@ -71,7 +71,7 @@
         const badges = KG.badgesFor(p);
         const promoted = p.promotedUntil && new Date(p.promotedUntil) > new Date();
         const title = KG.lang() === 'ne' && p.nameNe ? p.nameNe : p.name;
-        return '<div class="product-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition flex flex-col" data-category="' + esc(p.category) + '" data-region="' + esc(p.region) + '" data-search="' + esc((p.name + ' ' + p.sub + ' ' + p.materials + ' ' + KG.catName(p.category) + ' ' + KG.regionName(p.region) + ' ' + (p.nameNe || '')).toLowerCase()) + '">' +
+        return '<div class="product-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition flex flex-col" data-product-id="' + p.id + '" data-category="' + esc(p.category) + '" data-region="' + esc(p.region) + '" data-search="' + esc((p.name + ' ' + p.sub + ' ' + p.materials + ' ' + KG.catName(p.category) + ' ' + KG.regionName(p.region) + ' ' + (p.nameNe || '')).toLowerCase()) + '">' +
             '<div class="aspect-[4/3] overflow-hidden relative cursor-pointer" onclick="KG.openProduct(' + p.id + ')">' +
                 '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">' +
                 '<span class="kg-grad absolute top-2 left-2 text-white text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-full shadow">' + esc(p.tag || '') + '</span>' +
@@ -184,6 +184,7 @@
                     (imgs.length > 1 ? '<div class="flex gap-2 mt-2 overflow-x-auto">' + imgs.map(function (src, i) {
                         return '<button type="button" data-thumb="' + i + '" class="w-16 h-16 shrink-0 rounded-lg overflow-hidden border-2 ' + (i ? 'border-transparent' : 'border-red-700') + '"><img src="' + esc(src) + '" alt="" class="w-full h-full object-cover"></button>';
                     }).join('') + '</div>' : '') +
+                    (p.videoUrl ? '<div class="mt-3 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800">' + (/\.(mp4|webm)(\?|$)/i.test(p.videoUrl) ? '<video controls preload="metadata" class="w-full aspect-video bg-black"><source src="' + esc(p.videoUrl) + '"></video>' : '<a href="' + esc(p.videoUrl) + '" target="_blank" rel="noopener" class="flex items-center gap-2 p-3 text-sm font-semibold text-red-700 dark:text-amber-300"><i class="fa-solid fa-circle-play text-xl"></i>' + KG.tx('Watch the product video', 'उत्पादन भिडियो हेर्नुहोस्') + '</a>') + '</div>' : '') +
                     (p.placeholder ? '<p class="text-[11px] text-amber-700 dark:text-amber-400 mt-2"><i class="fa-solid fa-camera mr-1"></i>' + KG.tx('Sample listing — real product photos coming soon.', 'नमूना सूची — वास्तविक फोटो चाँडै।') + '</p>' : '') +
                 '</div>' +
                 '<div>' +
@@ -207,6 +208,7 @@
                     '</div>' +
                     '<div class="flex flex-wrap gap-2 mt-3">' +
                         '<button class="' + ui.btn2 + ' !text-xs" onclick="KG.openThread({sellerId:\'' + esc(p.sellerId) + '\', productId:' + p.id + '})"><i class="fa-regular fa-comments mr-1"></i>' + KG.tx('Message the maker', 'शिल्पीलाई सन्देश') + '</button>' +
+                        '<button class="' + ui.btn2 + ' !text-xs" onclick="KG.openCustomRequest(' + p.id + ',\'' + esc(p.sellerId) + '\')"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>' + KG.tx('Request a custom piece', 'अनुकूलित वस्तु माग्नुहोस्') + '</button>' +
                         '<button class="' + ui.btn2 + ' !text-xs" onclick="KG.shareProduct(' + p.id + ')"><i class="fa-solid fa-share-nodes mr-1"></i>' + KG.tx('Share', 'सेयर') + '</button>' +
                         '<button class="' + ui.btn2 + ' !text-xs" onclick="KG.giftThis(' + p.id + ')"><i class="fa-solid fa-gift mr-1"></i>' + KG.tx('Send as gift to Nepal', 'नेपालमा उपहार पठाउनुहोस्') + '</button>' +
                     '</div>' +
@@ -279,9 +281,11 @@
     KG.openFavorites = function (sharedIds) {
         const ids = sharedIds || KG.favs();
         const list = ids.map(function (id) { return KG.product(id); }).filter(Boolean);
+        const shops = sharedIds || !KG.followedShops ? [] : KG.followedShops().map(function (id) { return KG.seller(id); }).filter(Boolean);
         const shared = !!sharedIds;
         const body = KG.modal('kgFavsModal', shared ? KG.tx('Shared collection', 'सेयर गरिएको संग्रह') : '<i class="fa-solid fa-heart text-red-600 mr-1"></i>' + t('kgFavs'),
             (list.length ? KG.miniGrid(list) : '<p class="text-sm text-gray-500 text-center py-8">' + KG.tx('Tap the heart on any item to save it here.', 'कुनै पनि वस्तुमा मुटु थिचेर यहाँ राख्नुहोस्।') + '</p>') +
+            (shops.length ? '<h4 class="font-bold mt-6 mb-2">' + KG.tx('Favorite shops', 'मनपर्ने पसलहरू') + '</h4><div class="grid sm:grid-cols-2 gap-2">' + shops.map(function (s) { return '<button class="text-left border border-gray-200 dark:border-gray-800 rounded-xl p-3 hover:border-red-700" onclick="KG.openShop(\'' + esc(s.id) + '\')"><strong class="text-sm">' + esc(s.shopName) + '</strong><span class="block text-xs text-gray-500">' + esc(KG.regionName(s.region)) + ' · ' + esc(KG.catName(s.craft)) + '</span></button>'; }).join('') + '</div>' : '') +
             (list.length && !shared ? '<div class="flex flex-wrap gap-2 mt-5"><button class="' + ui.btn + '" onclick="KG.shareFavs()"><i class="fa-solid fa-link mr-1"></i>' + KG.tx('Share this collection', 'संग्रह सेयर गर्नुहोस्') + '</button><button class="' + ui.btn2 + '" onclick="KG.favsToCart()">' + KG.tx('Add all to bag', 'सबै झोलामा') + '</button></div>' : '') +
             (shared && list.length ? '<button class="' + ui.btn2 + ' mt-5" onclick="KG.store.set(\'kg-favs\', Array.from(new Set(KG.favs().concat([' + ids.join(',') + ']))));KG.updateFavCount();KG.toast(KG.tx(\'Saved to your favorites\',\'मनपर्नेमा राखियो\'))"><i class="fa-regular fa-heart mr-1"></i>' + KG.tx('Save all to my favorites', 'सबै मनपर्नेमा राख्नुहोस्') + '</button>' : ''), 'xl');
         return body;

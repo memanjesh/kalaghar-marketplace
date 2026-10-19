@@ -216,3 +216,17 @@ a.kg-contact:hover .kg-cicon { background: rgba(255, 255, 255, .18); }
 /* Footer repeats the support actions; hide floating buttons to keep it clear. */
 #kgFloat { transition: opacity .18s ease, visibility .18s ease; }
 #kgFloat.kg-float-in-footer { opacity: 0; visibility: hidden; pointer-events: none; }
+.kg-filter-check {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    min-height: 2.35rem;
+    padding: .45rem .7rem;
+    border: 1px solid rgb(209 213 219);
+    border-radius: .65rem;
+    font-size: .75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.dark .kg-filter-check { border-color: rgb(55 65 81); }
+.kg-filter-check input { accent-color: #b91c1c; }

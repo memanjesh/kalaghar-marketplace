@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     KG.initCheckout();
     KG.initDiscover();
     KG.initAdmin();
+    KG.initGrowth();
 
     // Re-draw the new sections whenever the language changes
     var origApplyLang = window.applyLang;

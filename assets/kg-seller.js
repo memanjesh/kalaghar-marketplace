@@ -32,6 +32,7 @@
             ['overview', 'fa-chart-line', KG.tx('Overview', 'सारांश')],
             ['listings', 'fa-box-open', KG.tx('Listings', 'सूची')],
             ['orders', 'fa-truck-fast', KG.tx('Orders', 'अर्डर') + (toShip ? ' (' + toShip + ')' : '')],
+            ['custom', 'fa-wand-magic-sparkles', KG.tx('Custom requests', 'अनुकूलित अनुरोध')],
             ['messages', 'fa-comments', KG.tx('Messages', 'सन्देश') + (unread ? ' (' + unread + ')' : '')],
             ['earnings', 'fa-wallet', KG.tx('Earnings', 'आम्दानी')],
             ['marketing', 'fa-bullhorn', KG.tx('Promote & coupons', 'प्रचार र कुपन')],
@@ -44,7 +45,7 @@
             }).join('') + '<button class="text-xs text-gray-500 hover:text-red-700 ml-auto" onclick="KG.closeModal(\'kgSeller\');KG.openShop(\'' + esc(s.id) + '\')"><i class="fa-solid fa-eye mr-1"></i>' + KG.tx('View my shop', 'मेरो पसल हेर्नुहोस्') + '</button></div>' +
             '<div id="kgSellerBody"></div>', 'full');
         const box = body.querySelector('#kgSellerBody');
-        ({ overview: overview, listings: listings, orders: ordersTab, messages: messagesTab, earnings: earnings, marketing: marketing, profile: profile })[tab](box, s);
+        ({ overview: overview, listings: listings, orders: ordersTab, custom: customRequests, messages: messagesTab, earnings: earnings, marketing: marketing, profile: profile })[tab](box, s);
     };
 
     function sellerOrders(sid) { return KG.store.get('kg-orders', []).filter(function (o) { return o.sellerId === sid; }).reverse(); }
@@ -137,7 +138,9 @@
                 '</div>' +
                 '<div><label class="' + ui.label + '" for="ls-descNe">' + KG.tx('Description in Nepali', 'नेपालीमा विवरण') + '</label><textarea id="ls-descNe" name="descNe" rows="3" class="' + ui.input + '">' + esc(v.descNe) + '</textarea>' + mic('descNe') + '</div>' +
                 '<div><label class="' + ui.label + '" for="ls-description">' + KG.tx('Description in English', 'अङ्ग्रेजीमा विवरण') + '</label><textarea id="ls-description" name="description" rows="3" class="' + ui.input + '">' + esc(v.description) + '</textarea>' + (C.translateEndpoint ? '<button type="button" id="ls-translate" class="text-xs text-red-700 dark:text-red-400 font-semibold mt-1"><i class="fa-solid fa-language mr-1"></i>' + KG.tx('Translate from Nepali', 'नेपालीबाट अनुवाद') + '</button>' : '') + '</div>' +
+                '<div class="rounded-xl border border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-900/20 p-3"><div class="flex flex-wrap items-center justify-between gap-2"><div><p class="text-sm font-bold"><i class="fa-solid fa-wand-magic-sparkles text-purple-700 mr-1"></i>' + KG.tx('AI listing assistant', 'AI सूची सहायक') + '</p><p class="' + ui.muted + '">' + KG.tx('Suggests a title, short description, full description, tags and care instructions. You review every field before saving.', 'शीर्षक, विवरण, ट्याग र हेरचाह सुझाव दिन्छ। सुरक्षित गर्नुअघि सबै जाँच्नुहोस्।') + '</p></div><button type="button" id="ls-ai" class="' + ui.btn2 + ' !text-xs"' + (!(C.ai && C.ai.listingAssistantEndpoint) ? ' disabled title="Configure the server endpoint first"' : '') + '>' + KG.tx('Generate suggestions', 'सुझाव बनाउनुहोस्') + '</button></div><p id="ls-ai-status" class="text-xs mt-2"></p></div>' +
                 f('care', KG.tx('Care instructions', 'हेरचाह निर्देशन'), v.care) +
+                f('videoUrl', KG.tx('Product video URL (optional)', 'उत्पादन भिडियो लिङ्क (ऐच्छिक)'), v.videoUrl || '', 'url', 'placeholder="https://…/video.mp4 or YouTube/Vimeo"') +
                 '<label class="flex items-center gap-2 text-sm"><input type="checkbox" name="personalizable" class="accent-red-700"' + (v.personalizable ? ' checked' : '') + '> ' + KG.tx('Buyers can request personalization (name, colour, size)', 'खरिदकर्ताले अनुकूलन माग्न सक्छन्') + '</label>' +
                 '<div id="ls-pashmina" class="hidden text-xs bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900 rounded-lg p-3"><i class="fa-solid fa-certificate text-red-700 mr-1"></i>' + KG.tx('Pashmina listings get the "Chyangra Pashmina Verified" badge once your Chyangra Pashmina trademark licence is verified. Upload it under Shop profile.', 'च्याङ्ग्रा पश्मिना ट्रेडमार्क इजाजतपत्र प्रमाणित भएपछि ब्याज देखिन्छ। पसल प्रोफाइलमा अपलोड गर्नुहोस्।') + ' ' + ((s.chyangraCert && s.chyangraCert.status) ? '<strong>' + KG.tx('Status: ', 'स्थिति: ') + esc(s.chyangraCert.status) + '</strong>' : '') + '</div>' +
                 '<p id="ls-err" class="text-xs text-red-700 hidden" role="alert"></p>' +
@@ -187,6 +190,15 @@
                 .catch(function () { KG.toast(KG.tx('Translation unavailable right now.', 'अनुवाद अहिले उपलब्ध छैन।'), 'warn'); });
         }
         const tb = body.querySelector('#ls-translate'); if (tb) tb.addEventListener('click', function () { translate('nameNe'); translate('descNe'); });
+        const ai = body.querySelector('#ls-ai'); if (ai && C.ai && C.ai.listingAssistantEndpoint) ai.addEventListener('click', function () {
+            const status = body.querySelector('#ls-ai-status'); ai.disabled = true; status.textContent = KG.tx('Creating suggestions…', 'सुझाव बनाउँदै…');
+            const headers = { 'Content-Type': 'application/json' }; if (KG.authToken) headers.Authorization = 'Bearer ' + KG.authToken;
+            fetch(C.ai.listingAssistantEndpoint, { method: 'POST', headers: headers, body: JSON.stringify({ name: form.name.value.trim(), nameNe: form.nameNe.value.trim(), description: form.description.value.trim(), descNe: form.descNe.value.trim(), materials: form.materials.value.trim(), category: form.category.value, region: form.region.value, priceNpr: +form.price.value || null }) })
+                .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Assistant unavailable'); return j; }); })
+                .then(function (j) { const x = j.suggestion || j; if (x.name) form.name.value = x.name; if (x.tagline) form.sub.value = x.tagline; if (x.description) form.description.value = x.description; if (x.care) form.care.value = x.care; status.textContent = KG.tx('Suggestions added — review and edit them before saving.', 'सुझाव थपियो — सुरक्षित गर्नुअघि जाँच्नुहोस्।'); })
+                .catch(function (e) { status.textContent = e.message; status.className = 'text-xs mt-2 text-red-700'; })
+                .finally(function () { ai.disabled = false; });
+        });
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -200,7 +212,7 @@
             const prod = Object.assign({}, base, {
                 name: name || nameNe, nameNe: nameNe, sub: form.sub.value.trim(), description: form.description.value.trim(), descNe: form.descNe.value.trim(),
                 category: form.category.value, price: Math.round(+form.price.value), stock: +form.stock.value || 0, materials: form.materials.value.trim(), size: form.size.value.trim(),
-                weightG: +form.weightG.value || 500, region: region, care: form.care.value.trim(), personalizable: form.personalizable.checked,
+                weightG: +form.weightG.value || 500, region: region, care: form.care.value.trim(), videoUrl: /^https:\/\//.test(form.videoUrl.value.trim()) ? form.videoUrl.value.trim() : '', personalizable: form.personalizable.checked,
                 images: images, image: images[0], sellerId: s.id, tag: (KG.REGIONS.find(function (r) { return r.id === region; }) || { en: 'NEPAL' }).en.toUpperCase(), tagClass: base.tagClass || 'bg-red-700',
                 needsTranslation: !name, placeholder: false, updatedAt: KG.now()
             });
@@ -209,6 +221,20 @@
             }
         });
     };
+
+    /* ---------------------------- custom requests & quotations ---------------------------- */
+    function customRequests(box, s) {
+        const requests = KG.store.get('kg-custom-requests', []).filter(function (r) { return r.sellerId === s.id; }).reverse();
+        box.innerHTML = requests.length ? requests.map(function (r) {
+            const quote = (r.quotes || []).slice(-1)[0];
+            return '<article class="' + ui.card + ' p-4 mb-3"><div class="flex flex-wrap items-start justify-between gap-2"><div><strong>' + esc(r.title) + '</strong><p class="' + ui.muted + '">' + esc(r.id) + ' · ' + esc(r.buyerName) + ' · ' + r.qty + ' ' + KG.tx('piece(s)', 'वटा') + ' · ' + KG.tx('budget', 'बजेट') + ' ' + KG.npr(r.budget) + '</p></div><span class="text-[10px] uppercase font-bold rounded-full bg-amber-100 text-amber-800 px-2 py-1">' + esc(r.status) + '</span></div><p class="text-sm mt-3 whitespace-pre-line">' + esc(r.details) + '</p>' + (r.reference ? '<img src="' + esc(r.reference) + '" alt="Reference" class="w-28 h-28 object-cover rounded-lg border mt-3">' : '') +
+                '<form data-request="' + esc(r.id) + '" class="grid sm:grid-cols-4 gap-2 mt-4"><div><label class="' + ui.label + '">' + KG.tx('Quote (NPR)', 'कोटेसन (रु.)') + '</label><input name="amount" type="number" min="1" required value="' + (quote ? quote.amount : '') + '" class="' + ui.input + '"></div><div><label class="' + ui.label + '">' + KG.tx('Days', 'दिन') + '</label><input name="days" type="number" min="1" required value="' + (quote ? quote.days : 7) + '" class="' + ui.input + '"></div><div class="sm:col-span-2"><label class="' + ui.label + '">' + KG.tx('Terms / notes', 'सर्त / नोट') + '</label><input name="note" required maxlength="500" value="' + esc(quote ? quote.note : '') + '" class="' + ui.input + '"></div><button class="' + ui.btn + ' sm:col-span-4 !text-xs">' + KG.tx(quote ? 'Revise quote' : 'Send quote', quote ? 'कोटेसन संशोधन' : 'कोटेसन पठाउनुहोस्') + '</button></form></article>';
+        }).join('') : '<p class="text-sm text-gray-500 text-center py-8">' + KG.tx('No custom requests yet.', 'अहिलेसम्म अनुकूलित अनुरोध छैन।') + '</p>';
+        box.querySelectorAll('[data-request]').forEach(function (form) { form.addEventListener('submit', function (e) {
+            e.preventDefault(); const all = KG.store.get('kg-custom-requests', []), r = all.find(function (x) { return x.id === form.dataset.request; });
+            r.quotes = (r.quotes || []).concat([{ id: KG.uid('Q-'), amount: +form.amount.value, days: +form.days.value, note: form.note.value.trim(), status: 'sent', createdAt: KG.now() }]); r.status = 'quoted'; r.updatedAt = KG.now(); KG.store.set('kg-custom-requests', all); KG.toast(KG.tx('Quote sent', 'कोटेसन पठाइयो')); KG.openSellerDashboard('custom');
+        }); });
+    }
 
     /* ---------------------------- orders ---------------------------- */
     function ordersTab(box, s) {

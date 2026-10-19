@@ -86,3 +86,5 @@ Do not share the token or paste it anywhere except the site's Admin login. Becau
 ## Verification
 
 Run `npm test` for the content-security and page checks, and `npm run check` for JavaScript syntax checks. The payment service has no third-party runtime dependencies and remains under `server/`.
+
+For the full 20-feature delivery matrix, including what is only a preview and what still requires external onboarding, see [`docs/IMPLEMENTATION_STATUS.md`](docs/IMPLEMENTATION_STATUS.md). Production infrastructure and launch gates are in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).

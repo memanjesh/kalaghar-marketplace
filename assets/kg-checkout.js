@@ -288,9 +288,12 @@
         const base = C.payments.paymentApiBase.replace(/\/$/, '');
         const total = orders.reduce(function (s, o) { return s + o.total; }, 0);
         const returnUrl = location.origin + location.pathname + '?payment=return&group=' + encodeURIComponent(orders[0].groupId) + '&method=' + method;
+        const idempotencyKey = 'checkout:' + orders[0].groupId + ':' + method;
+        const headers = { 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey };
+        if (KG.authToken) headers.Authorization = 'Bearer ' + KG.authToken;
         fetch(base + '/api/pay/' + method + '/start', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ groupId: orders[0].groupId, orderIds: orders.map(function (o) { return o.id; }), amountNpr: total, buyer: orders[0].buyer, returnUrl: returnUrl, currency: KG.cur })
+            method: 'POST', headers: headers,
+            body: JSON.stringify({ groupId: orders[0].groupId, orderIds: orders.map(function (o) { return o.id; }), amountNpr: total, buyer: orders[0].buyer, returnUrl: returnUrl, currency: KG.cur, idempotencyKey: idempotencyKey })
         }).then(function (r) { return r.json(); }).then(function (j) {
             if (j.redirectUrl) location.href = j.redirectUrl;
             else if (j.form) { // eSewa: auto-submit signed form
@@ -405,7 +408,7 @@
         const seller = KG.mySeller();
         const orders = KG.myOrders();
         const threads = KG.myThreads();
-        const tabs = [['orders', KG.tx('My orders', 'मेरा अर्डर')], ['messages', KG.tx('Messages', 'सन्देश') + (threads.unread ? ' (' + threads.unread + ')' : '')], ['favs', t('kgFavs')]];
+        const tabs = [['orders', KG.tx('My orders', 'मेरा अर्डर')], ['messages', KG.tx('Messages', 'सन्देश') + (threads.unread ? ' (' + threads.unread + ')' : '')], ['favs', t('kgFavs')], ['rewards', KG.tx('Rewards', 'पुरस्कार')]];
         const body = KG.modal('kgAccount', esc(KG.tx('Namaste, ', 'नमस्ते, ') + u.name.split(' ')[0]),
             '<div class="flex flex-wrap gap-2 mb-4 items-center">' + tabs.map(function (x) { return '<button class="text-xs font-semibold px-3 py-1.5 rounded-full ' + (x[0] === tab ? 'bg-red-700 text-white' : 'bg-gray-100 dark:bg-gray-800') + '" onclick="KG.openAccount(\'' + x[0] + '\')">' + x[1] + '</button>'; }).join('') +
                 (seller ? '<button class="text-xs font-semibold px-3 py-1.5 rounded-full border border-red-700 text-red-700 dark:text-red-400" onclick="KG.closeModal(\'kgAccount\');KG.openSellerDashboard()"><i class="fa-solid fa-store mr-1"></i>' + t('fSellerDash') + '</button>' : '<button class="text-xs font-semibold px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-700" onclick="KG.closeModal(\'kgAccount\');openModal(\'artisanModal\')"><i class="fa-solid fa-hands-holding mr-1"></i>' + KG.tx('Sell on KalaGhar', 'KalaGhar मा बेच्नुहोस्') + '</button>') +
@@ -413,6 +416,7 @@
             '<div id="kgAcctBody"></div>', 'xl');
         const box = body.querySelector('#kgAcctBody');
         if (tab === 'favs') { KG.closeModal('kgAccount'); KG.openFavorites(); return; }
+        if (tab === 'rewards') { KG.closeModal('kgAccount'); KG.openRewards(); return; }
         if (tab === 'messages') { box.innerHTML = KG.threadListHtml(threads.list, 'buyer'); return; }
         box.innerHTML = orders.length ? orders.map(orderCard).join('') : '<p class="text-sm text-gray-500 text-center py-8">' + KG.tx('No orders yet.', 'अहिलेसम्म अर्डर छैन।') + '</p>';
     };

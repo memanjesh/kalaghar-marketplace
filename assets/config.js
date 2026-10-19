@@ -128,6 +128,13 @@ window.KG_CONFIG = {
        returns {translation}. Leave empty to have admin translate on approval. */
     translateEndpoint: '',
 
+    /* ---------- AI listing assistant ----------
+       Point this at the server route after OPENAI_API_KEY and Supabase Auth
+       are configured. The browser never receives the model provider key. */
+    ai: {
+        listingAssistantEndpoint: ''   // e.g. https://api.kalaghar.com/api/ai/listing-assistant
+    },
+
     /* ---------- Database ----------
        Leave empty to keep data in each visitor's browser (testing mode).
        Fill in to switch to a shared Supabase database (see db/schema.sql). */
