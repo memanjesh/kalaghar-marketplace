@@ -50,6 +50,60 @@
 .kg-catitem-on { font-weight: 700; box-shadow: inset 3px 0 0 #c2410c; }
 .dark .kg-catitem:hover, .dark .kg-catitem-on { background: rgba(217, 119, 6, .12); }
 
+/* Product discovery, craft passport and premium gift presentation */
+.kg-discovery-section { padding-top: 4px; }
+.kg-discovery-rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(190px, 1fr); grid-template-rows: 1fr; gap: 12px; overflow-x: auto; padding: 2px 2px 10px; scroll-snap-type: x proximity; scrollbar-width: thin; }
+.kg-discovery-card { min-width: 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 11px; padding: 9px; text-align: left; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; scroll-snap-align: start; transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease; }
+.kg-discovery-card:hover { transform: translateY(-2px); border-color: #d97706; box-shadow: 0 10px 25px -18px rgba(69, 26, 3, .7); }
+.kg-discovery-card img { width: 64px; height: 64px; border-radius: 11px; object-fit: cover; }
+.kg-discovery-card strong { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; color: #111827; font-size: 12px; line-height: 1.35; }
+.kg-discovery-card small { display: block; margin-top: 5px; color: #991b1b; font-size: 10px; font-weight: 700; }
+.dark .kg-discovery-card { background: #111827; border-color: #374151; }
+.dark .kg-discovery-card strong { color: #f9fafb; }
+.dark .kg-discovery-card small { color: #fbbf24; }
+
+.kg-packaging-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+.kg-packaging-choice { position: relative; display: grid; grid-template-columns: 30px minmax(0, 1fr); align-items: center; gap: 7px; min-width: 0; padding: 8px; border: 1px solid #e5e7eb; border-radius: 12px; cursor: pointer; transition: border-color .15s, background .15s; }
+.kg-packaging-choice input { position: absolute; opacity: 0; pointer-events: none; }
+.kg-packaging-choice:has(input:checked) { border-color: #b91c1c; background: #fff7ed; box-shadow: inset 0 0 0 1px #b91c1c; }
+.kg-packaging-art { width: 30px; height: 36px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #fff; background: linear-gradient(145deg, #7f1d1d, #d97706); box-shadow: 0 5px 12px -7px #7f1d1d; }
+.kg-packaging-choice strong, .kg-packaging-choice small { display: block; min-width: 0; }
+.kg-packaging-choice strong { color: #111827; font-size: 10px; line-height: 1.2; }
+.kg-packaging-choice small { color: #6b7280; font-size: 8px; line-height: 1.25; margin-top: 2px; }
+.dark .kg-packaging-choice { border-color: #374151; }
+.dark .kg-packaging-choice:has(input:checked) { border-color: #f59e0b; background: rgba(217, 119, 6, .12); box-shadow: inset 0 0 0 1px #f59e0b; }
+.dark .kg-packaging-choice strong { color: #f9fafb; }
+
+.kg-passport { position: relative; overflow: hidden; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 18px; border: 1px solid #f4d39b; border-radius: 18px; background: linear-gradient(135deg, #fffbeb, #fff7ed); }
+.kg-passport::after { content: "क"; position: absolute; right: -12px; bottom: -32px; color: rgba(153, 27, 27, .045); font-family: 'Mukta', sans-serif; font-size: 120px; font-weight: 800; line-height: 1; pointer-events: none; }
+.kg-passport-seal { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; background: var(--kg-grad); box-shadow: inset 0 0 0 4px rgba(255,255,255,.28), 0 9px 24px -13px #7f1d1d; }
+.kg-passport-id { padding: 5px 8px; border: 1px dashed #d97706; border-radius: 7px; color: #92400e; background: rgba(255,255,255,.55); font-size: 10px; font-weight: 800; }
+.kg-passport-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 13px; }
+.kg-passport-facts small, .kg-passport-facts strong { display: block; }
+.kg-passport-facts small { color: #92400e; font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.kg-passport-facts strong { margin-top: 2px; color: #1f2937; font-size: 11px; line-height: 1.35; }
+.dark .kg-passport { border-color: #78350f; background: linear-gradient(135deg, rgba(120,53,15,.22), rgba(127,29,29,.12)); }
+.dark .kg-passport-facts strong { color: #f3f4f6; }
+.dark .kg-passport-id { color: #fcd34d; background: rgba(17,24,39,.5); }
+
+.kg-gift-personal { display: flex; align-items: center; gap: 9px; align-self: end; min-height: 42px; padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer; }
+.kg-gift-personal strong, .kg-gift-personal small { display: block; }
+.kg-gift-personal strong { color: #374151; font-size: 10px; }
+.kg-gift-personal small { color: #9ca3af; font-size: 9px; }
+.dark .kg-gift-personal { border-color: #374151; }
+.dark .kg-gift-personal strong { color: #f3f4f6; }
+.kg-gift-result { display: flex; min-width: 0; flex-direction: column; text-align: left; padding: 8px; border: 1px solid #e5e7eb; border-radius: 13px; }
+.kg-gift-result:hover { border-color: #d97706; }
+.kg-gift-result img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 9px; }
+.kg-gift-result strong { margin-top: 7px; color: #111827; font-size: 11px; line-height: 1.3; }
+.kg-gift-result span { margin-top: 3px; color: #991b1b; font-size: 10px; font-weight: 800; }
+.kg-gift-result small { margin-top: 5px; color: #6b7280; font-size: 8px; }
+.dark .kg-gift-result { border-color: #374151; }
+.dark .kg-gift-result strong { color: #f9fafb; }
+.dark .kg-gift-result span { color: #fbbf24; }
+
+.kg-mobile-buybar { display: none; }
+
 /* Footer (Etsy layout, KalaGhar colours) */
 .kg-foot { background-color: #611b18; background-image: linear-gradient(135deg, #4b1118 0%, #6f1d18 58%, #7c2d12 100%); }
 .kg-fhead { color: #fff; font-weight: 800; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
@@ -74,6 +128,22 @@ body > section, body > footer, body > main, body > header { width: 100%; }
     .kg-header-actions { gap: 0 !important; }
     .kg-header-language { width: 36px; padding-left: 8px !important; padding-right: 8px !important; justify-content: center; }
     .kg-header-language #langLabel { display: none; }
+}
+
+@media (max-width: 767px) {
+    #kgProduct .kg-modal-body { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+    .kg-mobile-buybar { position: fixed; z-index: 110; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid #e5e7eb; background: rgba(255,255,255,.96); box-shadow: 0 -12px 30px -24px #111827; backdrop-filter: blur(14px); }
+    .kg-mobile-buybar small, .kg-mobile-buybar strong { display: block; }
+    .kg-mobile-buybar small { color: #6b7280; font-size: 9px; }
+    .kg-mobile-buybar strong { color: #991b1b; font-size: 15px; }
+    .kg-mobile-buybar button { min-height: 44px; padding: 0 20px; border-radius: 9999px; color: #fff; background: var(--kg-grad); font-size: 12px; font-weight: 800; }
+    .dark .kg-mobile-buybar { border-color: #374151; background: rgba(17,24,39,.96); }
+    .dark .kg-mobile-buybar strong { color: #fbbf24; }
+    .kg-packaging-grid { grid-template-columns: 1fr; }
+    .kg-passport { grid-template-columns: 42px minmax(0, 1fr); gap: 11px; padding: 14px; }
+    .kg-passport-seal { width: 42px; height: 42px; font-size: 17px; }
+    .kg-passport-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kg-discovery-rail { grid-auto-columns: minmax(210px, 75vw); }
 }
 
 @media (max-width: 350px) {
@@ -139,8 +209,8 @@ a.kg-contact:hover .kg-cicon { background: rgba(255, 255, 255, .18); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .kg-social, .kg-theme-button, .kg-locale-button { transition: none; }
-    .kg-social:hover, .kg-theme-button:hover { transform: none; }
+    .kg-social, .kg-theme-button, .kg-locale-button, .kg-discovery-card { transition: none; }
+    .kg-social:hover, .kg-theme-button:hover, .kg-discovery-card:hover { transform: none; }
 }
 
 /* Footer repeats the support actions; hide floating buttons to keep it clear. */

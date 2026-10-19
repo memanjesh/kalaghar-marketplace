@@ -15,12 +15,13 @@
         window.cartCount = n;
     }
     KG.updateCartCount = updateCartCount;
-    KG.addToCart = function (id, qty, personalization, silent) {
+    KG.addToCart = function (id, qty, personalization, silent, packaging) {
         const p = KG.product(id); if (!p) return;
         qty = Math.max(1, +qty || 1);
+        packaging = packaging || 'eco';
         const c = KG.cart();
-        const line = c.find(function (l) { return l.productId == id && (l.personalization || '') === (personalization || ''); });
-        if (line) line.qty += qty; else c.push({ productId: +id, qty: qty, personalization: (personalization || '').trim() });
+        const line = c.find(function (l) { return l.productId == id && (l.personalization || '') === (personalization || '') && (l.packaging || 'eco') === packaging; });
+        if (line) line.qty += qty; else c.push({ productId: +id, qty: qty, personalization: (personalization || '').trim(), packaging: packaging });
         saveCart(c); KG.track('cart', +id);
         if (!silent) KG.toast((KG.lang() === 'ne' && p.nameNe ? p.nameNe : p.name) + ' — ' + KG.tx('added to bag', 'झोलामा थपियो'));
     };
@@ -46,6 +47,7 @@
                         '<div class="flex-1 min-w-0"><button class="text-sm font-semibold text-gray-900 dark:text-white hover:text-red-700 text-left" onclick="KG.closeModal(\'kgCart\');KG.openProduct(' + l.p.id + ')">' + esc(l.p.name) + '</button>' +
                             '<p class="' + ui.muted + '">' + esc((KG.seller(l.p.sellerId) || {}).shopName || '') + '</p>' +
                             (l.personalization ? '<p class="text-[11px] text-gray-600 dark:text-gray-300 mt-0.5"><i class="fa-solid fa-pen-nib mr-1"></i>' + esc(l.personalization) + '</p>' : '') +
+                            '<p class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5"><i class="fa-solid fa-gift mr-1"></i>' + esc(KG.packaging(l.packaging).name) + '</p>' +
                             '<div class="flex items-center gap-2 mt-1.5"><button class="w-7 h-7 rounded border border-gray-300 dark:border-gray-700" aria-label="Decrease" onclick="KG.setQty(' + i + ',' + (l.qty - 1) + ')">−</button><span class="text-sm w-6 text-center">' + l.qty + '</span><button class="w-7 h-7 rounded border border-gray-300 dark:border-gray-700" aria-label="Increase" onclick="KG.setQty(' + i + ',' + (l.qty + 1) + ')">+</button><button class="text-xs text-gray-500 hover:text-red-700 ml-2" onclick="KG.setQty(' + i + ',0)">' + KG.tx('Remove', 'हटाउनुहोस्') + '</button></div>' +
                         '</div>' +
                         '<div class="text-right">' + KG.priceHtml(l.total) + '</div>' +
@@ -121,7 +123,7 @@
                 '</div>' +
                 '<aside class="lg:col-span-2"><div class="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 border border-gray-200 dark:border-gray-800 lg:sticky lg:top-16">' +
                     '<p class="text-sm font-bold text-gray-900 dark:text-white mb-3">' + KG.tx('Order summary', 'अर्डर सारांश') + '</p>' +
-                    '<div class="space-y-2 text-xs">' + lines.map(function (l) { return '<div class="flex justify-between gap-2"><span class="text-gray-700 dark:text-gray-300">' + esc(l.p.name) + ' × ' + l.qty + '</span><span>' + KG.npr(l.total) + '</span></div>'; }).join('') + '</div>' +
+                    '<div class="space-y-2 text-xs">' + lines.map(function (l) { return '<div class="flex justify-between gap-2"><span class="text-gray-700 dark:text-gray-300">' + esc(l.p.name) + ' × ' + l.qty + '<small class="block text-gray-400">' + esc(KG.packaging(l.packaging).name) + '</small></span><span>' + KG.npr(l.total) + '</span></div>'; }).join('') + '</div>' +
                     '<div class="flex gap-2 mt-4"><label class="sr-only" for="co-coupon">Coupon</label><input id="co-coupon" name="coupon" placeholder="' + KG.tx('Coupon code', 'कुपन कोड') + '" class="' + ui.input + ' uppercase" value="' + esc(st.coupon || '') + '"><button type="button" id="co-apply" class="' + ui.btn2 + '">' + KG.tx('Apply', 'लागू') + '</button></div>' +
                     '<p id="co-coupon-msg" class="text-[11px] mt-1"></p>' +
                     '<div id="co-totals" class="mt-3 text-sm space-y-1.5"></div>' +
@@ -245,7 +247,7 @@
                 buyer: { name: form.name.value.trim(), email: form.email.value.trim(), phone: form.phone.value.trim() },
                 address: { line: form.address.value.trim(), city: form.city.value.trim(), district: form.district.value.trim(), postcode: form.postcode.value.trim(), country: form.country.value.trim() },
                 gift: giftOn ? { recipient: form.rname.value.trim(), phone: form.rphone.value.trim(), occasion: form.occasion.value, message: form.giftMsg.value.trim(), hidePrices: form.hidePrices.checked } : null,
-                items: ls.map(function (l) { return { productId: l.p.id, name: l.p.name, price: l.p.price, qty: l.qty, personalization: l.personalization, sellerId: sid }; }),
+                items: ls.map(function (l) { return { productId: l.p.id, name: l.p.name, price: l.p.price, qty: l.qty, personalization: l.personalization, packaging: l.packaging || 'eco', sellerId: sid }; }),
                 goods: goods, discount: discount, coupon: r.coupon && !r.cd.error ? r.coupon.code : '', shipping: ship, insurance: ins, total: total,
                 vat: C.tax.pricesIncludeVat ? Math.round((goods - discount) - (goods - discount) / (1 + C.tax.vatRate)) : 0,
                 zone: r.zone.id, courier: courier, tracking: '',

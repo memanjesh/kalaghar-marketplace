@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "check": "node --check assets/kg-content.js && node --check assets/kg-admin.js && node --check assets/kg-core.js && node --check assets/kg-shop.js && node --check assets/kg-discover.js && node --check assets/kg-seller.js && node --check server/server.js"
+    "check": "node --check assets/kg-content.js && node --check assets/kg-admin.js && node --check assets/kg-core.js && node --check assets/kg-shop.js && node --check assets/kg-checkout.js && node --check assets/kg-discover.js && node --check assets/kg-seller.js && node --check server/server.js"
   },
   "engines": {
     "node": ">=18"

@@ -8,6 +8,43 @@
 
     KG.activeRegion = null;
 
+    /* ---------------------------- discovery helpers ---------------------------- */
+    KG.PACKAGING = [
+        { id: 'heritage', name: 'Heritage Wrap', detail: 'Lokta paper · Dhaka ribbon', icon: 'fa-scroll' },
+        { id: 'signature', name: 'Signature Box', detail: 'Keepsake box · gift card', icon: 'fa-box-open' },
+        { id: 'eco', name: 'Minimal Eco Wrap', detail: 'Recycled paper · jute twine', icon: 'fa-leaf' }
+    ];
+    KG.packaging = function (id) { return KG.PACKAGING.find(function (x) { return x.id === id; }) || KG.PACKAGING[0]; };
+    KG.recentIds = function () { return KG.store.get('kg-recent-products', []); };
+    KG.rememberProduct = function (id) {
+        const ids = KG.recentIds().filter(function (x) { return +x !== +id; });
+        ids.unshift(+id); KG.store.set('kg-recent-products', ids.slice(0, 12));
+        KG.renderDiscoveryShelf();
+    };
+    KG.renderDiscoveryShelf = function () {
+        const el = document.getElementById('kgDiscoveryShelf'); if (!el) return;
+        const all = KG.products();
+        const recent = KG.recentIds().map(function (id) { return KG.product(id); }).filter(Boolean).slice(0, 6);
+        const signals = recent.concat(KG.favs().map(function (id) { return KG.product(id); }).filter(Boolean));
+        const cats = signals.map(function (p) { return p.category; });
+        const regions = signals.map(function (p) { return p.region; });
+        const excluded = recent.map(function (p) { return +p.id; });
+        const picks = all.map(function (p) {
+            let score = (cats.indexOf(p.category) > -1 ? 3 : 0) + (regions.indexOf(p.region) > -1 ? 1.5 : 0) + KG.rating(p.id).avg / 5;
+            if (p.personalizable) score += .25;
+            return { p: p, score: score };
+        }).filter(function (x) { return excluded.indexOf(+x.p.id) < 0; })
+          .sort(function (a, b) { return b.score - a.score || a.p.price - b.p.price; }).slice(0, 6).map(function (x) { return x.p; });
+        function rail(list) {
+            return '<div class="kg-discovery-rail">' + list.map(function (p) {
+                return '<button type="button" onclick="KG.openProduct(' + p.id + ')" class="kg-discovery-card group"><img src="' + esc(p.image) + '" alt="" loading="lazy"><span><strong>' + esc(KG.lang() === 'ne' && p.nameNe ? p.nameNe : p.name) + '</strong><small>' + esc(KG.catName(p.category)) + ' · ' + KG.npr(p.price) + '</small></span></button>';
+            }).join('') + '</div>';
+        }
+        el.innerHTML = '<div class="flex items-end justify-between gap-3 mb-5"><div><span class="kg-eyebrow text-xs uppercase tracking-[.18em] font-extrabold">Made for your journey</span><h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mt-1">' + KG.tx('Your KalaGhar edit', 'तपाईंको कलाघर संग्रह') + '</h2><p class="text-xs text-gray-500 dark:text-gray-400 mt-1">' + KG.tx('A private, on-device selection based on crafts you explore and save.', 'तपाईंले हेर्नुभएको र रोज्नुभएको शिल्पमा आधारित।') + '</p></div></div>' +
+            (recent.length ? '<div class="mb-7"><h3 class="text-sm font-bold text-gray-900 dark:text-white mb-3"><i class="fa-regular fa-clock mr-1.5 text-red-700"></i>' + KG.tx('Recently viewed', 'हालसालै हेरिएका') + '</h3>' + rail(recent) + '</div>' : '') +
+            '<div><h3 class="text-sm font-bold text-gray-900 dark:text-white mb-3"><i class="fa-solid fa-wand-magic-sparkles mr-1.5 text-amber-600"></i>' + KG.tx('Picked for you', 'तपाईंका लागि छानिएका') + '</h3>' + rail(picks.length ? picks : all.slice(0, 6)) + '</div>';
+    };
+
     /* ---------------------------- favorites ---------------------------- */
     KG.favs = function () { return KG.store.get('kg-favs', []); };
     KG.isFav = function (id) { return KG.favs().indexOf(+id) > -1; };
@@ -20,7 +57,7 @@
             b.innerHTML = '<i class="fa-' + (i > -1 ? 'regular' : 'solid') + ' fa-heart"></i>';
             b.classList.toggle('text-red-600', i === -1);
         });
-        KG.updateFavCount(); KG.updateLocaleLabel();
+        KG.updateFavCount(); KG.updateLocaleLabel(); KG.renderDiscoveryShelf();
         KG.toast(i > -1 ? KG.tx('Removed from favorites', 'मनपर्नेबाट हटाइयो') : KG.tx('Saved to favorites', 'मनपर्नेमा राखियो'));
     };
     KG.updateFavCount = function () {
@@ -65,6 +102,7 @@
         });
         grid.innerHTML = list.length ? list.map(cardHtml).join('') : '<p class="col-span-full text-center text-sm text-gray-500 py-10">' + KG.tx('No products yet.', 'अहिलेसम्म कुनै उत्पादन छैन।') + '</p>';
         KG.applyFilters();
+        KG.renderDiscoveryShelf();
     };
     KG.applyFilters = function () {
         const q = ((document.getElementById('searchInput') || {}).value || '').toLowerCase().trim();
@@ -110,6 +148,7 @@
     KG.openProduct = function (id) {
         const p = KG.product(id); if (!p) return;
         KG.track('view', p.id);
+        KG.rememberProduct(p.id);
         history.replaceState(null, '', '#product-' + p.id);
         const s = KG.seller(p.sellerId) || {};
         const r = KG.rating(p.id);
@@ -118,6 +157,9 @@
         const dom = KG.zoneById('np-valley');
         const vat = C.tax.pricesIncludeVat ? p.price - p.price / (1 + C.tax.vatRate) : 0;
         const title = KG.lang() === 'ne' && p.nameNe ? p.nameNe : p.name;
+        const technique = { pashmina: 'Hand-combed & hand-finished', dhaka: 'Handloom geometric weave', lokta: 'Bark-fibre sheet making', metal: 'Lost-wax casting & hand finishing', singingbowl: 'Hand-hammering & tonal tuning', thangka: 'Mineral-pigment hand painting', felt: 'Wet felting by hand', tea: 'Small-batch orthodox processing', beads: 'Traditional bead stringing', wood: 'Hand carving', rugs: 'Tibetan hand-knotting' }[p.category] || 'Handmade craft process';
+        const makingTime = { pashmina: '4–7 days', dhaka: '3–6 days', lokta: '2–4 days', metal: '2–5 weeks', singingbowl: '5–10 days', thangka: '3–8 weeks', felt: '1–3 days', tea: 'Seasonal harvest', beads: '1–2 days', wood: '1–3 weeks', rugs: '4–10 weeks' }[p.category] || 'Varies by piece';
+        const passportId = 'KG-' + String(p.region || 'NP').slice(0, 3).toUpperCase() + '-' + String(p.id).padStart(4, '0');
         const rows = [
             [KG.tx('Materials', 'सामग्री'), p.materials],
             [KG.tx('Size', 'आकार'), p.size],
@@ -154,10 +196,13 @@
                     '<p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">' + (C.tax.pricesIncludeVat ? KG.tx('Price includes ' + Math.round(C.tax.vatRate * 100) + '% VAT (' + KG.npr(vat) + '). ', 'मूल्यमा ' + Math.round(C.tax.vatRate * 100) + '% भ्याट समावेश (' + KG.npr(vat) + ')। ') : '') + KG.tx('Shipping calculated at checkout. No hidden charges.', 'ढुवानी शुल्क चेकआउटमा देखिन्छ। कुनै लुकेको शुल्क छैन।') + '</p>' +
                     (p.description ? '<p class="text-sm text-gray-700 dark:text-gray-300 mt-3 whitespace-pre-line">' + esc(KG.lang() === 'ne' && p.descNe ? p.descNe : p.description) + '</p>' : '') +
                     (p.personalizable ? '<div class="mt-4"><label class="' + ui.label + '" for="kgPersonal"><i class="fa-solid fa-pen-nib mr-1 text-red-700"></i>' + KG.tx('Personalization (optional)', 'आफ्नो अनुरोध (ऐच्छिक)') + '</label><textarea id="kgPersonal" rows="2" maxlength="200" placeholder="' + KG.tx('e.g. initials to embroider, preferred colour, size', 'जस्तै: नाम/अक्षर, रङ, साइज') + '" class="' + ui.input + '"></textarea><p class="' + ui.muted + ' mt-1">' + KG.tx('Custom items may take 3–7 extra days.', 'अनुकूलित वस्तुमा ३–७ दिन थप लाग्न सक्छ।') + '</p></div>' : '') +
+                    '<div class="mt-4"><div class="flex items-center justify-between gap-3 mb-2"><label class="' + ui.label + ' !mb-0">' + KG.tx('Gift presentation', 'उपहार प्याकेजिङ') + '</label><span class="text-[10px] uppercase tracking-wider text-gray-400">' + KG.tx('Included', 'समावेश') + '</span></div><div class="kg-packaging-grid">' + KG.PACKAGING.map(function (x, i) {
+                        return '<label class="kg-packaging-choice"><input type="radio" name="kgPackaging" value="' + x.id + '"' + (i ? '' : ' checked') + '><span class="kg-packaging-art"><i class="fa-solid ' + x.icon + '"></i></span><span><strong>' + esc(x.name) + '</strong><small>' + esc(x.detail) + '</small></span></label>';
+                    }).join('') + '</div></div>' +
                     '<div class="flex items-center gap-2 mt-4">' +
                         '<label class="sr-only" for="kgQty">Quantity</label>' +
                         '<input id="kgQty" type="number" min="1" max="' + (p.stock || 99) + '" value="1" class="' + ui.input + ' !w-20 text-center">' +
-                        '<button class="' + ui.btn + ' flex-1" onclick="KG.addToCart(' + p.id + ', +document.getElementById(\'kgQty\').value, (document.getElementById(\'kgPersonal\')||{}).value)"><i class="fa-solid fa-bag-shopping mr-1"></i>' + t('addToBag') + '</button>' +
+                        '<button class="' + ui.btn + ' flex-1" onclick="KG.addProductWithOptions(' + p.id + ')"><i class="fa-solid fa-bag-shopping mr-1"></i>' + t('addToBag') + '</button>' +
                         '<button type="button" data-fav="' + p.id + '" onclick="KG.toggleFav(' + p.id + ', event)" aria-label="Save to favorites" class="' + ui.btn2 + ' ' + (KG.isFav(p.id) ? 'text-red-600' : '') + '"><i class="fa-' + (KG.isFav(p.id) ? 'solid' : 'regular') + ' fa-heart"></i></button>' +
                     '</div>' +
                     '<div class="flex flex-wrap gap-2 mt-3">' +
@@ -168,6 +213,7 @@
                     '<p class="text-[11px] text-green-700 dark:text-green-400 mt-3"><i class="fa-solid fa-shield-halved mr-1"></i>' + KG.tx('Covered by KalaGhar Purchase Protection — your payment is held until you receive your order. ', 'KalaGhar खरिद सुरक्षा — सामान नपाएसम्म तपाईंको रकम सुरक्षित राखिन्छ। ') + '<a class="underline" href="pages/purchase-protection.html" target="_blank">' + KG.tx('Learn more', 'थप जानकारी') + '</a></p>' +
                 '</div>' +
             '</div>' +
+            '<section class="kg-passport mt-7" aria-labelledby="kgPassportTitle"><div class="kg-passport-seal"><i class="fa-solid fa-fingerprint"></i></div><div class="min-w-0"><div class="flex flex-wrap items-center justify-between gap-2"><div><p class="text-[10px] uppercase tracking-[.2em] font-extrabold text-amber-700 dark:text-amber-300">Traceable craft story</p><h4 id="kgPassportTitle" class="font-extrabold text-lg text-gray-900 dark:text-white">KalaGhar Craft Passport</h4></div><code class="kg-passport-id">' + passportId + '</code></div><div class="kg-passport-facts"><span><small>Maker</small><strong>' + esc(s.shopName || 'KalaGhar artisan') + '</strong></span><span><small>Place</small><strong>' + esc(KG.regionName(p.region)) + ', Nepal</strong></span><span><small>Technique</small><strong>' + esc(technique) + '</strong></span><span><small>Making time</small><strong>' + esc(makingTime) + '</strong></span></div><p class="text-[11px] text-gray-500 dark:text-gray-400 mt-3"><i class="fa-solid fa-circle-check text-green-600 mr-1"></i>' + (s.verified ? 'Maker profile verified by KalaGhar. ' : 'Maker profile review in progress. ') + 'Passport details follow this listing from maker to delivery.</p></div></section>' +
             '<div class="mt-6 border-t border-gray-100 dark:border-gray-800 pt-4">' +
                 '<h4 class="font-bold text-sm text-gray-900 dark:text-white mb-2">' + KG.tx('Product details', 'उत्पादन विवरण') + '</h4>' +
                 '<dl class="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">' + rows.map(function (x) {
@@ -185,7 +231,8 @@
                     '</div>';
                 }).join('') : '<p class="text-sm text-gray-500">' + KG.tx('No reviews yet — be the first after your order arrives.', 'अहिलेसम्म समीक्षा छैन।') + '</p>') +
             '</div>' +
-            moreFromShop(p), 'xl');
+            moreFromShop(p) +
+            '<div class="kg-mobile-buybar"><div><small>' + KG.tx('Handmade in Nepal', 'नेपालमा हस्तनिर्मित') + '</small><strong>' + KG.npr(p.price) + '</strong></div><button type="button" onclick="KG.addProductWithOptions(' + p.id + ')"><i class="fa-solid fa-bag-shopping mr-1"></i>' + t('addToBag') + '</button></div>', 'xl');
 
         // gallery + zoom
         const zoom = body.querySelector('#kgZoom'), main = body.querySelector('#kgMainImg');
@@ -203,6 +250,13 @@
                 b.classList.replace('border-transparent', 'border-red-700');
             });
         });
+    };
+    KG.addProductWithOptions = function (id) {
+        const modal = document.getElementById('kgProduct');
+        const qty = modal && modal.querySelector('#kgQty');
+        const personal = modal && modal.querySelector('#kgPersonal');
+        const pack = modal && modal.querySelector('input[name="kgPackaging"]:checked');
+        KG.addToCart(id, qty ? +qty.value : 1, personal ? personal.value : '', false, pack ? pack.value : 'heritage');
     };
     function moreFromShop(p) {
         const more = KG.products().filter(function (x) { return x.sellerId === p.sellerId && x.id !== p.id; }).slice(0, 4);
@@ -258,12 +312,13 @@
         { id: 'wellness', en: 'Wellness / Meditation', ne: 'ध्यान', cats: ['singingbowl', 'thangka', 'felt'] }
     ];
     KG.openGiftMode = function () {
-        const state = { who: null, occ: null, max: 10000 };
+        const state = { who: null, occ: null, max: 10000, craft: '', destination: 'nepal', personal: false };
         const chip = function (group, x) { return '<button type="button" data-' + group + '="' + x.id + '" class="kg-chip text-xs font-semibold px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-700 hover:border-red-700">' + esc(KG.tx(x.en, x.ne)) + '</button>'; };
         const body = KG.modal('kgGift', '<i class="fa-solid fa-gift text-red-700 mr-1"></i>' + t('kgGiftMode'),
             '<p class="text-sm text-gray-600 dark:text-gray-300 mb-4">' + KG.tx('Tell us who it\'s for and we\'ll suggest handmade gifts from Nepal.', 'कसका लागि हो भन्नुहोस्, हामी नेपाली हस्तकलाका उपहार सुझाउँछौं।') + '</p>' +
             '<p class="' + ui.label + '">' + KG.tx('Who is it for?', 'कसका लागि?') + '</p><div class="flex flex-wrap gap-2 mb-4">' + RECIPIENTS.map(function (x) { return chip('who', x); }).join('') + '</div>' +
             '<p class="' + ui.label + '">' + KG.tx('Occasion', 'अवसर') + '</p><div class="flex flex-wrap gap-2 mb-4">' + OCCASIONS.map(function (x) { return chip('occ', x); }).join('') + '</div>' +
+            '<div class="grid sm:grid-cols-3 gap-3 mb-4"><div><label class="' + ui.label + '" for="kgGiftCraft">' + KG.tx('Preferred craft', 'मनपर्ने शिल्प') + '</label><select id="kgGiftCraft" class="' + ui.input + '"><option value="">' + KG.tx('Surprise me', 'आश्चर्य दिनुहोस्') + '</option>' + KG.visibleCategories().map(function (c) { return '<option value="' + esc(c.id) + '">' + esc(KG.tx(c.en, c.ne)) + '</option>'; }).join('') + '</select></div><div><label class="' + ui.label + '" for="kgGiftDestination">' + KG.tx('Deliver to', 'डेलिभरी स्थान') + '</label><select id="kgGiftDestination" class="' + ui.input + '"><option value="nepal">Nepal</option><option value="international">International</option></select></div><label class="kg-gift-personal"><input id="kgGiftPersonal" type="checkbox" class="accent-red-700"><span><strong>' + KG.tx('Personalizable only', 'अनुकूलित मात्र') + '</strong><small>' + KG.tx('Names, colours or sizes', 'नाम, रङ वा साइज') + '</small></span></label></div>' +
             '<label class="' + ui.label + '" for="kgGiftBudget">' + KG.tx('Budget up to', 'बजेट') + ' <span id="kgGiftBudgetVal" class="text-red-700 dark:text-red-400">' + KG.npr(10000) + '</span></label>' +
             '<input id="kgGiftBudget" type="range" min="500" max="30000" step="500" value="10000" class="w-full accent-red-700 mb-5">' +
             '<div id="kgGiftResults"></div>', 'xl');
@@ -275,15 +330,23 @@
                 let s = 0;
                 if (who && who.cats.indexOf(p.category) > -1) s += 2;
                 if (occ && occ.cats.indexOf(p.category) > -1) s += 2;
+                if (state.craft && p.category === state.craft) s += 4;
                 if (p.personalizable) s += 0.5;
+                if (state.destination === 'international') s += (p.weightG || 500) <= 1000 ? 1 : -.5;
                 s += KG.rating(p.id).avg / 5;
-                return { p: p, s: s };
+                const why = [];
+                if (who && who.cats.indexOf(p.category) > -1) why.push(KG.tx('fits recipient', 'प्राप्तकर्तालाई सुहाउँछ'));
+                if (occ && occ.cats.indexOf(p.category) > -1) why.push(KG.tx('occasion match', 'अवसर मिल्दो'));
+                if (state.craft && p.category === state.craft) why.push(KG.tx('your craft choice', 'तपाईंको शिल्प'));
+                if (p.personalizable) why.push(KG.tx('personalizable', 'अनुकूलित गर्न मिल्ने'));
+                if (state.destination === 'international' && (p.weightG || 500) <= 1000) why.push(KG.tx('easy to ship', 'पठाउन सजिलो'));
+                return { p: p, s: s, why: why };
             });
             const needsMatch = (who && who.cats.length) || (occ && occ.cats.length);
-            list = list.filter(function (x) { return !needsMatch || x.s >= 2; })
-              .sort(function (a, b) { return b.s - a.s; }).slice(0, 8).map(function (x) { return x.p; });
+            list = list.filter(function (x) { return (!state.personal || x.p.personalizable) && (!needsMatch || x.s >= 2); })
+              .sort(function (a, b) { return b.s - a.s; }).slice(0, 8);
             body.querySelector('#kgGiftResults').innerHTML = list.length
-                ? '<p class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">' + KG.tx('Gift ideas', 'उपहार सुझाव') + '</p>' + KG.miniGrid(list)
+                ? '<p class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">' + KG.tx('Best matches for you', 'तपाईंका उत्कृष्ट मिलान') + '</p><div class="grid grid-cols-2 sm:grid-cols-4 gap-3">' + list.map(function (x) { return '<button type="button" onclick="KG.openProduct(' + x.p.id + ')" class="kg-gift-result group"><img src="' + esc(x.p.image) + '" alt="" loading="lazy"><strong>' + esc(x.p.name) + '</strong><span>' + KG.npr(x.p.price) + '</span><small>' + esc((x.why.length ? x.why : [KG.tx('within your budget', 'तपाईंको बजेटमा')]).slice(0, 2).join(' · ')) + '</small></button>'; }).join('') + '</div>'
                 : '<p class="text-sm text-gray-500">' + KG.tx('No matches in this budget — try raising it.', 'यो बजेटमा केही भेटिएन।') + '</p>';
         }
         body.addEventListener('click', function (e) {
@@ -299,6 +362,9 @@
         body.querySelector('#kgGiftBudget').addEventListener('input', function (e) {
             state.max = +e.target.value; body.querySelector('#kgGiftBudgetVal').textContent = KG.npr(state.max); render();
         });
+        body.querySelector('#kgGiftCraft').addEventListener('change', function (e) { state.craft = e.target.value; render(); });
+        body.querySelector('#kgGiftDestination').addEventListener('change', function (e) { state.destination = e.target.value; render(); });
+        body.querySelector('#kgGiftPersonal').addEventListener('change', function (e) { state.personal = e.target.checked; render(); });
         render();
     };
 

@@ -31,7 +31,6 @@
             '<header><div class="in"><a class="logo" href="../index.html"><span class="k">क</span>KalaGhar</a><nav>' +
             '<a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="returns.html">Returns</a><a href="delivery.html">Delivery</a><a href="purchase-protection.html">Protection</a><a href="../index.html#complaint">Complaints</a></nav></div></header>');
         document.body.insertAdjacentHTML('beforeend',
-            '<footer><div class="in"><strong>' + vals.name + '</strong> · ' + vals.address + ' · Reg. No. ' + vals.reg + ' · PAN/VAT ' + vals.pan + ' · E-commerce portal listing ' + vals.listing +
-            '<br>Complaint officer: ' + vals.officer + ' · <a href="mailto:' + vals.officerEmail + '">' + vals.officerEmail + '</a> · ' + vals.officerPhone + ' · <a href="../index.html#complaint">File a complaint</a></div></footer>');
+            '<footer><div class="in">&copy; ' + new Date().getFullYear() + ' KalaGhar Marketplace. All rights reserved.</div></footer>');
     });
 })();

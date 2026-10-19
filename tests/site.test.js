@@ -51,3 +51,22 @@ test('mobile layout includes scrollable navigation and edge-safe footer rules', 
     assert.match(html, /kg-catnav overflow-x-auto/);
     assert.match(admin, /tabBar\.classList\.add\('overflow-x-auto'\)/);
 });
+
+test('guided shopping features are wired into products and checkout', function () {
+    const shop = fs.readFileSync(path.join(root, 'assets', 'kg-shop.js'), 'utf8');
+    const checkout = fs.readFileSync(path.join(root, 'assets', 'kg-checkout.js'), 'utf8');
+    const css = fs.readFileSync(path.join(root, 'assets', 'kg.css'), 'utf8');
+    assert.match(html, /id="kgDiscoveryShelf"/);
+    assert.match(shop, /KalaGhar Craft Passport/);
+    assert.match(shop, /Signature Box/);
+    assert.match(shop, /kgGiftDestination/);
+    assert.match(shop, /kg-mobile-buybar/);
+    assert.match(checkout, /packaging: l\.packaging/);
+    assert.match(css, /@media \(max-width: 767px\)[\s\S]*\.kg-mobile-buybar/);
+});
+
+test('pending registration and complaint officer strip is absent from the storefront footer', function () {
+    const discover = fs.readFileSync(path.join(root, 'assets', 'kg-discover.js'), 'utf8');
+    assert.doesNotMatch(discover, /id="kgBizStrip"/);
+    assert.doesNotMatch(html, /Reg\. No\. pending/);
+});
