@@ -231,8 +231,8 @@
         // Registration details required by the E-Commerce Act 2081, shown in the footer
         const b = C.business, pend = KG.tx('pending', 'प्रक्रियामा');
         const slot = document.getElementById('kgBizSlot'); if (!slot) return;
-        slot.innerHTML = '<div id="kgBizStrip" class="max-w-7xl mx-auto px-4 pb-6 text-[11px] text-amber-50/60 leading-relaxed border-t border-white/10 pt-5">' +
-            '<p><strong class="text-amber-50/85">' + esc(b.legalName || b.name) + '</strong> · ' + esc(b.address) +
+        slot.innerHTML = '<div id="kgBizStrip" class="max-w-7xl mx-auto px-4 pb-6 text-[11px] text-white/75 leading-relaxed border-t border-white/20 pt-5">' +
+            '<p><strong class="text-white">' + esc(b.legalName || b.name) + '</strong> · ' + esc(b.address) +
             ' · ' + KG.tx('Reg. No.', 'दर्ता नं.') + ' ' + esc(b.registrationNo || pend) + ' · PAN/VAT ' + esc(b.pan || pend) +
             ' · ' + KG.tx('E-commerce portal listing', 'ई-कमर्स पोर्टल सूचीकरण') + ' ' + esc(b.docListingNo || pend) + (b.specialPermits ? ' · ' + esc(b.specialPermits) : '') + '</p>' +
             '<p>' + KG.tx('Complaint officer', 'गुनासो सुन्ने अधिकारी') + ': ' + esc(b.complaintOfficer.name || KG.tx('to be appointed', 'नियुक्त हुन बाँकी')) + ' · <a class="underline" href="mailto:' + esc(b.complaintOfficer.email) + '">' + esc(b.complaintOfficer.email) + '</a> · ' + esc(b.complaintOfficer.phone) + '</p></div>';

@@ -51,10 +51,10 @@
 .dark .kg-catitem:hover, .dark .kg-catitem-on { background: rgba(217, 119, 6, .12); }
 
 /* Footer (Etsy layout, KalaGhar colours) */
-.kg-foot { background-color: #3b1206; background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px); background-size: 16px 16px; }
+.kg-foot { background-color: #b45309; background-image: radial-gradient(rgba(255, 255, 255, .10) 1px, transparent 1px), linear-gradient(135deg, #991b1b 0%, #c2410c 55%, #d97706 100%); background-size: 16px 16px, 100% 100%; }
 .kg-fhead { color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
-.kg-flink { color: rgba(255, 251, 235, .82); transition: color .15s; }
-.kg-flink:hover { color: #fcd34d; text-decoration: underline; text-underline-offset: 3px; }
+.kg-flink { color: rgba(255, 255, 255, .88); transition: color .15s; }
+.kg-flink:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Pictures: consistent rounded corners everywhere */
 #productGrid img, #regions img, #makers img, #workshops img, .kg-modal img { border-radius: inherit; }
