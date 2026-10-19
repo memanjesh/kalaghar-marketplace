@@ -98,7 +98,7 @@
     function festivalSection() {
         const f = KG.activeFestival(); if (!f) return '';
         const picks = KG.products().filter(function (p) { return f.categories.indexOf(p.category) > -1; }).slice(0, 4);
-        return '<section id="festival" class="max-w-7xl mx-auto px-4 pt-8"><div class="rounded-2xl bg-gradient-to-r ' + f.color + ' text-white p-6 md:p-8">' +
+        return '<section id="festival" class="relative w-full kg-grad text-white overflow-hidden border-b border-white/20"><div class="absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div><div class="relative max-w-7xl mx-auto px-4 py-10 md:py-12">' +
             '<div class="flex flex-wrap items-end justify-between gap-3 mb-5"><div><p class="text-xs font-bold uppercase tracking-widest opacity-90"><i class="fa-solid fa-sparkles mr-1"></i>' + KG.tx('Festival Storefront', 'चाडपर्व पसल') + '</p><h2 class="text-2xl md:text-3xl font-extrabold mt-1">' + esc(KG.tx(f.name + ' Gifts', f.ne + 'का उपहार')) + '</h2><p class="text-sm opacity-90 mt-1">' + KG.tx('Handpicked for the season — plus we deliver gifts to family anywhere in Nepal.', 'यो चाडका लागि छानिएका — नेपालभर परिवारसम्म उपहार पुर्‍याउँछौं।') + '</p></div>' +
             '<button class="bg-white text-red-800 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-red-50" onclick="KG.openGiftMode()"><i class="fa-solid fa-gift mr-1"></i>' + t('kgGiftMode') + '</button></div>' +
             '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">' + picks.map(function (p) {
