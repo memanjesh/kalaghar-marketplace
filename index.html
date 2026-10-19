@@ -151,6 +151,21 @@
                 </a>
             </div>
         </div>
+        <!-- CATEGORY NAV (Etsy-style) -->
+        <nav aria-label="Shop by category" class="border-t border-gray-100 dark:border-gray-800">
+            <div class="kg-catnav overflow-x-auto"><div id="categoryButtons" class="flex w-max mx-auto px-1 sm:px-2 whitespace-nowrap">
+                <button onclick="filterCategory('all')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fAll">All Crafts</button>
+                <button onclick="filterCategory('pashmina')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fPashmina">Himalayan Pashmina &amp; Wool</button>
+                <button onclick="filterCategory('dhaka')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fDhaka">Palpali Dhaka</button>
+                <button onclick="filterCategory('lokta')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fLokta">Lokta Paper</button>
+                <button onclick="filterCategory('metal')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fMetal">Patan Statues</button>
+                <button onclick="filterCategory('shoes')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fShoes">Shoes</button>
+                <button onclick="filterCategory('bags')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fBags">Bags</button>
+                <button onclick="filterCategory('homedecor')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fHomeDecor">Home Decor</button>
+                <button onclick="filterCategory('clothes')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fClothes">Clothes</button>
+                <button onclick="filterCategory('accessories')" class="cat-btn shrink-0 text-sm px-3 py-2.5 font-medium text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 border-b-2 border-transparent transition" data-i18n="fAccessories">Accessories</button>
+            </div></div>
+        </nav>
     </header>
 
     <!-- DISPATCH NOTICE -->
@@ -185,23 +200,6 @@
         </div>
     </section>
 
-    <!-- CATEGORY FILTER BAR (Moved here, below Hero, with larger fonts and new categories) -->
-    <section class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-[64px] z-30 shadow-sm transition-colors">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-center gap-2 sm:gap-3" id="categoryButtons">
-            <button onclick="filterCategory('all')" class="cat-btn active bg-red-700 text-white text-sm px-5 py-2 rounded-full font-semibold transition shadow-sm" data-i18n="fAll">All Crafts</button>
-            <button onclick="filterCategory('pashmina')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fPashmina">Himalayan Pashmina &amp; Wool</button>
-            <button onclick="filterCategory('dhaka')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fDhaka">Palpali Dhaka</button>
-            <button onclick="filterCategory('lokta')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fLokta">Lokta Paper</button>
-            <button onclick="filterCategory('metal')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fMetal">Patan Statues</button>
-            
-            <!-- New Categories -->
-            <button onclick="filterCategory('shoes')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fShoes">Shoes</button>
-            <button onclick="filterCategory('bags')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fBags">Bags</button>
-            <button onclick="filterCategory('homedecor')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fHomeDecor">Home Decor</button>
-            <button onclick="filterCategory('clothes')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fClothes">Clothes</button>
-            <button onclick="filterCategory('accessories')" class="cat-btn bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm px-5 py-2 rounded-full font-semibold transition" data-i18n="fAccessories">Accessories</button>
-        </div>
-    </section>
 
     <!-- FEATURED SPOTLIGHT -->
     <section class="max-w-7xl mx-auto px-4 py-10">
@@ -293,7 +291,7 @@
     </section>
 
     <!-- CATALOG -->
-    <section id="marketplace" class="max-w-7xl mx-auto px-4 py-10">
+    <section id="marketplace" class="scroll-mt-32 max-w-7xl mx-auto px-4 py-10">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-200 dark:border-gray-800 pb-4">
             <div>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-i18n="catalogTitle">Curated Heritage Collections</h2>

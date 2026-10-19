@@ -84,7 +84,19 @@
         }
     };
     const origFilter = window.filterCategory;
-    window.filterCategory = function (cat) { origFilter(cat); KG.applyFilters(); };
+    // Header category nav: Etsy-style underline for the active category
+    KG.styleCats = function (cat) {
+        document.querySelectorAll('.cat-btn').forEach(function (b) {
+            const on = (b.getAttribute('onclick') || '').indexOf("'" + cat + "'") > -1;
+            b.classList.remove('bg-red-700', 'text-white', 'bg-gray-100', 'dark:bg-gray-800', 'active');
+            b.classList.toggle('kg-cat-on', on);
+            b.setAttribute('aria-current', on ? 'true' : 'false');
+        });
+    };
+    window.filterCategory = function (cat) {
+        origFilter(cat); KG.styleCats(cat); KG.applyFilters();
+        if (cat === 'all') document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
     window.filterProductsBySearch = function () { KG.applyFilters(); };
     KG.filterRegion = function (id) {
         KG.activeRegion = id; KG.applyFilters();
@@ -384,7 +396,7 @@
         KG.CATEGORIES.filter(function (c) { return c.isNew; }).forEach(function (c) {
             const b = document.createElement('button');
             b.setAttribute('onclick', "filterCategory('" + c.id + "')");
-            b.className = tpl.className.replace(' active', '');
+            b.className = tpl.className;
             b.dataset.i18n = 'kgCat_' + c.id; b.textContent = c.en;
             bar.insertBefore(b, tpl);
         });
@@ -394,7 +406,7 @@
     }
 
     KG.initShop = function () {
-        upgradeHeader(); addCategoryButtons(); upgradeShippingCalculator();
+        upgradeHeader(); addCategoryButtons(); upgradeShippingCalculator(); KG.styleCats(activeCategory);
         KG.updateFavCount();
         renderProducts(); calcShipping();
     };

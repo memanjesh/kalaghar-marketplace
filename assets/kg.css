@@ -15,3 +15,11 @@
 @media (prefers-reduced-motion: reduce) {
     .kg-modal, .kg-pin circle, #kgZoom img { animation: none; transition: none; }
 }
+
+/* Header category nav */
+.kg-catnav { scrollbar-width: thin; scrollbar-color: #d1d5db transparent; }
+.kg-catnav::-webkit-scrollbar { height: 4px; }
+.kg-catnav::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+@media (hover: none) { .kg-catnav { scrollbar-width: none; } .kg-catnav::-webkit-scrollbar { display: none; } }
+.cat-btn.kg-cat-on { color: #b91c1c !important; border-bottom-color: #b91c1c !important; font-weight: 700; }
+.dark .cat-btn.kg-cat-on { color: #f87171 !important; border-bottom-color: #f87171 !important; }
