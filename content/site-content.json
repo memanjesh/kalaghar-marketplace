@@ -165,7 +165,7 @@
         "icon": "fa-phone",
         "iconStyle": "solid",
         "color": "#b91c1c",
-        "visible": true
+        "visible": false
       },
       {
         "id": "whatsapp",
