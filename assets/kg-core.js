@@ -61,9 +61,9 @@
     KG.ui = {
         input: INPUT,
         label: 'block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1',
-        btn: 'bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 px-4 rounded-lg transition text-sm',
-        btn2: 'border border-gray-300 dark:border-gray-700 hover:border-red-700 hover:text-red-700 dark:hover:text-red-400 font-semibold py-2 px-4 rounded-lg transition text-sm',
-        card: 'bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm',
+        btn: 'kg-btn text-white font-semibold py-2.5 px-4 rounded-xl transition text-sm',
+        btn2: 'bg-white dark:bg-gray-900 text-red-800 dark:text-amber-300 border border-red-200 dark:border-gray-700 hover:border-red-700 dark:hover:border-amber-400 font-semibold py-2 px-4 rounded-xl transition text-sm',
+        card: 'bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm',
         h2: 'text-2xl font-bold text-gray-900 dark:text-white',
         muted: 'text-xs text-gray-500 dark:text-gray-400'
     };
@@ -76,7 +76,7 @@
         wrap.id = id;
         wrap.className = 'kg-modal fixed inset-0 bg-black/60 z-[90] flex items-start sm:items-center justify-center p-3 sm:p-4 overflow-y-auto';
         wrap.innerHTML =
-            '<div role="dialog" aria-modal="true" aria-label="' + KG.esc(title) + '" class="bg-white dark:bg-gray-900 rounded-xl ' + (widths[size] || widths.md) + ' w-full shadow-2xl relative my-6 max-h-[calc(100vh-3rem)] overflow-y-auto">' +
+            '<div role="dialog" aria-modal="true" aria-label="' + KG.esc(title) + '" class="bg-white dark:bg-gray-900 rounded-2xl ' + (widths[size] || widths.md) + ' w-full shadow-2xl relative my-6 max-h-[calc(100vh-3rem)] overflow-y-auto">' +
                 '<div class="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-5 py-3 flex items-center justify-between gap-3">' +
                     '<h3 class="text-lg font-bold text-gray-900 dark:text-white truncate">' + title + '</h3>' +
                     '<button type="button" data-close class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 p-1" aria-label="Close"><i class="fa-solid fa-xmark text-lg"></i></button>' +
@@ -213,7 +213,12 @@
         8: { sellerId: 'kg', region: 'kathmandu', materials: 'Handwoven cotton', size: 'S / M / L / XL', weightG: 300, personalizable: true },
         9: { sellerId: 'kg', region: 'kathmandu', materials: 'Glass beads (pote), brass clasp', size: 'Length 45 cm', weightG: 60 }
     };
-    // New-category sample listings (ids 101+). Replace the placeholder art with real photos.
+    // Free stock photos from Pexels (pexels.com, free to use). Replace with the artisans' own photos when available.
+    KG.photo = function (id) { return 'https://images.pexels.com/photos/' + id + '/pexels-photo-' + id + '.jpeg?auto=compress&cs=tinysrgb&w=600'; };
+    const PHOTOS = {101: "11889669", 102: "11501256", 103: "7612424", 104: "33118330", 105: "10973354", 106: "4611339", 107: "6118896"};
+    // Earlier versions used photos that didn't match their products — swap any saved copies
+    const PHOTO_FIX = {"375880": "11733651", "2292919": "11404647", "261763": "34079281", "1050244": "18681553", "267320": "26925256", "2081199": "8356401", "4207794": "6962803", "7691162": "8483487", "1191531": "29218624", "6158525": "6634555"};
+    // New-category sample listings (ids 101+).
     const NEW_PRODUCTS = [
         { id: 101, name: 'Hand-hammered Singing Bowl', sub: '7-metal alloy, with cushion & striker', price: 6500, category: 'singingbowl', tag: 'PATAN', tagClass: 'bg-yellow-700', sellerId: 's-purna', region: 'patan', materials: 'Bell-metal alloy, hand-hammered', size: 'Diameter 15 cm', weightG: 900, img: ['Singing Bowl', '#78350f', '#b45309', '◎'] },
         { id: 102, name: 'Medicine Buddha Thangka', sub: 'Hand-painted, natural mineral pigments', price: 18000, category: 'thangka', tag: 'KATHMANDU', tagClass: 'bg-orange-700', sellerId: 'kg', region: 'kathmandu', materials: 'Cotton canvas, mineral pigments, 24k gold detailing', size: '50 × 35 cm (painting)', weightG: 300, fragile: true, img: ['Thangka', '#7c2d12', '#1e3a8a', '☸'] },
@@ -223,7 +228,7 @@
         { id: 106, name: 'Carved Peacock Window Panel', sub: 'Newari sal-wood carving', price: 22000, category: 'wood', tag: 'BHAKTAPUR', tagClass: 'bg-amber-900', sellerId: 'kg', region: 'bhaktapur', materials: 'Seasoned sal wood', size: '45 × 30 cm', weightG: 2500, fragile: true, img: ['Wood Carving', '#451a03', '#92400e', '❖'] },
         { id: 107, name: 'Tibetan-knot Wool Rug', sub: 'Hand-knotted, 100 knots per inch', price: 28000, category: 'rugs', tag: 'HAND-KNOTTED', tagClass: 'bg-indigo-800', sellerId: 'kg', region: 'kathmandu', materials: 'Himalayan highland wool, vegetable dyes', size: '120 × 180 cm', weightG: 6000, personalizable: true, img: ['Rug & Carpet', '#312e81', '#9f1239', '▦'] }
     ].map(function (p) {
-        p.image = KG.placeholderImg(p.img[0], p.img[1], p.img[2], p.img[3]); delete p.img; p.placeholder = true; return p;
+        p.image = KG.photo(PHOTOS[p.id]); delete p.img; return p;
     });
 
     function normalize(p) {
@@ -242,6 +247,15 @@
     window.loadProducts = function () {
         let list = KG.store.get('kg-products', null);
         if (!list) list = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+        if (!KG.store.get('kg-migr-photos2', false)) {
+            list.forEach(function (p) {
+                const fix = function (src) { const m = /photos\/(\d+)\//.exec(src || ''); return m && PHOTO_FIX[m[1]] ? KG.photo(PHOTO_FIX[m[1]]) : src; };
+                if (PHOTOS[p.id] && (p.placeholder || /^data:image\/svg/.test(p.image || ''))) { p.image = KG.photo(PHOTOS[p.id]); p.images = [p.image]; p.placeholder = false; }
+                p.image = fix(p.image); if (p.images) p.images = p.images.map(fix);
+            });
+            KG.store.set('kg-migr-photos2', true);
+            if (KG.store.get('kg-products', null)) KG.store.set('kg-products', list);
+        }
         if (!KG.store.get('kg-migr-newcats', false)) {
             NEW_PRODUCTS.forEach(function (np) { if (!list.some(function (p) { return p.id === np.id; })) list.push(np); });
             KG.store.set('kg-products', list);
@@ -376,7 +390,9 @@
         kgWholesaleTitle: 'Wholesale & Bulk Orders', kgWholesaleSub: 'For shops, hotels, yoga studios and corporate gifting abroad.',
         kgDiasporaTitle: 'Send a gift home to Nepal', kgDiasporaSub: 'Living abroad? Pay by card and we deliver to your family anywhere in Nepal — with a gift message.',
         kgComplaint: 'File a Complaint', fPrivacyPolicy: 'Privacy Policy', fReturns: 'Return & Refund Policy', fDelivery: 'Delivery Policy',
-        fProtection: 'Purchase Protection', fExportHub: 'Export Hub for Artisans', fSellerDash: 'Seller Dashboard', fWholesale: 'Wholesale', fImpact: 'Our Impact', fWorkshops: 'Workshops'
+        fProtection: 'Purchase Protection', fExportHub: 'Export Hub for Artisans', fSellerDash: 'Seller Dashboard', fWholesale: 'Wholesale', fImpact: 'Our Impact', fWorkshops: 'Workshops',
+        kgCategories: 'Categories', ftShop: 'Shop', ftSell: 'Sell', ftAbout: 'About', ftHelp: 'Help', ftHandmade: '100% handmade in Nepal',
+        ftFestival: 'Festival Gifts', ftSendHome: 'Send a Gift Home', ftSellOn: 'Sell on KalaGhar', ftSellerRules: 'Seller Policies', ftTrack: 'Track My Order'
     });
     Object.assign(I18N.ne, {
         kgFavs: 'मनपर्ने', kgBag: 'तपाईंको झोला', kgCheckout: 'चेकआउट', kgGiftMode: 'उपहार मोड', kgCurrency: 'मुद्रा',
@@ -386,7 +402,9 @@
         kgWholesaleTitle: 'थोक तथा ठूला अर्डर', kgWholesaleSub: 'विदेशका पसल, होटल, योग स्टुडियो र कर्पोरेट उपहारका लागि।',
         kgDiasporaTitle: 'नेपालमा घर उपहार पठाउनुहोस्', kgDiasporaSub: 'विदेशमा हुनुहुन्छ? कार्डबाट तिर्नुहोस्, हामी नेपालभर तपाईंको परिवारसम्म उपहार सन्देशसहित पुर्‍याउँछौं।',
         kgComplaint: 'गुनासो दर्ता', fPrivacyPolicy: 'गोपनीयता नीति', fReturns: 'फिर्ता तथा रकम फिर्ता नीति', fDelivery: 'डेलिभरी नीति',
-        fProtection: 'खरिद सुरक्षा', fExportHub: 'शिल्पीका लागि निर्यात केन्द्र', fSellerDash: 'विक्रेता ड्यासबोर्ड', fWholesale: 'थोक', fImpact: 'हाम्रो प्रभाव', fWorkshops: 'कार्यशाला'
+        fProtection: 'खरिद सुरक्षा', fExportHub: 'शिल्पीका लागि निर्यात केन्द्र', fSellerDash: 'विक्रेता ड्यासबोर्ड', fWholesale: 'थोक', fImpact: 'हाम्रो प्रभाव', fWorkshops: 'कार्यशाला',
+        kgCategories: 'वर्गहरू', ftShop: 'किनमेल', ftSell: 'बिक्री', ftAbout: 'हाम्रोबारे', ftHelp: 'सहायता', ftHandmade: '१००% नेपालमा हातले बनेको',
+        ftFestival: 'चाडपर्व उपहार', ftSendHome: 'घरमा उपहार पठाउनुहोस्', ftSellOn: 'KalaGhar मा बेच्नुहोस्', ftSellerRules: 'विक्रेता नीति', ftTrack: 'मेरो अर्डर ट्र्याक'
     });
     KG.CATEGORIES.forEach(function (c) {
         const key = 'kgCat_' + c.id; I18N.en[key] = c.en; I18N.ne[key] = c.ne;

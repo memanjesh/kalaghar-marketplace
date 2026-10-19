@@ -16,10 +16,42 @@
     .kg-modal, .kg-pin circle, #kgZoom img { animation: none; transition: none; }
 }
 
-/* Header category nav */
-.kg-catnav { scrollbar-width: thin; scrollbar-color: #d1d5db transparent; }
-.kg-catnav::-webkit-scrollbar { height: 4px; }
-.kg-catnav::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-@media (hover: none) { .kg-catnav { scrollbar-width: none; } .kg-catnav::-webkit-scrollbar { display: none; } }
-.cat-btn.kg-cat-on { color: #b91c1c !important; border-bottom-color: #b91c1c !important; font-weight: 700; }
-.dark .cat-btn.kg-cat-on { color: #f87171 !important; border-bottom-color: #f87171 !important; }
+/* ================= KalaGhar brand theme (festival red → amber) ================= */
+:root { --kg-red: #991b1b; --kg-amber: #d97706; --kg-grad: linear-gradient(90deg, #991b1b 0%, #c2410c 55%, #d97706 100%); }
+
+.kg-grad { background-image: var(--kg-grad); }
+.kg-btn, button.bg-red-700, a.bg-red-700, label.bg-red-700 {
+    background-color: #b91c1c; background-image: var(--kg-grad); color: #fff;
+    box-shadow: 0 2px 8px -2px rgba(153, 27, 27, .45);
+}
+.kg-btn:hover, button.bg-red-700:hover, a.bg-red-700:hover, label.bg-red-700:hover { filter: brightness(1.08); }
+.kg-btn:disabled { opacity: .6; cursor: not-allowed; }
+.kg-btn-soft { background: #fef3c7; color: #9a3412; }
+.kg-btn-soft:hover { background-image: var(--kg-grad); color: #fff; }
+.dark .kg-btn-soft { background: rgba(217, 119, 6, .18); color: #fcd34d; }
+
+/* Section eyebrow labels, like "FESTIVAL STOREFRONT" */
+.kg-eyebrow { background-image: var(--kg-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.dark .kg-eyebrow { background-image: linear-gradient(90deg, #f87171, #fbbf24); }
+
+/* Admin / dashboard tabs pick up the gradient underline */
+.admin-tab.active { color: #991b1b; border-bottom-color: transparent; background-image: var(--kg-grad); background-size: 100% 2px; background-position: bottom; background-repeat: no-repeat; }
+.dark .admin-tab.active { color: #fbbf24; }
+
+/* Header: featured row + categories menu */
+.kg-catnav { scrollbar-width: none; }
+.kg-catnav::-webkit-scrollbar { display: none; }
+.kg-feat { transition: background-color .15s; }
+.kg-catitem { transition: background-color .12s; }
+.kg-catitem:hover, .kg-catitem-on { background: #fff7ed; }
+.kg-catitem-on { font-weight: 700; box-shadow: inset 3px 0 0 #c2410c; }
+.dark .kg-catitem:hover, .dark .kg-catitem-on { background: rgba(217, 119, 6, .12); }
+
+/* Footer (Etsy layout, KalaGhar colours) */
+.kg-foot { background-color: #3b1206; background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px); background-size: 16px 16px; }
+.kg-fhead { color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+.kg-flink { color: rgba(255, 251, 235, .82); transition: color .15s; }
+.kg-flink:hover { color: #fcd34d; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Pictures: consistent rounded corners everywhere */
+#productGrid img, #regions img, #makers img, #workshops img, .kg-modal img { border-radius: inherit; }

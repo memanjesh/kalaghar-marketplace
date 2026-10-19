@@ -25,7 +25,7 @@
                 '<text x="' + (lblLeft ? x - 12 : x + 12) + '" y="' + (r.id === 'kathmandu' ? y - 10 : r.id === 'patan' ? y + 16 : y + 4) + '" text-anchor="' + (lblLeft ? 'end' : 'start') + '" class="fill-gray-800 dark:fill-gray-100 text-[13px] font-semibold" style="paint-order:stroke" stroke="var(--kg-halo)" stroke-width="4">' + esc(KG.regionName(r.id)) + '</text></g>';
         }).join('');
         return '<section id="regions" class="max-w-7xl mx-auto px-4 py-12">' +
-            '<div class="text-center mb-6"><span class="text-red-700 dark:text-red-400 font-bold text-xs uppercase tracking-wider">' + KG.tx('Map of makers', 'शिल्पीको नक्सा') + '</span><h2 class="' + ui.h2 + ' mt-1" data-i18n="kgRegionsTitle">' + t('kgRegionsTitle') + '</h2><p class="text-sm text-gray-600 dark:text-gray-400 mt-1" data-i18n="kgRegionsSub">' + t('kgRegionsSub') + '</p></div>' +
+            '<div class="text-center mb-6"><span class="kg-eyebrow font-bold text-xs uppercase tracking-widest">' + KG.tx('Map of makers', 'शिल्पीको नक्सा') + '</span><h2 class="' + ui.h2 + ' mt-1" data-i18n="kgRegionsTitle">' + t('kgRegionsTitle') + '</h2><p class="text-sm text-gray-600 dark:text-gray-400 mt-1" data-i18n="kgRegionsSub">' + t('kgRegionsSub') + '</p></div>' +
             '<div class="grid lg:grid-cols-3 gap-6 items-start">' +
                 '<div class="lg:col-span-2 ' + ui.card + ' p-3"><svg viewBox="0 0 ' + W + ' ' + H + '" class="w-full h-auto" role="img" aria-label="Map of Nepal with craft regions"><polygon points="' + pts + '" class="fill-amber-50 dark:fill-gray-800 stroke-amber-700/60 dark:stroke-gray-600" stroke-width="2" stroke-linejoin="round"></polygon>' + pins + '</svg></div>' +
                 '<div id="kgRegionInfo" class="' + ui.card + ' p-5"></div>' +
@@ -102,16 +102,16 @@
             '<div class="flex flex-wrap items-end justify-between gap-3 mb-5"><div><p class="text-xs font-bold uppercase tracking-widest opacity-90"><i class="fa-solid fa-sparkles mr-1"></i>' + KG.tx('Festival Storefront', 'चाडपर्व पसल') + '</p><h2 class="text-2xl md:text-3xl font-extrabold mt-1">' + esc(KG.tx(f.name + ' Gifts', f.ne + 'का उपहार')) + '</h2><p class="text-sm opacity-90 mt-1">' + KG.tx('Handpicked for the season — plus we deliver gifts to family anywhere in Nepal.', 'यो चाडका लागि छानिएका — नेपालभर परिवारसम्म उपहार पुर्‍याउँछौं।') + '</p></div>' +
             '<button class="bg-white text-red-800 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-red-50" onclick="KG.openGiftMode()"><i class="fa-solid fa-gift mr-1"></i>' + t('kgGiftMode') + '</button></div>' +
             '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">' + picks.map(function (p) {
-                return '<button class="text-left bg-white/10 hover:bg-white/20 rounded-xl overflow-hidden transition" onclick="KG.openProduct(' + p.id + ')"><div class="aspect-[4/3]"><img src="' + esc(p.image) + '" alt="" loading="lazy" class="w-full h-full object-cover"></div><div class="p-2"><p class="text-xs font-semibold line-clamp-1">' + esc(p.name) + '</p><p class="text-xs font-bold">' + KG.npr(p.price) + '</p></div></button>';
+                return '<button class="text-left bg-white/10 hover:bg-white/20 rounded-2xl overflow-hidden transition" onclick="KG.openProduct(' + p.id + ')"><div class="aspect-[4/3]"><img src="' + esc(p.image) + '" alt="" loading="lazy" class="w-full h-full object-cover"></div><div class="p-2"><p class="text-xs font-semibold line-clamp-1">' + esc(p.name) + '</p><p class="text-xs font-bold">' + KG.npr(p.price) + '</p></div></button>';
             }).join('') + '</div></div></section>';
     }
 
     /* ---------------------------- diaspora gifting band ---------------------------- */
     function diasporaSection() {
-        return '<section id="send-home" class="max-w-7xl mx-auto px-4 py-10"><div class="' + ui.card + ' p-6 md:p-8 grid md:grid-cols-3 gap-6 items-center">' +
-            '<div class="md:col-span-2"><span class="text-red-700 dark:text-red-400 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-plane-arrival mr-1"></i>' + KG.tx('For Nepalis abroad', 'विदेशमा रहेका नेपालीका लागि') + '</span>' +
-            '<h2 class="' + ui.h2 + ' mt-1" data-i18n="kgDiasporaTitle">' + t('kgDiasporaTitle') + '</h2><p class="text-sm text-gray-600 dark:text-gray-400 mt-2" data-i18n="kgDiasporaSub">' + t('kgDiasporaSub') + '</p>' +
-            '<ul class="text-xs text-gray-600 dark:text-gray-300 mt-3 space-y-1"><li><i class="fa-solid fa-check text-green-600 mr-1"></i>' + KG.tx('Pay with an international card', 'अन्तर्राष्ट्रिय कार्डबाट भुक्तानी') + '</li><li><i class="fa-solid fa-check text-green-600 mr-1"></i>' + KG.tx('Delivered in 1–5 days by local courier, no customs', 'स्थानीय कुरियरबाट १–५ दिनमा, भन्सार छैन') + '</li><li><i class="fa-solid fa-check text-green-600 mr-1"></i>' + KG.tx('Gift message and price-free packing slip', 'उपहार सन्देश र मूल्य नभएको स्लिप') + '</li></ul></div>' +
+        return '<section id="send-home" class="max-w-7xl mx-auto px-4 py-10"><div class="kg-grad text-white rounded-2xl p-6 md:p-8 grid md:grid-cols-3 gap-6 items-center shadow-lg">' +
+            '<div class="md:col-span-2"><span class="text-white/90 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-plane-arrival mr-1"></i>' + KG.tx('For Nepalis abroad', 'विदेशमा रहेका नेपालीका लागि') + '</span>' +
+            '<h2 class="text-2xl md:text-3xl font-extrabold mt-1" data-i18n="kgDiasporaTitle">' + t('kgDiasporaTitle') + '</h2><p class="text-sm text-white/90 mt-2" data-i18n="kgDiasporaSub">' + t('kgDiasporaSub') + '</p>' +
+            '<ul class="text-sm text-white/95 mt-3 space-y-1"><li><i class="fa-solid fa-check text-amber-200 mr-1"></i>' + KG.tx('Pay with an international card', 'अन्तर्राष्ट्रिय कार्डबाट भुक्तानी') + '</li><li><i class="fa-solid fa-check text-amber-200 mr-1"></i>' + KG.tx('Delivered in 1–5 days by local courier, no customs', 'स्थानीय कुरियरबाट १–५ दिनमा, भन्सार छैन') + '</li><li><i class="fa-solid fa-check text-amber-200 mr-1"></i>' + KG.tx('Gift message and price-free packing slip', 'उपहार सन्देश र मूल्य नभएको स्लिप') + '</li></ul></div>' +
             '<div class="flex flex-col gap-2"><button class="' + ui.btn + '" onclick="KG.giftThis()"><i class="fa-solid fa-gift mr-1"></i>' + KG.tx('Send a gift home', 'घरमा उपहार पठाउनुहोस्') + '</button><button class="' + ui.btn2 + '" onclick="KG.openGiftMode()">' + KG.tx('Get gift ideas', 'उपहार सुझाव') + '</button></div></div></section>';
     }
     KG.giftThis = function (productId) {
@@ -122,17 +122,17 @@
 
     /* ---------------------------- workshops ---------------------------- */
     const WORKSHOPS = [
-        { id: 'w-pottery', en: 'Pottery at Bhaktapur Pottery Square', ne: 'भक्तपुर पोटरी स्क्वायरमा माटोका भाँडा', region: 'bhaktapur', hours: 3, price: 3500, max: 6, img: ['Pottery', '#7c2d12', '#c2410c', '◍'] },
-        { id: 'w-thangka', en: 'Thangka painting basics', ne: 'थाङ्का चित्रकलाको आधार', region: 'kathmandu', hours: 4, price: 5500, max: 5, img: ['Thangka', '#1e3a8a', '#b45309', '☸'] },
-        { id: 'w-dhaka', en: 'Weave on a Dhaka loom', ne: 'ढाका तानमा बुन्नुहोस्', region: 'palpa', hours: 3, price: 3000, max: 4, img: ['Dhaka Loom', '#92400e', '#be123c', '▤'] },
-        { id: 'w-bowl', en: 'Singing bowl sound session & making demo', ne: 'सिंगिङ बोल ध्वनि सत्र', region: 'patan', hours: 2, price: 2500, max: 10, img: ['Singing Bowl', '#78350f', '#ca8a04', '◎'] },
-        { id: 'w-felt', en: 'Felt-making for families', ne: 'परिवारका लागि फेल्ट बनाउने', region: 'kathmandu', hours: 2, price: 2000, max: 12, img: ['Felt', '#be123c', '#f59e0b', '●'] },
-        { id: 'w-lokta', en: 'Make your own lokta paper', ne: 'आफ्नै लोक्ता कागज बनाउनुहोस्', region: 'kathmandu', hours: 2, price: 1800, max: 8, img: ['Lokta Paper', '#166534', '#a16207', '▭'] }
+        { id: 'w-pottery', en: 'Pottery at Bhaktapur Pottery Square', ne: 'भक्तपुर पोटरी स्क्वायरमा माटोका भाँडा', region: 'bhaktapur', hours: 3, price: 3500, max: 6, photo: '6638540', img: ['Pottery', '#7c2d12', '#c2410c', '◍'] },
+        { id: 'w-thangka', en: 'Thangka painting basics', ne: 'थाङ्का चित्रकलाको आधार', region: 'kathmandu', hours: 4, price: 5500, max: 5, photo: '11501256', img: ['Thangka', '#1e3a8a', '#b45309', '☸'] },
+        { id: 'w-dhaka', en: 'Weave on a Dhaka loom', ne: 'ढाका तानमा बुन्नुहोस्', region: 'palpa', hours: 3, price: 3000, max: 4, photo: '6634704', img: ['Dhaka Loom', '#92400e', '#be123c', '▤'] },
+        { id: 'w-bowl', en: 'Singing bowl sound session & making demo', ne: 'सिंगिङ बोल ध्वनि सत्र', region: 'patan', hours: 2, price: 2500, max: 10, photo: '6252095', img: ['Singing Bowl', '#78350f', '#ca8a04', '◎'] },
+        { id: 'w-felt', en: 'Felt-making for families', ne: 'परिवारका लागि फेल्ट बनाउने', region: 'kathmandu', hours: 2, price: 2000, max: 12, photo: '10474348', img: ['Felt', '#be123c', '#f59e0b', '●'] },
+        { id: 'w-lokta', en: 'Make your own lokta paper', ne: 'आफ्नै लोक्ता कागज बनाउनुहोस्', region: 'kathmandu', hours: 2, price: 1800, max: 8, photo: '4115784', img: ['Lokta Paper', '#166534', '#a16207', '▭'] }
     ];
     function workshopsSection() {
-        return '<section id="workshops" class="max-w-7xl mx-auto px-4 py-12"><div class="mb-6"><span class="text-red-700 dark:text-red-400 font-bold text-xs uppercase tracking-wider">' + KG.tx('Visiting Nepal?', 'नेपाल आउँदै हुनुहुन्छ?') + '</span><h2 class="' + ui.h2 + ' mt-1" data-i18n="kgWorkshopsTitle">' + t('kgWorkshopsTitle') + '</h2><p class="text-sm text-gray-600 dark:text-gray-400 mt-1" data-i18n="kgWorkshopsSub">' + t('kgWorkshopsSub') + '</p></div>' +
+        return '<section id="workshops" class="max-w-7xl mx-auto px-4 py-12"><div class="mb-6"><span class="kg-eyebrow font-bold text-xs uppercase tracking-widest">' + KG.tx('Visiting Nepal?', 'नेपाल आउँदै हुनुहुन्छ?') + '</span><h2 class="' + ui.h2 + ' mt-1" data-i18n="kgWorkshopsTitle">' + t('kgWorkshopsTitle') + '</h2><p class="text-sm text-gray-600 dark:text-gray-400 mt-1" data-i18n="kgWorkshopsSub">' + t('kgWorkshopsSub') + '</p></div>' +
             '<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">' + WORKSHOPS.map(function (w) {
-                return '<div class="' + ui.card + ' overflow-hidden flex flex-col"><img src="' + KG.placeholderImg(w.img[0], w.img[1], w.img[2], w.img[3]) + '" alt="" class="h-32 w-full object-cover"><div class="p-4 flex flex-col flex-1"><p class="font-bold text-sm text-gray-900 dark:text-white">' + esc(KG.tx(w.en, w.ne)) + '</p><p class="' + ui.muted + ' mt-1"><i class="fa-solid fa-location-dot mr-1"></i>' + esc(KG.regionName(w.region)) + ' · <i class="fa-regular fa-clock mx-1"></i>' + w.hours + ' ' + KG.tx('hours', 'घण्टा') + ' · ' + KG.tx('up to ', 'अधिकतम ') + w.max + ' ' + KG.tx('people', 'जना') + '</p><div class="flex items-center justify-between mt-auto pt-3"><div>' + KG.priceHtml(w.price) + '<span class="' + ui.muted + '"> / ' + KG.tx('person', 'जना') + '</span></div><button class="' + ui.btn + ' !py-1.5 !text-xs" onclick="KG.bookWorkshop(\'' + w.id + '\')">' + KG.tx('Book', 'बुक') + '</button></div></div></div>';
+                return '<div class="' + ui.card + ' overflow-hidden flex flex-col"><div class="aspect-[4/3] overflow-hidden"><img src="' + KG.photo(w.photo) + '" alt="' + esc(w.en) + '" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-300"></div><div class="p-4 flex flex-col flex-1"><p class="font-bold text-sm text-gray-900 dark:text-white">' + esc(KG.tx(w.en, w.ne)) + '</p><p class="' + ui.muted + ' mt-1"><i class="fa-solid fa-location-dot mr-1"></i>' + esc(KG.regionName(w.region)) + ' · <i class="fa-regular fa-clock mx-1"></i>' + w.hours + ' ' + KG.tx('hours', 'घण्टा') + ' · ' + KG.tx('up to ', 'अधिकतम ') + w.max + ' ' + KG.tx('people', 'जना') + '</p><div class="flex items-center justify-between mt-auto pt-3"><div>' + KG.priceHtml(w.price) + '<span class="' + ui.muted + '"> / ' + KG.tx('person', 'जना') + '</span></div><button class="' + ui.btn + ' !py-1.5 !text-xs" onclick="KG.bookWorkshop(\'' + w.id + '\')">' + KG.tx('Book', 'बुक') + '</button></div></div></div>';
             }).join('') + '</div></section>';
     }
     KG.bookWorkshop = function (id) {
@@ -180,7 +180,7 @@
     /* ---------------------------- wholesale ---------------------------- */
     function wholesaleSection() {
         return '<section id="wholesale" class="max-w-7xl mx-auto px-4 py-12"><div class="' + ui.card + ' p-6 md:p-8 grid md:grid-cols-2 gap-8">' +
-            '<div><span class="text-red-700 dark:text-red-400 font-bold text-xs uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1"></i>B2B</span><h2 class="' + ui.h2 + ' mt-1" data-i18n="kgWholesaleTitle">' + t('kgWholesaleTitle') + '</h2><p class="text-sm text-gray-600 dark:text-gray-400 mt-2" data-i18n="kgWholesaleSub">' + t('kgWholesaleSub') + '</p>' +
+            '<div><span class="kg-eyebrow font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-boxes-stacked mr-1"></i>B2B</span><h2 class="' + ui.h2 + ' mt-1" data-i18n="kgWholesaleTitle">' + t('kgWholesaleTitle') + '</h2><p class="text-sm text-gray-600 dark:text-gray-400 mt-2" data-i18n="kgWholesaleSub">' + t('kgWholesaleSub') + '</p>' +
             '<ul class="text-sm text-gray-700 dark:text-gray-300 mt-4 space-y-2"><li><i class="fa-solid fa-tags text-red-700 mr-2"></i>' + KG.tx('Tiered pricing from 20 pieces', '२० थानदेखि छुट मूल्य') + '</li><li><i class="fa-solid fa-palette text-red-700 mr-2"></i>' + KG.tx('Custom colours, sizes and private labels', 'आफ्नै रङ, साइज र लेबल') + '</li><li><i class="fa-solid fa-file-contract text-red-700 mr-2"></i>' + KG.tx('Certificate of Origin and export paperwork handled', 'उत्पत्ति प्रमाणपत्र र निर्यात कागजात') + '</li><li><i class="fa-solid fa-ship text-red-700 mr-2"></i>' + KG.tx('Air or sea freight via our Export Hub', 'निर्यात केन्द्रबाट हवाई वा समुद्री ढुवानी') + '</li></ul></div>' +
             '<form id="kgWholesaleForm" class="space-y-3"><div class="grid sm:grid-cols-2 gap-3">' +
                 '<div><label class="' + ui.label + '" for="ws-name">' + KG.tx('Your name', 'नाम') + '</label><input id="ws-name" required class="' + ui.input + '"></div>' +
@@ -228,40 +228,14 @@
 
     /* ---------------------------- footer legal block ---------------------------- */
     function upgradeFooter() {
+        // Registration details required by the E-Commerce Act 2081, shown in the footer
         const b = C.business, pend = KG.tx('pending', 'प्रक्रियामा');
-        // Support column: real links
-        const sup = document.querySelector('[data-i18n="supTitle"]');
-        if (sup) {
-            const ul = sup.nextElementSibling;
-            const link = function (href, key, extra) { return '<li><a href="' + href + '" class="footer-link" data-i18n="' + key + '"' + (extra || '') + '>' + t(key) + '</a></li>'; };
-            ul.innerHTML = link('pages/delivery.html', 'fDelivery') + link('pages/returns.html', 'fReturns') + link('pages/purchase-protection.html', 'fProtection') +
-                link('#', 'kgComplaint', ' onclick="KG.openComplaint();return false;"') + link('#faq', 'faqTitle') + link('pages/terms.html', 'footerTerms') + link('pages/privacy.html', 'fPrivacyPolicy');
-        }
-        const exp = document.querySelector('[data-i18n="expTitle"]');
-        if (exp) {
-            const ul = exp.nextElementSibling;
-            ul.querySelectorAll('a').forEach(function (a) {
-                const key = a.dataset.i18n; const map = { fAll: 'all', fPashmina: 'pashmina', fDhaka: 'dhaka', fLokta: 'lokta', fMetal: 'metal' };
-                if (map[key]) a.setAttribute('onclick', "filterCategory('" + map[key] + "');return false;");
-            });
-            ul.insertAdjacentHTML('beforeend', '<li><a href="#regions" class="footer-link">' + t('kgRegionsTitle') + '</a></li><li><a href="#workshops" class="footer-link" data-i18n="fWorkshops">' + t('fWorkshops') + '</a></li><li><a href="#wholesale" class="footer-link" data-i18n="fWholesale">' + t('fWholesale') + '</a></li><li><a href="#impact" class="footer-link" data-i18n="fImpact">' + t('fImpact') + '</a></li><li><a href="pages/export-hub.html" class="footer-link" data-i18n="fExportHub">' + t('fExportHub') + '</a></li><li><a href="#" onclick="KG.openSellerDashboard();return false;" class="footer-link" data-i18n="fSellerDash">' + t('fSellerDash') + '</a></li>');
-        }
-        // bottom bar links
-        const priv = document.querySelector('footer a[data-i18n="privacy"]'); if (priv) priv.href = 'pages/privacy.html';
-        const terms = document.querySelector('footer a[data-i18n="terms"]'); if (terms) terms.href = 'pages/terms.html';
-        const sm = document.querySelector('footer a[data-i18n="sitemap"]'); if (sm) sm.href = 'sitemap.xml';
-        // payment badges: add Khalti + ConnectIPS
-        const fp = Array.from(document.querySelectorAll('footer span')).find(function (s) { return s.textContent.trim() === 'fonepay'; });
-        if (fp && !document.getElementById('kgKhaltiBadge')) fp.insertAdjacentHTML('afterend', '<span id="kgKhaltiBadge" class="bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-sm text-[10px] font-bold text-purple-700">Khalti</span><span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-sm text-[10px] font-bold text-blue-800">connectIPS</span>');
-        // business registration strip (E-Commerce Act 2081)
-        const bottom = document.querySelector('footer > div:last-child');
-        if (bottom && !document.getElementById('kgBizStrip')) {
-            bottom.insertAdjacentHTML('beforebegin', '<div id="kgBizStrip" class="max-w-7xl mx-auto px-4 pb-6 text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">' +
-                '<p><strong class="text-gray-700 dark:text-gray-300">' + esc(b.legalName || b.name) + '</strong> · ' + esc(b.address) +
-                ' · ' + KG.tx('Reg. No.', 'दर्ता नं.') + ' ' + esc(b.registrationNo || pend) + ' · PAN/VAT ' + esc(b.pan || pend) +
-                ' · ' + KG.tx('E-commerce portal listing', 'ई-कमर्स पोर्टल सूचीकरण') + ' ' + esc(b.docListingNo || pend) + (b.specialPermits ? ' · ' + esc(b.specialPermits) : '') + '</p>' +
-                '<p>' + KG.tx('Complaint officer', 'गुनासो सुन्ने अधिकारी') + ': ' + esc(b.complaintOfficer.name || KG.tx('to be appointed', 'नियुक्त हुन बाँकी')) + ' · <a class="underline" href="mailto:' + esc(b.complaintOfficer.email) + '">' + esc(b.complaintOfficer.email) + '</a> · ' + esc(b.complaintOfficer.phone) + ' · <a href="#" class="underline" onclick="KG.openComplaint();return false;">' + t('kgComplaint') + '</a></p></div>');
-        }
+        const slot = document.getElementById('kgBizSlot'); if (!slot) return;
+        slot.innerHTML = '<div id="kgBizStrip" class="max-w-7xl mx-auto px-4 pb-6 text-[11px] text-amber-50/60 leading-relaxed border-t border-white/10 pt-5">' +
+            '<p><strong class="text-amber-50/85">' + esc(b.legalName || b.name) + '</strong> · ' + esc(b.address) +
+            ' · ' + KG.tx('Reg. No.', 'दर्ता नं.') + ' ' + esc(b.registrationNo || pend) + ' · PAN/VAT ' + esc(b.pan || pend) +
+            ' · ' + KG.tx('E-commerce portal listing', 'ई-कमर्स पोर्टल सूचीकरण') + ' ' + esc(b.docListingNo || pend) + (b.specialPermits ? ' · ' + esc(b.specialPermits) : '') + '</p>' +
+            '<p>' + KG.tx('Complaint officer', 'गुनासो सुन्ने अधिकारी') + ': ' + esc(b.complaintOfficer.name || KG.tx('to be appointed', 'नियुक्त हुन बाँकी')) + ' · <a class="underline" href="mailto:' + esc(b.complaintOfficer.email) + '">' + esc(b.complaintOfficer.email) + '</a> · ' + esc(b.complaintOfficer.phone) + '</p></div>';
     }
 
     /* ---------------------------- search-engine data ---------------------------- */

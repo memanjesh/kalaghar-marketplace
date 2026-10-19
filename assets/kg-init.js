@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.applyLang = function (lang) {
         origApplyLang(lang);
         KG.renderDiscover();
+        KG.renderFeatured();
+        KG.updateLocaleLabel();
         KG.refreshAccountLabel();
         KG.updateCartCount();
     };

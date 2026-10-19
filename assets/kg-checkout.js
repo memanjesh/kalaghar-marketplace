@@ -84,7 +84,7 @@
             '<form id="kgCoForm" class="grid lg:grid-cols-5 gap-6" novalidate>' +
                 '<div class="lg:col-span-3 space-y-5">' +
                     // diaspora gifting
-                    '<label class="flex gap-3 items-start bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900 rounded-xl p-3 cursor-pointer">' +
+                    '<label class="flex gap-3 items-start bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900 rounded-2xl p-3 cursor-pointer">' +
                         '<input type="checkbox" name="gift" class="mt-1 accent-red-700"' + (st.gift ? ' checked' : '') + '>' +
                         '<span><span class="block text-sm font-bold text-gray-900 dark:text-white"><i class="fa-solid fa-gift text-red-700 mr-1"></i>' + t('kgDiasporaTitle') + '</span><span class="block ' + ui.muted + '">' + t('kgDiasporaSub') + '</span></span>' +
                     '</label>' +
@@ -119,7 +119,7 @@
                     '</fieldset>' +
                     '<fieldset><legend class="text-sm font-bold text-gray-900 dark:text-white mb-2">' + KG.tx('Payment', 'भुक्तानी') + '</legend><div id="co-methods" class="grid sm:grid-cols-2 gap-2"></div></fieldset>' +
                 '</div>' +
-                '<aside class="lg:col-span-2"><div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 border border-gray-200 dark:border-gray-800 lg:sticky lg:top-16">' +
+                '<aside class="lg:col-span-2"><div class="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 border border-gray-200 dark:border-gray-800 lg:sticky lg:top-16">' +
                     '<p class="text-sm font-bold text-gray-900 dark:text-white mb-3">' + KG.tx('Order summary', 'अर्डर सारांश') + '</p>' +
                     '<div class="space-y-2 text-xs">' + lines.map(function (l) { return '<div class="flex justify-between gap-2"><span class="text-gray-700 dark:text-gray-300">' + esc(l.p.name) + ' × ' + l.qty + '</span><span>' + KG.npr(l.total) + '</span></div>'; }).join('') + '</div>' +
                     '<div class="flex gap-2 mt-4"><label class="sr-only" for="co-coupon">Coupon</label><input id="co-coupon" name="coupon" placeholder="' + KG.tx('Coupon code', 'कुपन कोड') + '" class="' + ui.input + ' uppercase" value="' + esc(st.coupon || '') + '"><button type="button" id="co-apply" class="' + ui.btn2 + '">' + KG.tx('Apply', 'लागू') + '</button></div>' +
@@ -423,7 +423,7 @@
         const reviewed = KG.store.get('kg-reviews', []).filter(function (r) { return r.orderId === o.id; }).map(function (r) { return r.productId; });
         const steps = ['paid', 'shipped', 'delivered', 'completed'];
         const idx = steps.indexOf(o.status);
-        return '<div class="border border-gray-200 dark:border-gray-800 rounded-xl p-4 mb-3">' +
+        return '<div class="border border-gray-200 dark:border-gray-800 rounded-2xl p-4 mb-3">' +
             '<div class="flex flex-wrap items-center gap-2 justify-between"><div><strong class="text-sm">' + o.id + '</strong> <span class="' + ui.muted + '">· ' + KG.fmtDate(o.createdAt) + ' · ' + esc(s.shopName || '') + '</span></div>' + KG.statusBadge(o.status) + '</div>' +
             '<ol class="flex items-center gap-1 mt-3" aria-label="Order progress">' + steps.map(function (st, i) {
                 const on = idx >= i && o.status !== 'cancelled' && o.status !== 'refunded';
@@ -606,7 +606,7 @@
         sessionStorage.setItem('kg-bag-nudged', '1');
         const n = c.reduce(function (s, l) { return s + l.qty; }, 0);
         const bar = document.createElement('div');
-        bar.className = 'fixed bottom-4 left-4 z-[60] max-w-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl p-4 text-sm';
+        bar.className = 'fixed bottom-4 left-4 z-[60] max-w-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 text-sm';
         bar.setAttribute('role', 'status');
         bar.innerHTML = '<button class="absolute top-2 right-2 text-gray-400" aria-label="Dismiss" onclick="this.parentNode.remove()"><i class="fa-solid fa-xmark"></i></button><p class="font-bold text-gray-900 dark:text-white"><i class="fa-solid fa-bag-shopping text-red-700 mr-1"></i>' + KG.tx('Still thinking it over?', 'अझै सोच्दै हुनुहुन्छ?') + '</p><p class="text-xs text-gray-600 dark:text-gray-400 mt-1">' + KG.tx('You left ' + n + ' handmade item' + (n > 1 ? 's' : '') + ' in your bag. One-of-a-kind pieces can sell out.', 'तपाईंको झोलामा ' + n + ' वस्तु बाँकी छन्।') + '</p><button class="' + ui.btn + ' !py-1.5 !text-xs mt-3" onclick="this.parentNode.remove();KG.openCart()">' + KG.tx('View my bag', 'झोला हेर्नुहोस्') + '</button>';
         document.body.appendChild(bar);

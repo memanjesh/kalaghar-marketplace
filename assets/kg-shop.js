@@ -20,7 +20,7 @@
             b.innerHTML = '<i class="fa-' + (i > -1 ? 'regular' : 'solid') + ' fa-heart"></i>';
             b.classList.toggle('text-red-600', i === -1);
         });
-        KG.updateFavCount();
+        KG.updateFavCount(); KG.updateLocaleLabel();
         KG.toast(i > -1 ? KG.tx('Removed from favorites', 'मनपर्नेबाट हटाइयो') : KG.tx('Saved to favorites', 'मनपर्नेमा राखियो'));
     };
     KG.updateFavCount = function () {
@@ -34,10 +34,10 @@
         const badges = KG.badgesFor(p);
         const promoted = p.promotedUntil && new Date(p.promotedUntil) > new Date();
         const title = KG.lang() === 'ne' && p.nameNe ? p.nameNe : p.name;
-        return '<div class="product-card bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition flex flex-col" data-category="' + esc(p.category) + '" data-region="' + esc(p.region) + '" data-search="' + esc((p.name + ' ' + p.sub + ' ' + p.materials + ' ' + KG.catName(p.category) + ' ' + KG.regionName(p.region) + ' ' + (p.nameNe || '')).toLowerCase()) + '">' +
-            '<div class="h-48 overflow-hidden relative cursor-pointer" onclick="KG.openProduct(' + p.id + ')">' +
+        return '<div class="product-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden group hover:shadow-lg transition flex flex-col" data-category="' + esc(p.category) + '" data-region="' + esc(p.region) + '" data-search="' + esc((p.name + ' ' + p.sub + ' ' + p.materials + ' ' + KG.catName(p.category) + ' ' + KG.regionName(p.region) + ' ' + (p.nameNe || '')).toLowerCase()) + '">' +
+            '<div class="aspect-[4/3] overflow-hidden relative cursor-pointer" onclick="KG.openProduct(' + p.id + ')">' +
                 '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">' +
-                '<span class="absolute top-2 left-2 ' + esc(p.tagClass || 'bg-red-700') + ' text-white text-[10px] font-bold px-2 py-0.5 rounded">' + esc(p.tag || '') + '</span>' +
+                '<span class="kg-grad absolute top-2 left-2 text-white text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-full shadow">' + esc(p.tag || '') + '</span>' +
                 (promoted ? '<span class="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded">' + KG.tx('Ad', 'विज्ञापन') + '</span>' : '') +
                 '<button type="button" data-fav="' + p.id + '" onclick="KG.toggleFav(' + p.id + ', event)" aria-label="Save to favorites" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 dark:bg-gray-900/90 flex items-center justify-center shadow ' + (KG.isFav(p.id) ? 'text-red-600' : 'text-gray-600 dark:text-gray-300') + ' hover:text-red-600"><i class="fa-' + (KG.isFav(p.id) ? 'solid' : 'regular') + ' fa-heart"></i></button>' +
             '</div>' +
@@ -49,7 +49,7 @@
                 (badges.length ? '<div class="flex flex-wrap gap-1 mt-2">' + badges.map(function (b) { return KG.badgeHtml(b, true); }).join('') + '</div>' : '') +
                 '<div class="flex items-end justify-between mt-auto pt-3 gap-2">' +
                     '<div class="leading-tight">' + KG.priceHtml(p.price) + '</div>' +
-                    '<button onclick="KG.addToCart(' + p.id + ')" class="bg-gray-100 dark:bg-gray-800 hover:bg-red-700 hover:text-white text-gray-700 dark:text-gray-200 p-2 rounded-lg text-xs font-semibold transition shrink-0">' + t('addToBag') + '</button>' +
+                    '<button onclick="KG.addToCart(' + p.id + ')" class="kg-btn-soft px-3 py-2 rounded-full text-xs font-semibold transition shrink-0">' + t('addToBag') + '</button>' +
                 '</div>' +
             '</div>' +
         '</div>';
@@ -77,8 +77,11 @@
         });
         const note = document.getElementById('kgFilterNote');
         if (note) {
-            if (KG.activeRegion) {
-                note.innerHTML = '<i class="fa-solid fa-location-dot mr-1"></i>' + KG.tx('Showing crafts from ', 'क्षेत्र: ') + '<strong>' + esc(KG.regionName(KG.activeRegion)) + '</strong> · ' + shown + ' ' + KG.tx('items', 'वस्तु') + ' <button class="underline ml-2" onclick="KG.filterRegion(null)">' + KG.tx('Clear', 'हटाउनुहोस्') + '</button>';
+            const parts = [];
+            if (activeCategory !== 'all') parts.push('<strong>' + esc(KG.catName(activeCategory)) + '</strong>');
+            if (KG.activeRegion) parts.push('<i class="fa-solid fa-location-dot mx-1"></i><strong>' + esc(KG.regionName(KG.activeRegion)) + '</strong>');
+            if (parts.length) {
+                note.innerHTML = KG.tx('Showing ', 'देखाउँदै: ') + parts.join(' · ') + ' · ' + shown + ' ' + KG.tx('items', 'वस्तु') + ' <button class="underline ml-2 font-semibold" onclick="KG.filterRegion(null);filterCategory(\'all\')">' + KG.tx('Clear', 'हटाउनुहोस्') + '</button>';
                 note.classList.remove('hidden');
             } else note.classList.add('hidden');
         }
@@ -132,7 +135,7 @@
         const body = KG.modal('kgProduct', esc(title),
             '<div class="grid md:grid-cols-2 gap-6">' +
                 '<div>' +
-                    '<div id="kgZoom" class="relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 aspect-[4/3] cursor-zoom-in bg-gray-100 dark:bg-gray-800">' +
+                    '<div id="kgZoom" class="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 aspect-[4/3] cursor-zoom-in bg-gray-100 dark:bg-gray-800">' +
                         '<img id="kgMainImg" src="' + esc(imgs[0]) + '" alt="' + esc(p.name) + '" class="w-full h-full object-cover transition-transform duration-150">' +
                         '<span class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i>' + KG.tx('Hover or tap to zoom', 'जुम गर्न राख्नुहोस्') + '</span>' +
                     '</div>' +
@@ -359,54 +362,112 @@
             btn.addEventListener('click', function () { if (KG.user()) KG.openAccount(); else openModal('customerAuthModal'); });
         }
 
-        // currency + gift mode
-        const theme = document.getElementById('themeToggle');
-        const sel = document.createElement('select');
-        sel.id = 'kgCurrency'; sel.title = 'Currency'; sel.setAttribute('aria-label', 'Currency');
-        sel.className = 'hidden sm:block text-xs font-semibold bg-transparent text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 rounded-lg px-1.5 py-1.5 hover:border-red-700 focus:outline-none dark:bg-gray-900';
-        sel.innerHTML = Object.keys(C.currency.fallbackRates).map(function (c) { return '<option value="' + c + '"' + (c === KG.cur ? ' selected' : '') + '>' + c + '</option>'; }).join('');
-        sel.addEventListener('change', function () { KG.setCurrency(sel.value); calcShipping(); });
-        theme.before(sel);
-        // phones: currency switcher lives in the footer so the header stays on one line
-        const weAccept = document.querySelector('footer [data-i18n="weAccept"]');
-        if (weAccept && !document.getElementById('kgCurrencyFoot')) {
-            const holder = weAccept.parentNode;
-            const fs = sel.cloneNode(true); fs.id = 'kgCurrencyFoot'; fs.className = 'sm:hidden text-xs font-semibold bg-transparent text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-700 rounded-lg px-1.5 py-1 dark:bg-gray-900';
-            const wrapEl = document.createElement('label'); wrapEl.className = 'sm:hidden flex items-center gap-2'; wrapEl.innerHTML = '<span class="font-bold text-[10px] tracking-widest uppercase text-gray-400">' + t('kgCurrency') + '</span>';
-            wrapEl.appendChild(fs); holder.after(wrapEl);
-            fs.addEventListener('change', function () { sel.value = fs.value; KG.setCurrency(fs.value); calcShipping(); });
-            sel.addEventListener('change', function () { fs.value = sel.value; });
-        }
-        const gift = document.createElement('button');
-        gift.className = 'hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 hover:text-red-700 dark:hover:text-red-400 px-2 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800';
-        gift.innerHTML = '<i class="fa-solid fa-gift text-red-700 dark:text-red-400"></i><span data-i18n="kgGiftMode">' + t('kgGiftMode') + '</span>';
-        gift.addEventListener('click', KG.openGiftMode);
-        sel.before(gift);
-
         // filter note above product grid
         const grid = document.getElementById('productGrid');
         if (grid && !document.getElementById('kgFilterNote')) grid.insertAdjacentHTML('beforebegin', '<div id="kgFilterNote" class="hidden mb-4 text-sm bg-amber-50 dark:bg-gray-900 border border-amber-200 dark:border-gray-800 rounded-lg px-3 py-2 text-gray-700 dark:text-gray-200"></div>');
     }
 
     /* ---------------------------- categories bar ---------------------------- */
-    function addCategoryButtons() {
-        const bar = document.getElementById('categoryButtons'); if (!bar || bar.dataset.kg) return;
-        bar.dataset.kg = '1';
-        const tpl = bar.querySelector('[onclick="filterCategory(\'shoes\')"]');
-        KG.CATEGORIES.filter(function (c) { return c.isNew; }).forEach(function (c) {
-            const b = document.createElement('button');
-            b.setAttribute('onclick', "filterCategory('" + c.id + "')");
-            b.className = tpl.className;
-            b.dataset.i18n = 'kgCat_' + c.id; b.textContent = c.en;
-            bar.insertBefore(b, tpl);
+    /* ---------------------------- Etsy-style Categories menu ---------------------------- */
+    const CAT_ICONS = { pashmina: 'fa-mitten', dhaka: 'fa-shirt', lokta: 'fa-book', metal: 'fa-om', singingbowl: 'fa-bell', thangka: 'fa-palette', felt: 'fa-circle', tea: 'fa-mug-hot', beads: 'fa-gem', wood: 'fa-tree', rugs: 'fa-rug', shoes: 'fa-shoe-prints', bags: 'fa-bag-shopping', homedecor: 'fa-couch', clothes: 'fa-vest', accessories: 'fa-glasses' };
+    KG.goCategory = function (id) { KG.closeCatMenu(); KG.closeModal('kgCatDrawer'); KG.activeRegion = null; filterCategory(id); document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    function catPreview(id) {
+        const list = KG.products().filter(function (p) { return id === 'all' || p.category === id; }).slice(0, 6);
+        const title = id === 'all' ? KG.tx('All Crafts', 'सबै शिल्प') : KG.catName(id);
+        return '<div class="flex items-center justify-between mb-4"><h3 class="text-lg font-bold text-gray-900 dark:text-white">' + esc(title) + '</h3>' +
+            '<button class="text-sm font-semibold text-red-700 dark:text-amber-300 hover:underline" onclick="KG.goCategory(\'' + id + '\')">' + KG.tx('See all', 'सबै हेर्नुहोस्') + ' <i class="fa-solid fa-arrow-right text-xs"></i></button></div>' +
+            (list.length ? '<div class="grid grid-cols-3 gap-4">' + list.map(function (p) {
+                return '<button type="button" class="text-left group" onclick="KG.closeCatMenu();KG.openProduct(' + p.id + ')"><div class="aspect-square rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800"><img src="' + esc(p.image) + '" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div><p class="text-xs font-semibold mt-1.5 text-gray-800 dark:text-gray-200 line-clamp-1 group-hover:underline">' + esc(p.name) + '</p></button>';
+            }).join('') + '</div>' : '<p class="text-sm text-gray-500">' + KG.tx('New pieces coming soon.', 'नयाँ वस्तु चाँडै आउँदैछन्।') + '</p>');
+    }
+    function buildCatMenu() {
+        const panel = document.getElementById('kgCatPanel'), btn = document.getElementById('kgCatBtn');
+        if (!panel || !btn) return;
+        const cats = [{ id: 'all', en: 'All Crafts', ne: 'सबै शिल्प' }].concat(KG.CATEGORIES);
+        panel.innerHTML = '<div class="max-w-7xl mx-auto px-3 sm:px-4"><div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 flex overflow-hidden max-h-[70vh]">' +
+            '<ul class="w-72 shrink-0 border-r border-gray-100 dark:border-gray-800 py-2 overflow-y-auto">' + cats.map(function (c) {
+                return '<li><button type="button" role="menuitem" data-cat="' + c.id + '" class="kg-catitem w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left text-gray-800 dark:text-gray-100"><i class="fa-solid ' + (CAT_ICONS[c.id] || 'fa-border-all') + ' w-4 text-center text-gray-500"></i><span class="flex-1">' + esc(KG.tx(c.en, c.ne)) + '</span><i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i></button></li>';
+            }).join('') + '</ul><div id="kgCatPreview" class="flex-1 p-6 overflow-y-auto"></div></div></div>';
+        const show = function (id) {
+            panel.querySelectorAll('.kg-catitem').forEach(function (b) { b.classList.toggle('kg-catitem-on', b.dataset.cat === id); });
+            panel.querySelector('#kgCatPreview').innerHTML = catPreview(id);
+        };
+        panel.querySelectorAll('.kg-catitem').forEach(function (b) {
+            b.addEventListener('mouseenter', function () { show(b.dataset.cat); });
+            b.addEventListener('focus', function () { show(b.dataset.cat); });
+            b.addEventListener('click', function () { KG.goCategory(b.dataset.cat); });
         });
-        // admin + artisan forms: add new categories to selects
-        const pf = document.getElementById('pfCategory');
-        if (pf) KG.CATEGORIES.filter(function (c) { return c.isNew; }).forEach(function (c) { pf.insertAdjacentHTML('beforeend', '<option value="' + c.id + '">' + esc(c.en) + '</option>'); });
+        show('all');
+    }
+    KG.closeCatMenu = function () {
+        const panel = document.getElementById('kgCatPanel'), btn = document.getElementById('kgCatBtn');
+        if (panel) panel.classList.add('hidden'); if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.classList.remove('bg-gray-100', 'dark:bg-gray-800'); }
+    };
+    function openCatDrawer() {
+        const cats = [{ id: 'all', en: 'All Crafts', ne: 'सबै शिल्प' }].concat(KG.CATEGORIES);
+        KG.modal('kgCatDrawer', KG.tx('Categories', 'वर्गहरू'), '<ul class="-mx-5 -my-2">' + cats.map(function (c) {
+            return '<li><button type="button" onclick="KG.goCategory(\'' + c.id + '\')" class="w-full flex items-center gap-3 px-5 py-3 text-left text-sm border-b border-gray-100 dark:border-gray-800 hover:bg-amber-50 dark:hover:bg-gray-800"><i class="fa-solid ' + (CAT_ICONS[c.id] || 'fa-border-all') + ' w-5 text-center text-red-700 dark:text-amber-300"></i><span class="flex-1 font-medium">' + esc(KG.tx(c.en, c.ne)) + '</span><i class="fa-solid fa-chevron-right text-xs text-gray-400"></i></button></li>';
+        }).join('') + '</ul>', 'md');
+    }
+    function wireCatMenu() {
+        const panel = document.getElementById('kgCatPanel'), btn = document.getElementById('kgCatBtn');
+        if (!panel || !btn || btn.dataset.kg) return;
+        btn.dataset.kg = '1';
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (window.innerWidth < 768) return openCatDrawer();
+            const open = panel.classList.contains('hidden');
+            if (open) { buildCatMenu(); panel.classList.remove('hidden'); btn.setAttribute('aria-expanded', 'true'); btn.classList.add('bg-gray-100', 'dark:bg-gray-800'); }
+            else KG.closeCatMenu();
+        });
+        document.addEventListener('click', function (e) { if (!panel.classList.contains('hidden') && !panel.contains(e.target)) KG.closeCatMenu(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') KG.closeCatMenu(); });
+        window.addEventListener('scroll', function () { if (window.scrollY > 600) KG.closeCatMenu(); }, { passive: true });
     }
 
+    /* ---------------------------- Etsy-style featured row ---------------------------- */
+    KG.renderFeatured = function () {
+        const ul = document.getElementById('kgFeatured'); if (!ul) return;
+        const f = KG.activeFestival ? KG.activeFestival() : null;
+        const items = [
+            ['<i class="fa-solid fa-gift mr-1.5 text-red-700 dark:text-amber-300"></i>' + t('kgGiftMode'), 'KG.openGiftMode()'],
+            f ? ['<i class="fa-solid fa-star mr-1.5 text-amber-500"></i>' + esc(KG.tx(f.name + ' Gifts', f.ne + 'का उपहार')), "document.getElementById('festival').scrollIntoView({behavior:'smooth'})"] : null,
+            [KG.tx('Home Favorites', 'घरका मनपर्ने'), "KG.goCategory('homedecor')"],
+            [KG.tx('Fashion Finds', 'फेसन'), "KG.goCategory('clothes')"],
+            [KG.tx('Pashmina', 'पश्मिना'), "KG.goCategory('pashmina')"],
+            [KG.tx('Send a Gift Home', 'घरमा उपहार'), "document.getElementById('send-home').scrollIntoView({behavior:'smooth'})"],
+            [KG.tx('Shop by Region', 'क्षेत्र अनुसार'), "document.getElementById('regions').scrollIntoView({behavior:'smooth'})"],
+            [KG.tx('Meet the Makers', 'शिल्पीहरू'), "document.getElementById('makers').scrollIntoView({behavior:'smooth'})"]
+        ].filter(Boolean);
+        ul.innerHTML = items.map(function (x) { return '<li><button type="button" onclick="' + x[1] + '" class="kg-feat px-3 py-1.5 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">' + x[0] + '</button></li>'; }).join('');
+    };
+
+    /* ---------------------------- language / currency (footer, like Etsy) ---------------------------- */
+    KG.updateLocaleLabel = function () {
+        const el = document.getElementById('kgLocaleLabel');
+        if (el) el.textContent = KG.tx('Nepal', 'नेपाल') + ' | ' + (KG.lang() === 'ne' ? 'नेपाली' : 'English') + ' | ' + KG.cur;
+    };
+    KG.openLocale = function () {
+        const body = KG.modal('kgLocale', KG.tx('Update your settings', 'सेटिङ अद्यावधिक'),
+            '<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">' + KG.tx('Set where you live, what language you speak and the currency you use.', 'भाषा र मुद्रा छान्नुहोस्।') + '</p>' +
+            '<div class="space-y-4"><div><label class="' + ui.label + '" for="lc-lang">' + KG.tx('Language', 'भाषा') + '</label><select id="lc-lang" class="' + ui.input + '"><option value="en">English</option><option value="ne">नेपाली (Nepali)</option></select></div>' +
+            '<div><label class="' + ui.label + '" for="lc-cur">' + KG.tx('Currency', 'मुद्रा') + '</label><select id="lc-cur" class="' + ui.input + '">' + Object.keys(C.currency.fallbackRates).map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join('') + '</select></div>' +
+            '<p class="' + ui.muted + '">' + KG.tx('Prices are charged in NPR. Other currencies are estimates.', 'मूल्य NPR मा लिइन्छ। अन्य मुद्रा अनुमान मात्र हुन्।') + '</p>' +
+            '<div class="flex gap-2 justify-end"><button type="button" data-close class="' + ui.btn2 + '">' + KG.tx('Cancel', 'रद्द') + '</button><button type="button" id="lc-save" class="' + ui.btn + '">' + KG.tx('Save', 'सुरक्षित') + '</button></div></div>');
+        body.querySelector('#lc-lang').value = KG.lang(); body.querySelector('#lc-cur').value = KG.cur;
+        body.querySelector('#lc-save').addEventListener('click', function () {
+            const l = body.querySelector('#lc-lang').value, c = body.querySelector('#lc-cur').value;
+            KG.closeModal('kgLocale');
+            KG.cur = c; KG.store.set('kg-currency', c);
+            if (typeof selectLang === 'function') selectLang(l); else applyLang(l);
+            calcShipping(); KG.updateLocaleLabel();
+        });
+    };
+
     KG.initShop = function () {
-        upgradeHeader(); addCategoryButtons(); upgradeShippingCalculator(); KG.styleCats(activeCategory);
+        upgradeHeader(); wireCatMenu(); upgradeShippingCalculator();
+        const pf = document.getElementById('pfCategory');
+        if (pf && !pf.dataset.kg) { pf.dataset.kg = '1'; KG.CATEGORIES.filter(function (c) { return c.isNew; }).forEach(function (c) { pf.insertAdjacentHTML('beforeend', '<option value="' + c.id + '">' + esc(c.en) + '</option>'); }); }
         KG.updateFavCount();
         renderProducts(); calcShipping();
     };
