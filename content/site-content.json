@@ -24,7 +24,7 @@
       },
       {
         "id": "authentic-craft",
-        "text": "📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa",
+        "text": "📜 100% Certified Authentic Craftsmanship from all over Nepal",
         "color": "#ffffff",
         "fontSize": 12,
         "visible": true
@@ -55,50 +55,50 @@
       {
         "id": "faq",
         "text": "FAQ",
-        "href": "#faq",
         "color": "#ffffff",
         "fontSize": 14,
-        "visible": true
+        "visible": true,
+        "href": "#faq"
       },
       {
         "id": "track-order",
         "text": "Track My Order",
-        "href": "#account",
         "color": "#ffffff",
         "fontSize": 14,
-        "visible": true
+        "visible": true,
+        "href": "#account"
       },
       {
         "id": "delivery",
         "text": "Delivery Policy",
-        "href": "pages/delivery.html",
         "color": "#ffffff",
         "fontSize": 14,
-        "visible": true
+        "visible": true,
+        "href": "pages/delivery.html"
       },
       {
         "id": "returns",
         "text": "Return & Refund Policy",
-        "href": "pages/returns.html",
         "color": "#ffffff",
         "fontSize": 14,
-        "visible": true
+        "visible": true,
+        "href": "pages/returns.html"
       },
       {
         "id": "purchase-protection",
         "text": "Purchase Protection",
-        "href": "pages/purchase-protection.html",
         "color": "#ffffff",
         "fontSize": 14,
-        "visible": true
+        "visible": true,
+        "href": "pages/purchase-protection.html"
       },
       {
         "id": "complaint",
         "text": "File a Complaint",
-        "href": "#complaint",
         "color": "#ffffff",
         "fontSize": 14,
-        "visible": true
+        "visible": true,
+        "href": "#complaint"
       }
     ]
   }
