@@ -452,13 +452,14 @@
     };
     window.addEventListener('resize', function () { KG.alignFeatured(); });
 
-    // Lift the floating call / WhatsApp / chat buttons above the footer's bottom bar
+    // The footer already contains phone and WhatsApp links, so hide the floating
+    // support cluster while the footer is visible instead of covering legal text.
     KG.watchFloat = function () {
-        const fl = document.getElementById('kgFloat'), bar = document.querySelector('footer .bg-black\\/15');
-        if (!fl || !bar || !('IntersectionObserver' in window)) return;
+        const fl = document.getElementById('kgFloat'), footer = document.querySelector('footer');
+        if (!fl || !footer || !('IntersectionObserver' in window)) return;
         new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) { fl.style.transform = e.isIntersecting ? 'translateY(-' + (bar.offsetHeight + 4) + 'px)' : ''; });
-        }).observe(bar);
+            entries.forEach(function (e) { fl.classList.toggle('kg-float-in-footer', e.isIntersecting); });
+        }, { threshold: 0.08 }).observe(footer);
     };
 
     /* ---------------------------- language / currency (footer, like Etsy) ---------------------------- */

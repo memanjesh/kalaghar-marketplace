@@ -1,0 +1,12 @@
+{
+  "name": "kalaghar-marketplace",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node --check assets/kg-content.js && node --check assets/kg-admin.js && node --check assets/kg-core.js && node --check server/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

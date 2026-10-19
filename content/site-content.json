@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "header": {
+    "brand": {
+      "text": "KalaGhar",
+      "color": "#111827",
+      "fontSize": 26,
+      "visible": true
+    },
+    "items": [
+      {
+        "id": "artisan-impact",
+        "text": "✨ Empowering 1,200+ Nepali Artisans & Rural Cooperatives",
+        "color": "#ffffff",
+        "fontSize": 12,
+        "visible": true
+      },
+      {
+        "id": "free-shipping",
+        "text": "✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery",
+        "color": "#ffffff",
+        "fontSize": 12,
+        "visible": true
+      },
+      {
+        "id": "authentic-craft",
+        "text": "📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan & Palpa",
+        "color": "#ffffff",
+        "fontSize": 12,
+        "visible": true
+      }
+    ]
+  },
+  "dispatch": {
+    "visible": true,
+    "backgroundColor": "#ffffff",
+    "items": [
+      {
+        "id": "kathmandu-dispatch",
+        "text": "Order today for dispatch from Kathmandu within 1–2 business days.",
+        "color": "#4b5563",
+        "fontSize": 12,
+        "visible": true
+      }
+    ]
+  },
+  "footer": {
+    "about": {
+      "text": "Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.",
+      "color": "#ffffff",
+      "fontSize": 14,
+      "visible": true
+    },
+    "items": [
+      {
+        "id": "faq",
+        "text": "FAQ",
+        "href": "#faq",
+        "color": "#ffffff",
+        "fontSize": 14,
+        "visible": true
+      },
+      {
+        "id": "track-order",
+        "text": "Track My Order",
+        "href": "#account",
+        "color": "#ffffff",
+        "fontSize": 14,
+        "visible": true
+      },
+      {
+        "id": "delivery",
+        "text": "Delivery Policy",
+        "href": "pages/delivery.html",
+        "color": "#ffffff",
+        "fontSize": 14,
+        "visible": true
+      },
+      {
+        "id": "returns",
+        "text": "Return & Refund Policy",
+        "href": "pages/returns.html",
+        "color": "#ffffff",
+        "fontSize": 14,
+        "visible": true
+      },
+      {
+        "id": "purchase-protection",
+        "text": "Purchase Protection",
+        "href": "pages/purchase-protection.html",
+        "color": "#ffffff",
+        "fontSize": 14,
+        "visible": true
+      },
+      {
+        "id": "complaint",
+        "text": "File a Complaint",
+        "href": "#complaint",
+        "color": "#ffffff",
+        "fontSize": 14,
+        "visible": true
+      }
+    ]
+  }
+}

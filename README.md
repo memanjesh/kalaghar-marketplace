@@ -37,6 +37,7 @@ An Etsy-style marketplace for handmade crafts from Nepal: buyers shop by craft o
 - Real orders with refunds and payout release, artisan approval and verification, licence checks
 - Complaints and protection cases, wholesale and workshop inquiries, translation queue
 - Coupons, payouts to transfer, festival override, printable tourist QR codes, launch checklist
+- Repository-backed Site Content editor for the header, footer and dispatch banner
 
 **Legal pages** (`pages/`) — Terms, Privacy, Return & Refund, Delivery, Purchase Protection, Export Hub, plus the footer business details and complaint form required by the E-Commerce Act 2081. Have a lawyer in Nepal review them before launch.
 
@@ -47,6 +48,7 @@ An Etsy-style marketplace for handmade crafts from Nepal: buyers shop by craft o
 | `index.html` | The main page |
 | `assets/config.js` | **Your business details, rates, payment and courier settings — edit this** |
 | `assets/kg-*.js` | Feature code (core, shop, checkout, discover, seller, admin) |
+| `content/site-content.json` | Published header, footer and dispatch-banner content |
 | `pages/` | Policy pages |
 | `server/` | Payment server for Khalti, eSewa and international cards |
 | `db/schema.sql` | Database for when you move to Supabase |
@@ -59,10 +61,26 @@ The Admin panel has a **Launch checklist** tab that ticks these off automaticall
 2. **Payments.** Open merchant accounts with Khalti and eSewa (and Stripe or your bank for international cards). Copy `server/.env.example` to `server/.env`, add the keys, and run the server (`node server.js`) on any Node 18 host. Then set `payments.paymentApiBase` in `config.js`. Until then checkout runs in **test mode** — orders are saved but no money is taken. Fonepay and ConnectIPS need their own merchant API access before they can be added to the server.
 3. **Couriers.** Open business accounts with Nepal Can Move and Pathao, and replace the illustrative shipping rates in `config.js` with your contracted rates.
 4. **Shared database.** Today, each visitor's data (accounts, orders, listings) stays in their own browser, which is fine for testing but not for real customers. Create a Supabase project, run `db/schema.sql`, and add the URL and key to `config.js`. The site's storage layer (`KG.store` in `kg-core.js`) is the single place to switch over, and the payment server must then read order totals from the database instead of trusting the browser.
-5. **Admin login.** The admin email and password are written in `index.html`, where anyone can read them. Move admin sign-in to Supabase Auth before launch.
+5. **Admin publishing.** Create a fine-grained GitHub personal access token restricted to this repository with **Contents: Read and write** permission. Open Admin in the footer and use that token to publish header, footer and dispatch-banner changes. The token is kept only in memory and is cleared on logout or refresh; it is never written to storage or the repository.
 6. **Replace sample content.** Sample artisans and new-category products are marked "sample" / "Photo coming soon".
 7. Update the domain in `sitemap.xml` and the festival dates in `config.js` each year.
 
 ## Run locally
 
 Any static server works, e.g. `python3 -m http.server` in this folder, then open http://localhost:8000.
+
+## Site-content admin
+
+The public page loads `content/site-content.json`, so the editable content has a safe static fallback and remains fast on GitHub Pages. The admin flow verifies the supplied token directly with GitHub, confirms write access to `memanjesh/kalaghar-marketplace`, then updates only that JSON file through GitHub's Contents API. Every publish creates an auditable commit and triggers the normal GitHub Pages deployment.
+
+For the narrowest access, create a fine-grained token with:
+
+- Repository access: **Only select repositories → `kalaghar-marketplace`**
+- Repository permissions: **Contents → Read and write**
+- A short expiration date, rotated regularly
+
+Do not share the token or paste it anywhere except the site's Admin login. Because the live storefront currently uses GitHub Pages, this repository-backed model provides persistent edits without publishing an admin password in client-side code.
+
+## Verification
+
+Run `npm test` for the content-security and page checks, and `npm run check` for JavaScript syntax checks. The payment service has no third-party runtime dependencies and remains under `server/`.

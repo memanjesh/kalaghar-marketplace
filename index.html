@@ -8,7 +8,7 @@
     <meta property="og:description" content="Handmade in Nepal, shipped worldwide. Buy directly from verified artisans and cooperatives.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#b91c1c">
-    <link rel="stylesheet" href="assets/kg.css?v=20261019i">
+    <link rel="stylesheet" href="assets/kg.css?v=20261019j">
     <title>KalaGhar (कलाघर) - Authentic Nepali Artisan Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
@@ -30,6 +30,16 @@
         @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: flex; width: 200%; animation: marquee 25s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
+        @keyframes kg-logo-float {
+            0%, 100% { transform: translateY(0) rotate(0); filter: drop-shadow(0 2px 3px rgba(127, 29, 29, .18)); }
+            50% { transform: translateY(-3px) rotate(3deg); filter: drop-shadow(0 6px 7px rgba(127, 29, 29, .28)); }
+        }
+        .kg-logo-mark { animation: kg-logo-float 3.2s ease-in-out infinite; transform-origin: 50% 60%; }
+        .kg-logo-mark:hover { animation-duration: 1.2s; }
+        @media (prefers-reduced-motion: reduce) {
+            .kg-logo-mark, .animate-marquee { animation: none !important; transform: none !important; }
+            html { scroll-behavior: auto !important; }
+        }
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
         details > summary::after { content: "+"; float: right; color: #b91c1c; font-weight: 700; }
@@ -64,8 +74,8 @@
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100 flex flex-col min-h-screen transition-colors duration-200">
 
     <!-- ANNOUNCEMENT MARQUEE -->
-    <div class="kg-grad text-white text-xs py-2 overflow-hidden whitespace-nowrap relative z-50 shadow-inner">
-        <div class="animate-marquee flex items-center gap-8 font-medium">
+    <div class="kg-grad text-white text-xs py-2 overflow-hidden whitespace-nowrap relative z-50 shadow-inner" data-kg-section="announcement">
+        <div id="kgAnnouncementTrack" class="animate-marquee flex items-center gap-8 font-medium">
             <span class="flex items-center gap-2" data-i18n="t1">✨ Empowering 1,200+ Nepali Artisans &amp; Rural Cooperatives</span>
             <span class="flex items-center gap-2" data-i18n="t2">✈️ Free Shipping across Nepal over NPR 3,000 | Global Express Delivery</span>
             <span class="flex items-center gap-2" data-i18n="t3">📜 100% Certified Authentic Craftsmanship from Kathmandu, Patan &amp; Palpa</span>
@@ -88,8 +98,8 @@
 
             <!-- Logo -->
             <a href="#" class="order-1 flex items-center gap-2 shrink-0" aria-label="KalaGhar home">
-                <span class="kg-grad w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-lg font-nepali shadow-sm">क</span>
-                <span class="text-[26px] font-extrabold tracking-tight text-gray-900 dark:text-white leading-none">KalaGhar</span>
+                <span class="kg-logo-mark kg-grad w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-lg font-nepali shadow-sm" aria-hidden="true">क</span>
+                <span data-kg-content="header-brand" class="text-[26px] font-extrabold tracking-tight text-gray-900 dark:text-white leading-none">KalaGhar</span>
             </a>
 
             <!-- Search -->
@@ -164,9 +174,8 @@
     </header>
 
     <!-- DISPATCH NOTICE -->
-    <div class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 text-center text-xs text-gray-600 dark:text-gray-400 py-2 px-4 transition-colors"
-         data-i18n-html="dispatch">
-        Order today for dispatch from Kathmandu within <strong class="text-red-700 dark:text-red-400">1–2 business days</strong>.
+    <div id="kgDispatchNotice" class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 text-center text-xs text-gray-600 dark:text-gray-400 py-2 px-4 transition-colors" role="status">
+        <span>Order today for dispatch from Kathmandu within 1–2 business days.</span>
     </div>
 
     <!-- HERO -->
@@ -489,30 +498,25 @@
 
         <!-- Main footer -->
         <div class="kg-foot text-white/90">
-            <div class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-8">
-                <div class="col-span-2 md:col-span-4 lg:col-span-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-12">
+                <div class="grid lg:grid-cols-[minmax(280px,1fr)_minmax(0,2fr)] gap-10 lg:gap-16 items-start">
+                <div>
                     <a href="#" class="inline-flex items-center gap-3">
-                        <span class="kg-grad w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-xl text-white font-nepali shadow">क</span>
+                        <span class="kg-logo-mark kg-grad w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-xl text-white font-nepali shadow" aria-hidden="true">क</span>
                         <span><span class="text-2xl font-extrabold text-white block leading-none">KalaGhar</span><span class="text-[11px] text-amber-100 font-nepali font-semibold tracking-wider">कलाघर नेपाल</span></span>
                     </a>
-                    <p class="text-sm leading-relaxed mt-4 max-w-sm text-white/85" data-i18n="footerAbout">Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.</p>
+                    <p id="kgFooterAbout" class="text-sm leading-relaxed mt-4 max-w-md text-white/85">Promoting authentic Nepali craftsmanship, empowering local weavers, and delivering heritage goods worldwide.</p>
                     <p class="text-sm mt-4 flex items-center gap-2"><i class="fa-solid fa-hand-holding-heart text-amber-200"></i><span data-i18n="ftHandmade">100% handmade in Nepal</span></p>
-                    <h4 class="kg-fhead mt-7" data-i18n="conTitle">Contact</h4>
-                    <ul class="grid sm:grid-cols-2 gap-3 max-w-md text-sm">
-                        <li><a href="tel:+9779851022453" class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-phone"></i></span><span><span class="kg-clabel" data-i18n="phoneLabel">PHONE</span><span class="block">+977 9851022453</span></span></a></li>
-                        <li><a href="https://wa.me/9779851022453" target="_blank" rel="noopener" class="kg-contact"><span class="kg-cicon"><i class="fa-brands fa-whatsapp"></i></span><span><span class="kg-clabel">WHATSAPP</span><span class="block">+977 9851022453</span></span></a></li>
-                        <li><a href="mailto:support@kalanepal.com" class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-envelope"></i></span><span><span class="kg-clabel" data-i18n="emailLabel">EMAIL</span><span class="block break-all">support@kalanepal.com</span></span></a></li>
-                        <li><span class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-location-dot"></i></span><span><span class="kg-clabel" data-i18n="addressLabel">ADDRESS</span><span class="block" data-i18n="contactAddress">Kathmandu- 14, Nepal</span></span></span></li>
-                    </ul>
-                    <div class="flex gap-3 mt-6">
-                        <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-brands fa-tiktok"></i></a>
+                    <div class="flex gap-2.5 mt-6" aria-label="Social links">
+                        <a href="#" aria-label="Instagram" class="kg-social"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook" class="kg-social"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" aria-label="TikTok" class="kg-social"><i class="fa-brands fa-tiktok"></i></a>
                     </div>
                 </div>
-                <div class="lg:col-span-2">
+                <nav aria-label="Footer" class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8">
+                <div>
                     <h4 class="kg-fhead" data-i18n="ftShop">Shop</h4>
-                    <ul class="space-y-2.5 text-sm">
+                    <ul class="kg-footer-links">
                         <li><a href="#marketplace" class="kg-flink" data-i18n="fAll" onclick="filterCategory('all');return false;">All Crafts</a></li>
                         <li><a href="#" class="kg-flink" data-i18n="kgGiftMode" onclick="KG.openGiftMode();return false;">Gift Mode</a></li>
                         <li><a href="#festival" class="kg-flink" data-i18n="ftFestival">Festival Gifts</a></li>
@@ -521,28 +525,28 @@
                         <li><a href="#wholesale" class="kg-flink" data-i18n="fWholesale">Wholesale</a></li>
                     </ul>
                 </div>
-                <div class="lg:col-span-2">
+                <div>
                     <h4 class="kg-fhead" data-i18n="ftSell">Sell</h4>
-                    <ul class="space-y-2.5 text-sm">
+                    <ul class="kg-footer-links">
                         <li><a href="#" class="kg-flink" data-i18n="ftSellOn" onclick="openModal('artisanModal');return false;">Sell on KalaGhar</a></li>
                         <li><a href="#seller" class="kg-flink" data-i18n="fSellerDash">Seller Dashboard</a></li>
                         <li><a href="pages/export-hub.html" class="kg-flink" data-i18n="fExportHub">Export Hub for Artisans</a></li>
                         <li><a href="pages/terms.html#sellers" class="kg-flink" data-i18n="ftSellerRules">Seller Policies</a></li>
                     </ul>
                 </div>
-                <div class="lg:col-span-2">
+                <div>
                     <h4 class="kg-fhead" data-i18n="ftAbout">About</h4>
-                    <ul class="space-y-2.5 text-sm">
+                    <ul class="kg-footer-links">
                         <li><a href="#makers" class="kg-flink" data-i18n="kgMakersTitle">Meet the Makers</a></li>
                         <li><a href="#impact" class="kg-flink" data-i18n="fImpact">Our Impact</a></li>
                         <li><a href="#workshops" class="kg-flink" data-i18n="fWorkshops">Workshops</a></li>
                         <li><a href="pages/export-hub.html" class="kg-flink" data-i18n="fExportHub">Export Hub for Artisans</a></li>
                     </ul>
                 </div>
-                <div class="lg:col-span-2">
+                <div>
                     <h4 class="kg-fhead" data-i18n="ftHelp">Help</h4>
-                    <ul class="space-y-2.5 text-sm">
-                        <li><a href="#faq" class="kg-flink" data-i18n="faqTitle">FAQ</a></li>
+                    <ul id="kgFooterHelpLinks" class="kg-footer-links">
+                        <li><a href="#faq" class="kg-flink">FAQ</a></li>
                         <li><a href="#account" class="kg-flink" data-i18n="ftTrack">Track My Order</a></li>
                         <li><a href="pages/delivery.html" class="kg-flink" data-i18n="fDelivery">Delivery Policy</a></li>
                         <li><a href="pages/returns.html" class="kg-flink" data-i18n="fReturns">Return & Refund Policy</a></li>
@@ -550,16 +554,30 @@
                         <li><a href="#complaint" class="kg-flink" data-i18n="kgComplaint">File a Complaint</a></li>
                     </ul>
                 </div>
+                </nav>
+                </div>
+
+                <div class="kg-contact-panel">
+                    <h4 class="kg-fhead !mb-4" data-i18n="conTitle">Contact</h4>
+                    <ul class="grid sm:grid-cols-2 xl:grid-cols-4 gap-3 text-sm">
+                        <li><a href="tel:+9779851022453" class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-phone"></i></span><span class="min-w-0"><span class="kg-clabel" data-i18n="phoneLabel">PHONE</span><span class="kg-contact-value">+977 9851022453</span></span></a></li>
+                        <li><a href="https://wa.me/9779851022453" target="_blank" rel="noopener" class="kg-contact"><span class="kg-cicon"><i class="fa-brands fa-whatsapp"></i></span><span class="min-w-0"><span class="kg-clabel">WHATSAPP</span><span class="kg-contact-value">+977 9851022453</span></span></a></li>
+                        <li><a href="mailto:support@kalanepal.com" class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-envelope"></i></span><span class="min-w-0"><span class="kg-clabel" data-i18n="emailLabel">EMAIL</span><span class="kg-contact-value">support@kalanepal.com</span></span></a></li>
+                        <li><span class="kg-contact"><span class="kg-cicon"><i class="fa-solid fa-location-dot"></i></span><span class="min-w-0"><span class="kg-clabel" data-i18n="addressLabel">ADDRESS</span><span class="kg-contact-value" data-i18n="contactAddress">Kathmandu-14, Nepal</span></span></span></li>
+                    </ul>
+                </div>
             </div>
-            <div class="max-w-7xl mx-auto px-4 pb-8 flex flex-wrap items-center gap-2">
-                <span class="font-bold text-[10px] tracking-widest uppercase text-white/80 mr-1" data-i18n="weAccept">WE ACCEPT:</span>
-                <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200"><i class="fa-brands fa-cc-visa text-blue-800 text-lg"></i></span>
-                <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200"><i class="fa-brands fa-cc-mastercard text-red-600 text-lg"></i></span>
-                <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 text-[10px] font-bold text-green-700">eSewa</span>
-                <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 text-[10px] font-bold text-purple-700">Khalti</span>
-                <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 text-[10px] font-bold text-red-600">fonepay</span>
-                <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 text-[10px] font-bold text-blue-800">connectIPS</span>
-                <span class="bg-white px-1.5 py-0.5 rounded border border-gray-200 text-[10px] font-bold text-gray-700"><i class="fa-solid fa-money-bill-1 mr-0.5"></i> Cash</span>
+            <div class="kg-payment-row max-w-7xl mx-auto px-4 sm:px-6 pb-7">
+                <span class="kg-payment-label" data-i18n="weAccept">WE ACCEPT:</span>
+                <div class="kg-payment-methods" aria-label="Accepted payment methods">
+                    <span class="kg-payment-tile kg-pay-visa" title="Visa"><i class="fa-brands fa-cc-visa" aria-hidden="true"></i><span class="sr-only">Visa</span></span>
+                    <span class="kg-payment-tile kg-pay-mastercard" title="Mastercard"><i class="fa-brands fa-cc-mastercard" aria-hidden="true"></i><span class="sr-only">Mastercard</span></span>
+                    <span class="kg-payment-tile kg-pay-esewa">eSewa</span>
+                    <span class="kg-payment-tile kg-pay-khalti">Khalti</span>
+                    <span class="kg-payment-tile kg-pay-fonepay">fonepay</span>
+                    <span class="kg-payment-tile kg-pay-connectips">connectIPS</span>
+                    <span class="kg-payment-tile kg-pay-cash"><i class="fa-solid fa-money-bill-1" aria-hidden="true"></i>Cash</span>
+                </div>
             </div>
             <div id="kgBizSlot"></div>
 
@@ -644,23 +662,16 @@
                 </div>
                 <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminEmailLabel">Admin Email</label>
-                        <input id="adminEmail" type="email" required placeholder="admin@kalaghar.com"
-                               class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg p-2.5 text-sm focus:border-red-700 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="adminPasswordLabel">Password</label>
-                        <input id="adminPassword" type="password" required placeholder="••••••••"
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1" for="adminToken">GitHub access token</label>
+                        <input id="adminToken" type="password" required autocomplete="off" spellcheck="false" placeholder="github_pat_…"
                                class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg p-2.5 text-sm focus:border-red-700 focus:outline-none">
                     </div>
                     <p id="adminLoginError" class="hidden text-xs text-red-600 dark:text-red-400"></p>
-                    <button type="submit" class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition" data-i18n="adminSignInBtn">Sign In to Console</button>
+                    <button id="adminSignInButton" type="submit" class="w-full bg-red-700 hover:bg-red-800 disabled:opacity-60 text-white font-semibold py-2.5 rounded-lg transition">Verify &amp; open console</button>
                 </form>
                 <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
                     <p class="text-[11px] text-amber-900 dark:text-amber-200 leading-relaxed">
-                        <strong data-i18n="adminDemoHintLabel">Demo credentials:</strong><br>
-                        Email: <code class="font-mono">admin@kalaghar.com</code><br>
-                        Password: <code class="font-mono">KalaGhar@2026</code>
+                        Use a fine-grained GitHub token restricted to <strong>memanjesh/kalaghar-marketplace</strong> with Contents read/write permission. It stays in memory for this page only and is never saved.
                     </p>
                 </div>
                 <button onclick="closeAdminPanel()" class="w-full mt-4 text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" data-i18n="adminBackToStore">← Back to store</button>
@@ -1318,11 +1329,8 @@
     /* =========================================================
        ADMIN PANEL
        ========================================================= */
-    const ADMIN_CREDS = { email: 'admin@kalaghar.com', password: 'KalaGhar@2026' };
-
     function isAdminLoggedIn() {
-        try { return sessionStorage.getItem('kg-admin-session') === ADMIN_CREDS.email; }
-        catch (e) { return false; }
+        return !!(window.KG_CONTENT && window.KG_CONTENT.isAuthenticated());
     }
 
     function openAdminPanel() {
@@ -1341,35 +1349,40 @@
     function showAdminLogin() {
         document.getElementById('adminLoginView').classList.remove('hidden');
         document.getElementById('adminDashboardView').classList.add('hidden');
-        document.getElementById('adminEmail').value = '';
-        document.getElementById('adminPassword').value = '';
+        document.getElementById('adminToken').value = '';
     }
 
     function showAdminDashboard() {
         document.getElementById('adminLoginView').classList.add('hidden');
         document.getElementById('adminDashboardView').classList.remove('hidden');
-        document.getElementById('adminEmailDisplay').textContent = ADMIN_CREDS.email;
+        document.getElementById('adminEmailDisplay').textContent = window.KG_CONTENT.user() + ' · secure GitHub publishing';
         switchAdminTab('overview');
     }
 
-    function handleAdminLoginSubmit(e) {
+    async function handleAdminLoginSubmit(e) {
         e.preventDefault();
-        const email = document.getElementById('adminEmail').value.trim();
-        const pass = document.getElementById('adminPassword').value;
+        const token = document.getElementById('adminToken').value.trim();
         const err = document.getElementById('adminLoginError');
-
-        if (email === ADMIN_CREDS.email && pass === ADMIN_CREDS.password) {
-            try { sessionStorage.setItem('kg-admin-session', email); } catch (e) {}
+        const button = document.getElementById('adminSignInButton');
+        err.classList.add('hidden');
+        button.disabled = true;
+        button.textContent = 'Verifying…';
+        try {
+            await window.KG_CONTENT.login(token);
+            document.getElementById('adminToken').value = '';
             err.classList.add('hidden');
             showAdminDashboard();
-        } else {
-            err.textContent = t('adminInvalid');
+        } catch (error) {
+            err.textContent = error.message || 'Unable to verify this token.';
             err.classList.remove('hidden');
+        } finally {
+            button.disabled = false;
+            button.textContent = 'Verify & open console';
         }
     }
 
     function adminLogout() {
-        try { sessionStorage.removeItem('kg-admin-session'); } catch (e) {}
+        if (window.KG_CONTENT) window.KG_CONTENT.logout();
         showAdminLogin();
     }
 
@@ -1620,12 +1633,13 @@
 
     <!-- KalaGhar feature modules -->
     <script src="assets/config.js?v=20261019i"></script>
+    <script src="assets/kg-content.js?v=20261019a"></script>
     <script src="assets/kg-core.js?v=20261019i"></script>
-    <script src="assets/kg-shop.js?v=20261019i"></script>
+    <script src="assets/kg-shop.js?v=20261019j"></script>
     <script src="assets/kg-checkout.js?v=20261019i"></script>
-    <script src="assets/kg-discover.js?v=20261019i"></script>
+    <script src="assets/kg-discover.js?v=20261019j"></script>
     <script src="assets/kg-seller.js?v=20261019i"></script>
-    <script src="assets/kg-admin.js?v=20261019i"></script>
+    <script src="assets/kg-admin.js?v=20261019j"></script>
     <script src="assets/kg-init.js?v=20261019i"></script>
 </body>
 </html>

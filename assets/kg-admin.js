@@ -12,7 +12,7 @@
     const td = function (h, cls) { return '<td class="p-3 align-top ' + (cls || '') + '">' + h + '</td>'; };
 
     const NEW_TABS = [
-        ['complaints', 'Complaints'], ['inquiries', 'Inquiries'], ['translations', 'Translations'],
+        ['content', 'Site content'], ['complaints', 'Complaints'], ['inquiries', 'Inquiries'], ['translations', 'Translations'],
         ['coupons', 'Coupons'], ['payouts', 'Payouts'], ['qr', 'QR codes'], ['launch', 'Launch checklist']
     ];
     function addTabs() {
@@ -36,6 +36,82 @@
         RENDER[tab](document.getElementById('adminTab-' + tab));
     };
     KG.adminTab = function (tab) { window.switchAdminTab(tab); };
+
+    /* ---------------------------- editable site content ---------------------------- */
+    let contentDraft = null;
+    function contentItemCard(section, item, index, includeHref) {
+        return '<div class="rounded-xl border border-gray-200 dark:border-gray-700 p-3 space-y-3" data-content-card data-section="' + section + '" data-index="' + index + '">' +
+            '<div class="flex items-center justify-between gap-3"><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-field="visible"' + (item.visible ? ' checked' : '') + '> Show</label><button type="button" data-action="remove" class="text-xs font-semibold text-red-700 dark:text-red-400"><i class="fa-solid fa-trash mr-1"></i>Remove</button></div>' +
+            '<div><label class="' + ui.label + '">Text</label><textarea rows="2" maxlength="240" data-field="text" class="' + ui.input + '">' + esc(item.text) + '</textarea></div>' +
+            (includeHref ? '<div><label class="' + ui.label + '">Link</label><input maxlength="300" data-field="href" value="' + esc(item.href) + '" class="' + ui.input + '" placeholder="#section or https://…"></div>' : '') +
+            '<div class="grid grid-cols-2 gap-3"><div><label class="' + ui.label + '">Text color</label><input type="color" data-field="color" value="' + esc(item.color) + '" class="w-full h-10 rounded border border-gray-300 dark:border-gray-700 bg-transparent p-1"></div>' +
+            '<div><label class="' + ui.label + '">Size (px)</label><input type="number" min="10" max="48" data-field="fontSize" value="' + Number(item.fontSize || 14) + '" class="' + ui.input + '"></div></div></div>';
+    }
+    function renderContentEditor(el) {
+        const d = contentDraft;
+        const card = 'bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-4 sm:p-5';
+        el.innerHTML = '<div class="flex flex-wrap items-start justify-between gap-3 mb-4"><div><h3 class="text-lg font-bold">Header, footer &amp; dispatch</h3><p class="text-xs text-gray-500 mt-1">Changes preview immediately. Publish creates a commit and GitHub Pages then updates the live site.</p></div><div class="flex flex-wrap gap-2"><button type="button" data-action="reload" class="' + ui.btn2 + ' !py-2 !text-xs">Reload published</button><button type="button" data-action="reset" class="' + ui.btn2 + ' !py-2 !text-xs">Restore defaults</button><button type="button" data-action="save" class="' + ui.btn + ' !py-2 !text-xs"><i class="fa-solid fa-cloud-arrow-up mr-1"></i>Publish changes</button></div></div>' +
+            '<div id="kgContentStatus" class="hidden mb-4 rounded-lg p-3 text-xs" role="status"></div>' +
+            '<div class="grid xl:grid-cols-2 gap-4">' +
+            '<section class="' + card + '"><h4 class="font-bold mb-1">Header</h4><p class="text-xs text-gray-500 mb-4">Brand and announcement-bar messages.</p>' +
+                '<div data-content-card data-section="brand" class="rounded-xl bg-gray-50 dark:bg-gray-800/50 p-3 mb-3 space-y-3"><div class="flex items-center justify-between"><strong class="text-sm">Brand name</strong><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-field="visible"' + (d.header.brand.visible ? ' checked' : '') + '> Show</label></div><input data-field="text" maxlength="60" value="' + esc(d.header.brand.text) + '" class="' + ui.input + '"><div class="grid grid-cols-2 gap-3"><input type="color" aria-label="Brand color" data-field="color" value="' + esc(d.header.brand.color) + '" class="w-full h-10 rounded border p-1"><input type="number" aria-label="Brand size" min="10" max="48" data-field="fontSize" value="' + Number(d.header.brand.fontSize) + '" class="' + ui.input + '"></div></div>' +
+                '<div class="space-y-3">' + d.header.items.map(function (item, i) { return contentItemCard('header', item, i, false); }).join('') + '</div><button type="button" data-action="add" data-section="header" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add header message</button></section>' +
+            '<section class="' + card + '"><div class="flex justify-between gap-3"><div><h4 class="font-bold mb-1">Dispatch banner</h4><p class="text-xs text-gray-500 mb-4">Add, edit, remove, or hide dispatch messages.</p></div><label class="flex items-center gap-2 text-xs font-semibold"><input id="kgDispatchVisible" type="checkbox"' + (d.dispatch.visible ? ' checked' : '') + '> Show banner</label></div>' +
+                '<div class="mb-3"><label class="' + ui.label + '">Banner background</label><input id="kgDispatchBackground" type="color" value="' + esc(d.dispatch.backgroundColor) + '" class="w-28 h-10 rounded border p-1"></div><div class="space-y-3">' + d.dispatch.items.map(function (item, i) { return contentItemCard('dispatch', item, i, false); }).join('') + '</div><button type="button" data-action="add" data-section="dispatch" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add dispatch message</button></section>' +
+            '<section class="' + card + '"><h4 class="font-bold mb-1">Footer introduction</h4><p class="text-xs text-gray-500 mb-4">Edit the text shown below the footer logo.</p><div data-content-card data-section="about" class="space-y-3"><label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" data-field="visible"' + (d.footer.about.visible ? ' checked' : '') + '> Show</label><textarea rows="4" maxlength="500" data-field="text" class="' + ui.input + '">' + esc(d.footer.about.text) + '</textarea><div class="grid grid-cols-2 gap-3"><input type="color" aria-label="About text color" data-field="color" value="' + esc(d.footer.about.color) + '" class="w-full h-10 rounded border p-1"><input type="number" aria-label="About text size" min="10" max="48" data-field="fontSize" value="' + Number(d.footer.about.fontSize) + '" class="' + ui.input + '"></div></div></section>' +
+            '<section class="' + card + '"><h4 class="font-bold mb-1">Footer help links</h4><p class="text-xs text-gray-500 mb-4">FAQ is the default label; links can be added, reordered by editing, hidden, or removed.</p><div class="space-y-3">' + d.footer.items.map(function (item, i) { return contentItemCard('footer', item, i, true); }).join('') + '</div><button type="button" data-action="add" data-section="footer" class="' + ui.btn2 + ' mt-3 !py-1.5 !text-xs">+ Add footer link</button></section></div>';
+
+        function status(message, kind, url) {
+            const box = el.querySelector('#kgContentStatus'); box.classList.remove('hidden', 'bg-green-50', 'text-green-800', 'bg-red-50', 'text-red-800', 'bg-amber-50', 'text-amber-900');
+            box.classList.add(kind === 'error' ? 'bg-red-50' : kind === 'success' ? 'bg-green-50' : 'bg-amber-50', kind === 'error' ? 'text-red-800' : kind === 'success' ? 'text-green-800' : 'text-amber-900');
+            box.textContent = message;
+            if (url) { const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.className = 'underline font-semibold ml-2'; a.textContent = 'View commit'; box.appendChild(a); }
+        }
+        function targetFor(card) {
+            if (card.dataset.section === 'brand') return d.header.brand;
+            if (card.dataset.section === 'about') return d.footer.about;
+            const list = card.dataset.section === 'header' ? d.header.items : card.dataset.section === 'dispatch' ? d.dispatch.items : d.footer.items;
+            return list[Number(card.dataset.index)];
+        }
+        el.querySelectorAll('[data-content-card] [data-field]').forEach(function (input) {
+            input.addEventListener(input.type === 'checkbox' || input.type === 'color' ? 'change' : 'input', function () {
+                const target = targetFor(input.closest('[data-content-card]'));
+                target[input.dataset.field] = input.type === 'checkbox' ? input.checked : input.type === 'number' ? Number(input.value) : input.value;
+                window.KG_CONTENT.apply(d);
+            });
+        });
+        el.querySelector('#kgDispatchVisible').addEventListener('change', function (e) { d.dispatch.visible = e.target.checked; window.KG_CONTENT.apply(d); });
+        el.querySelector('#kgDispatchBackground').addEventListener('change', function (e) { d.dispatch.backgroundColor = e.target.value; window.KG_CONTENT.apply(d); });
+        el.querySelectorAll('[data-action="remove"]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const cardEl = button.closest('[data-content-card]');
+                const list = cardEl.dataset.section === 'header' ? d.header.items : cardEl.dataset.section === 'dispatch' ? d.dispatch.items : d.footer.items;
+                list.splice(Number(cardEl.dataset.index), 1); window.KG_CONTENT.apply(d); renderContentEditor(el);
+            });
+        });
+        el.querySelectorAll('[data-action="add"]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const section = button.dataset.section;
+                const list = section === 'header' ? d.header.items : section === 'dispatch' ? d.dispatch.items : d.footer.items;
+                const item = { id: section + '-' + Date.now().toString(36), text: section === 'footer' ? 'New link' : 'New message', color: '#ffffff', fontSize: section === 'header' || section === 'dispatch' ? 12 : 14, visible: true };
+                if (section === 'dispatch') item.color = '#4b5563';
+                if (section === 'footer') item.href = '#';
+                list.push(item); window.KG_CONTENT.apply(d); renderContentEditor(el);
+            });
+        });
+        el.querySelector('[data-action="reset"]').addEventListener('click', function () { if (confirm('Restore the default header, footer and dispatch content in this editor?')) { contentDraft = window.KG_CONTENT.defaults(); window.KG_CONTENT.apply(contentDraft); renderContentEditor(el); } });
+        el.querySelector('[data-action="reload"]').addEventListener('click', async function () { try { status('Reloading published content…'); contentDraft = await window.KG_CONTENT.refresh(); renderContentEditor(el); } catch (error) { status(error.message, 'error'); } });
+        el.querySelector('[data-action="save"]').addEventListener('click', async function (e) {
+            const button = e.currentTarget; button.disabled = true; button.textContent = 'Publishing…';
+            try { const result = await window.KG_CONTENT.save(d); contentDraft = result.content; status('Published. GitHub Pages normally updates within a few minutes.', 'success', result.commitUrl); }
+            catch (error) { status(error.message || 'Publishing failed.', 'error'); }
+            finally { button.disabled = false; button.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Publish changes'; }
+        });
+    }
+    function contentEditor(el) {
+        contentDraft = window.KG_CONTENT.get();
+        renderContentEditor(el);
+    }
 
     /* ---------------------------- overview ---------------------------- */
     window.renderAdminDashboard = function () {
@@ -229,7 +305,7 @@
             item(!!C.payments.paymentApiBase, 'Payments: Khalti, eSewa, Fonepay, ConnectIPS, cards', 'Get merchant accounts, deploy the /server folder with your keys, then set payments.paymentApiBase. Until then checkout runs in test mode.') +
             item(C.shipping.couriers.domestic.every(function (c) { return c.apiKey; }), 'Courier accounts (Nepal Can Move, Pathao)', 'Open business accounts and replace the illustrative shipping rates in config.js with your contracted rates.') +
             item(!!(C.database.supabaseUrl && C.database.supabaseAnonKey), 'Shared database', 'Right now each visitor\'s data stays in their own browser. Create a Supabase project, run db/schema.sql, and add the URL and key.') +
-            item(!/KalaGhar@2026/.test(typeof ADMIN_CREDS !== 'undefined' ? ADMIN_CREDS.password : ''), 'Change the admin password', 'The admin login is written in index.html where anyone can read it. Move admin login to the database (Supabase Auth) before launch.') +
+            item(!!(window.KG_CONTENT && window.KG_CONTENT.isAuthenticated()), 'Secure admin publishing', 'The public demo password has been removed. Content publishing now requires repository-scoped GitHub authorization.') +
             item(!KG.sellers().some(function (s) { return s.sample; }), 'Replace sample artisans and products', 'Edit or remove the sample shops in Artisans and add real photos to listings marked "Photo coming soon".') +
             '</ul></div><div class="space-y-4"><div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-4"><p class="font-bold text-sm">Festival storefront</p><p class="text-xs text-gray-500 mt-1">Showing now: <strong>' + esc(fest ? fest.name : 'none') + '</strong></p><label class="sr-only" for="fest-sel">Festival</label><select id="fest-sel" class="' + ui.input + ' mt-2"><option value="">Automatic (by date)</option><option value="none">Hide</option>' + C.festivals.map(function (f) { return '<option value="' + f.id + '"' + (KG.store.get('kg-festival-override', '') === f.id ? ' selected' : '') + '>' + esc(f.name) + '</option>'; }).join('') + '</select></div>' +
             '<div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-4"><p class="font-bold text-sm">Test data</p><p class="text-xs text-gray-500 mt-1">Clear test orders, reviews and messages from this browser.</p><button id="clr" class="' + ui.btn2 + ' !text-xs mt-2">Clear test data</button></div></div></div>';
@@ -242,6 +318,6 @@
         });
     }
 
-    const RENDER = { complaints: complaints, inquiries: inquiries, translations: translations, coupons: coupons, payouts: payouts, qr: qr, launch: launch };
+    const RENDER = { content: contentEditor, complaints: complaints, inquiries: inquiries, translations: translations, coupons: coupons, payouts: payouts, qr: qr, launch: launch };
     KG.initAdmin = function () { addTabs(); };
 })();
