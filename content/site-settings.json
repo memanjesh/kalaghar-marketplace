@@ -269,7 +269,7 @@
   },
   "footer": {
     "style": "clean",
-    "palette": "cream",
+    "palette": "red",
     "pattern": true,
     "adminLink": false,
     "newsletter": true,
