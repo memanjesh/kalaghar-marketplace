@@ -252,7 +252,7 @@
     "badgeOverrides": {}
   },
   "theme": {
-    "active": "modern",
+    "active": "classic",
     "modern": {
       "fonts": true,
       "headingFont": "fraunces",
