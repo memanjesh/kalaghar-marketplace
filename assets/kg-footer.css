@@ -92,3 +92,14 @@ html.kg-modern.kg-m-tabbar .kg-cf { padding-bottom: 0; }
 /* Payment logos readable on every palette */
 .kg-cf-pay .kg-payment-tile { background: var(--cf-band); color: var(--cf-ink); box-shadow: inset 0 0 0 1px var(--cf-line); }
 .kg-cf-red .kg-cf-pay .kg-payment-tile, .kg-cf-charcoal .kg-cf-pay .kg-payment-tile, .dark .kg-cf-cream .kg-cf-pay .kg-payment-tile { color: #fff; }
+
+/* A hidden homepage section someone links to is shown when they click the link */
+section.kg-force-show.kg-force-show { display: block !important; }
+
+/* Classic footer contact: two columns on phones only (desktop unchanged) */
+@media (max-width: 639px) {
+    #kgClassicFooter .kg-contact-panel ul { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; column-gap: 12px; row-gap: 18px; }
+    #kgClassicFooter .kg-contact-panel .kg-contact { align-items: flex-start; gap: 10px; }
+    #kgClassicFooter .kg-contact-panel .kg-cicon { width: 34px; height: 34px; flex-shrink: 0; }
+    #kgClassicFooter .kg-contact-panel .kg-contact-value { font-size: 13px; overflow-wrap: anywhere; }
+}

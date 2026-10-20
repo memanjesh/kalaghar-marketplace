@@ -86,6 +86,13 @@
             return '<div><h4 class="kg-fhead">' + esc(loc(c.title, c.ne)) + '</h4><ul class="kg-footer-links">' + c.links.map(function (l) { return '<li>' + linkHtml(l, 'kg-flink') + '</li>'; }).join('') + '</ul></div>';
         }).join('');
         if (!nav.dataset.kgWired) { nav.dataset.kgWired = '1'; nav.addEventListener('click', onClick); }
+        // Social icons use the links set in Admin → Footer; icons without a link are hidden
+        const row = classic.querySelector('[aria-label="Social links"]');
+        if (row) {
+            const set = KG.FOOTER_SOCIALS.filter(function (k) { return f.socials[k]; });
+            row.innerHTML = set.map(function (k) { return '<a href="' + esc(f.socials[k]) + '" target="_blank" rel="noopener" aria-label="' + k.charAt(0).toUpperCase() + k.slice(1) + '" class="kg-social"><i class="fa-brands ' + SOCIAL_ICON[k] + '"></i></a>'; }).join('');
+            row.hidden = !set.length;
+        }
     }
 
     // The language/currency and dark-mode buttons keep their IDs and handlers: move them in, and back for Classic
@@ -117,6 +124,19 @@
     function watchFloat() {
         const fl = document.getElementById('kgFloat'); if (!fl || !('IntersectionObserver' in window)) return;
         new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (!el.hidden) fl.classList.toggle('kg-float-in-footer', e.isIntersecting); }); }, { threshold: 0.08 }).observe(el);
+    }
+
+    // Links to a homepage section that is hidden right now (e.g. hidden on phones) still take you there
+    function revealTarget(e) {
+        const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+        const id = a.getAttribute('href').slice(1); if (!id || id === 'admin') return;
+        const el = document.getElementById(id); if (!el || el.tagName !== 'SECTION') return;
+        if (getComputedStyle(el).display !== 'none') return;
+        if (el.classList.contains('kg-home-empty')) return;
+        e.preventDefault();
+        el.classList.add('kg-force-show');
+        history.replaceState(null, '', '#' + id);
+        requestAnimationFrame(function () { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     }
 
     // With the public link hidden, Admin opens from the address bar: yoursite/#admin
@@ -203,6 +223,7 @@
         const pay = document.getElementById('kgPaymentMethods');
         if (pay && 'MutationObserver' in window) new MutationObserver(copyPayments).observe(pay, { childList: true, subtree: true, characterData: true });
         window.addEventListener('hashchange', adminFromHash);
+        document.addEventListener('click', revealTarget, true);
         setTimeout(adminFromHash, 0);
     };
 })();
