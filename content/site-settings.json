@@ -268,7 +268,7 @@
     "underPrice": 2000
   },
   "footer": {
-    "style": "clean",
+    "style": "classic",
     "palette": "red",
     "pattern": true,
     "adminLink": false,
