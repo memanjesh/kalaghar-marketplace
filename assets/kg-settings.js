@@ -85,7 +85,7 @@
         },
         layout: { header: 'classic', home: 'classic', catalog: 'classic', cards: 'classic', product: 'classic', checkout: 'classic', account: 'classic', seller: 'classic', admin: 'classic', buttons: 'classic', darkmode: 'classic', nepali: 'classic', perPage: 8, underPrice: 2000 },
         footer: {
-            style: 'classic', palette: 'cream', pattern: true, adminLink: false,
+            style: 'classic', palette: 'cream', pattern: true, adminLink: false, floatMode: 'lift',
             newsletter: true, newsletterTitle: 'Stories from the hills, in your inbox', newsletterTitleNe: 'पहाडका कथा, तपाईंको इमेलमा', newsletterText: 'New collections, maker stories and festival offers. No spam.', newsletterTextNe: 'नयाँ संग्रह, शिल्पीका कथा र चाडपर्व अफर।',
             trust: true,
             trustItems: [
@@ -166,6 +166,7 @@
         return {
             style: f.style === 'clean' ? 'clean' : 'classic', palette: ['cream', 'charcoal', 'red'].indexOf(f.palette) > -1 ? f.palette : 'cream',
             pattern: bool(f.pattern, true), adminLink: bool(f.adminLink, false), newsletter: bool(f.newsletter, true),
+            floatMode: ['hide', 'lift', 'show'].indexOf(f.floatMode) > -1 ? f.floatMode : 'lift',
             newsletterTitle: str(f.newsletterTitle, 80, d.newsletterTitle), newsletterTitleNe: txt(f.newsletterTitleNe, 100, d.newsletterTitleNe), newsletterText: txt(f.newsletterText, 160, d.newsletterText), newsletterTextNe: txt(f.newsletterTextNe, 200, d.newsletterTextNe),
             trust: bool(f.trust, true),
             trustItems: (Array.isArray(f.trustItems) ? f.trustItems : d.trustItems).slice(0, 4).map(function (x) { x = x || {}; return { icon: FOOT_ICONS.indexOf(x.icon) > -1 ? x.icon : 'fa-star', text: str(x.text, 50), ne: str(x.ne, 70) }; }).filter(function (x) { return x.text; }),

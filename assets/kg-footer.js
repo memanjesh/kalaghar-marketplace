@@ -37,6 +37,9 @@
         classic = classic || document.querySelector('body > footer:not(#kgCleanFooter)');
         if (classic && !classic.id) classic.id = 'kgClassicFooter';
         root.classList.toggle('kg-hide-admin-link', !f.adminLink);
+        root.classList.toggle('kg-float-lift', f.floatMode === 'lift');
+        root.classList.toggle('kg-float-show', f.floatMode === 'show');
+        liftFloat();
         const clean = f.style === 'clean';
         root.classList.toggle('kg-footer-clean', clean);
         classicCols(f);
@@ -126,6 +129,22 @@
         new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (!el.hidden) fl.classList.toggle('kg-float-in-footer', e.isIntersecting); }); }, { threshold: 0.08 }).observe(el);
     }
 
+    // Support buttons in the footer: stay visible and ride just above the footer's bottom bar
+    let liftRaf = 0;
+    function liftFloat() {
+        cancelAnimationFrame(liftRaf);
+        liftRaf = requestAnimationFrame(function () {
+            const fl = document.getElementById('kgFloat'); if (!fl) return;
+            if (F().floatMode !== 'lift') { fl.style.transform = ''; return; }
+            const bars = Array.from(document.querySelectorAll('#kgClassicFooter .kg-footer-bottom, #kgCleanFooter .kg-cf-bottom')).filter(function (b) { return b.offsetParent; });
+            const bar = bars[0]; if (!bar) { fl.style.transform = ''; return; }
+            const barTop = bar.getBoundingClientRect().top;
+            const floatBottom = window.innerHeight - (parseFloat(getComputedStyle(fl).bottom) || 20);
+            const shift = Math.min(0, barTop - 12 - floatBottom);
+            fl.style.transform = shift ? 'translateY(' + Math.round(shift) + 'px)' : '';
+        });
+    }
+
     // Links to a homepage section that is hidden right now (e.g. hidden on phones) still take you there
     function revealTarget(e) {
         const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
@@ -173,6 +192,7 @@
             '<form id="ft-form" class="grid lg:grid-cols-3 gap-4"><div class="' + ui.card + ' p-4 space-y-3"><p class="font-bold text-sm">Look</p>' +
                 A.select('palette', 'Colours (Clean)', f.palette, [['cream', 'Warm cream (light)'], ['charcoal', 'Charcoal (dark)'], ['red', 'KalaGhar red']]) +
                 A.toggle('pattern', 'Dhaka-pattern edge', f.pattern) + A.toggle('trust', 'Trust row', f.trust) + A.toggle('newsletter', 'Newsletter signup', f.newsletter) + A.toggle('payments', 'Payment logos', f.payments) +
+                A.select('floatMode', 'Support buttons when the footer shows', f.floatMode, [['lift', 'Keep visible, move above the bottom bar (recommended)'], ['show', 'Always show in the same place'], ['hide', 'Hide while the footer is on screen']]) +
                 A.toggle('adminLink', 'Show "Admin" link in the footer', f.adminLink, 'Off = hidden from shoppers (both footers). Open Admin by adding #admin to your site address.') + '</div>' +
             '<div class="' + ui.card + ' p-4 space-y-2"><p class="font-bold text-sm">Words</p>' +
                 A.text('newsletterTitle', 'Newsletter heading', f.newsletterTitle, 'maxlength="80"') + A.text('newsletterTitleNe', 'Newsletter heading (Nepali)', f.newsletterTitleNe, 'maxlength="100"') +
@@ -224,6 +244,8 @@
         if (pay && 'MutationObserver' in window) new MutationObserver(copyPayments).observe(pay, { childList: true, subtree: true, characterData: true });
         window.addEventListener('hashchange', adminFromHash);
         document.addEventListener('click', revealTarget, true);
+        window.addEventListener('scroll', liftFloat, { passive: true });
+        window.addEventListener('resize', liftFloat);
         setTimeout(adminFromHash, 0);
     };
 })();

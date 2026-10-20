@@ -273,6 +273,7 @@
     "pattern": true,
     "adminLink": false,
     "newsletter": true,
+    "floatMode": "lift",
     "newsletterTitle": "Stories from the hills, in your inbox",
     "newsletterTitleNe": "पहाडका कथा, तपाईंको इमेलमा",
     "newsletterText": "New collections, maker stories and festival offers. No spam.",

@@ -103,3 +103,7 @@ section.kg-force-show.kg-force-show { display: block !important; }
     #kgClassicFooter .kg-contact-panel .kg-cicon { width: 34px; height: 34px; flex-shrink: 0; }
     #kgClassicFooter .kg-contact-panel .kg-contact-value { font-size: 13px; overflow-wrap: anywhere; }
 }
+
+/* Support buttons stay visible in the footer (Admin → Footer → Support buttons) */
+html.kg-float-lift #kgFloat.kg-float-in-footer, html.kg-float-show #kgFloat.kg-float-in-footer { display: flex; opacity: 1; visibility: visible; pointer-events: auto; }
+html.kg-float-lift #kgFloat { transition: opacity .18s ease, visibility .18s ease, transform .12s linear; }
