@@ -251,6 +251,164 @@
     "cardSince": true,
     "badgeOverrides": {}
   },
+  "footer": {
+    "style": "classic",
+    "palette": "cream",
+    "pattern": true,
+    "adminLink": false,
+    "newsletter": true,
+    "newsletterTitle": "Stories from the hills, in your inbox",
+    "newsletterTitleNe": "पहाडका कथा, तपाईंको इमेलमा",
+    "newsletterText": "New collections, maker stories and festival offers. No spam.",
+    "newsletterTextNe": "नयाँ संग्रह, शिल्पीका कथा र चाडपर्व अफर।",
+    "trust": true,
+    "trustItems": [
+      {
+        "icon": "fa-hand-holding-heart",
+        "text": "Handmade in Nepal",
+        "ne": "नेपालमा हस्तनिर्मित"
+      },
+      {
+        "icon": "fa-shield-halved",
+        "text": "Money held until delivery",
+        "ne": "डेलिभरीसम्म रकम सुरक्षित"
+      },
+      {
+        "icon": "fa-earth-asia",
+        "text": "Ships worldwide",
+        "ne": "विश्वभर ढुवानी"
+      }
+    ],
+    "about": "A marketplace for authentic Nepali crafts, bought directly from the artisans who make them.",
+    "aboutNe": "कारीगरबाट सिधै किनिने प्रामाणिक नेपाली हस्तकलाको बजार।",
+    "tagline": "Made with love in Kathmandu 🇳🇵",
+    "taglineNe": "काठमाडौंमा मायाले बनाइएको 🇳🇵",
+    "socials": {
+      "instagram": "",
+      "facebook": "",
+      "tiktok": "",
+      "youtube": "",
+      "whatsapp": ""
+    },
+    "columns": [
+      {
+        "title": "Shop",
+        "ne": "किनमेल",
+        "links": [
+          {
+            "text": "All crafts",
+            "ne": "सबै शिल्प",
+            "href": "kg:all"
+          },
+          {
+            "text": "Gift Mode",
+            "ne": "उपहार मोड",
+            "href": "kg:giftmode"
+          },
+          {
+            "text": "Festival gifts",
+            "ne": "चाडपर्व उपहार",
+            "href": "#festival"
+          },
+          {
+            "text": "Shop by region",
+            "ne": "क्षेत्र अनुसार",
+            "href": "#regions"
+          },
+          {
+            "text": "Send a gift home",
+            "ne": "घरमा उपहार पठाउनुहोस्",
+            "href": "#send-home"
+          }
+        ]
+      },
+      {
+        "title": "Sell on KalaGhar",
+        "ne": "KalaGhar मा बेच्नुहोस्",
+        "links": [
+          {
+            "text": "Open your shop",
+            "ne": "पसल खोल्नुहोस्",
+            "href": "kg:sell"
+          },
+          {
+            "text": "Seller dashboard",
+            "ne": "विक्रेता ड्यासबोर्ड",
+            "href": "kg:seller-dashboard"
+          },
+          {
+            "text": "Export Hub",
+            "ne": "निर्यात हब",
+            "href": "pages/export-hub.html"
+          },
+          {
+            "text": "Wholesale",
+            "ne": "थोक",
+            "href": "#wholesale"
+          }
+        ]
+      },
+      {
+        "title": "Help & About",
+        "ne": "सहायता र हाम्रोबारे",
+        "links": [
+          {
+            "text": "Help centre",
+            "ne": "सहायता केन्द्र",
+            "href": "kg:support"
+          },
+          {
+            "text": "Track my order",
+            "ne": "अर्डर ट्र्याक",
+            "href": "kg:track"
+          },
+          {
+            "text": "Returns & refunds",
+            "ne": "फिर्ता र रिफन्ड",
+            "href": "pages/returns.html"
+          },
+          {
+            "text": "Meet the makers",
+            "ne": "शिल्पीहरू",
+            "href": "#makers"
+          },
+          {
+            "text": "Our impact",
+            "ne": "हाम्रो प्रभाव",
+            "href": "#impact"
+          }
+        ]
+      }
+    ],
+    "legal": [
+      {
+        "text": "Terms",
+        "ne": "सर्तहरू",
+        "href": "pages/terms.html"
+      },
+      {
+        "text": "Privacy",
+        "ne": "गोपनीयता",
+        "href": "pages/privacy.html"
+      },
+      {
+        "text": "Delivery",
+        "ne": "डेलिभरी",
+        "href": "pages/delivery.html"
+      },
+      {
+        "text": "Purchase Protection",
+        "ne": "खरिद सुरक्षा",
+        "href": "pages/purchase-protection.html"
+      },
+      {
+        "text": "File a complaint",
+        "ne": "उजुरी",
+        "href": "#complaint"
+      }
+    ],
+    "payments": true
+  },
   "theme": {
     "active": "classic",
     "modern": {

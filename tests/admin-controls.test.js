@@ -67,10 +67,10 @@ test('delivery, checkout and badge settings are clamped and validated', function
 
 test('every new feature module is loaded, started and has admin tabs', function () {
     const html = read('index.html'), init = read('assets/kg-init.js');
-    ['kg-settings', 'kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern'].forEach(function (m) { assert.match(html, new RegExp('assets/' + m + '\\.js\\?v=')); });
-    ['initCommerce', 'initShipping', 'initMarketing', 'initHome', 'initBuyer', 'initSignals', 'initModern', 'initSettings'].forEach(function (f) { assert.match(init, new RegExp('KG\\.' + f + '\\(\\)')); });
-    const tabs = ['home-layout', 'hero-slider', 'plus-launch', 'shop-features', 'alerts', 'qa', 'vacations', 'feeds', 'seo-pages', 'analytics', 'shipping-labels', 'delivery', 'checkout-gifting', 'shopping-signals', 'site-theme'];
-    const all = ['kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern'].map(function (m) { return read('assets/' + m + '.js'); }).join('\n');
+    ['kg-settings', 'kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern', 'kg-footer'].forEach(function (m) { assert.match(html, new RegExp('assets/' + m + '\\.js\\?v=')); });
+    ['initCommerce', 'initShipping', 'initMarketing', 'initHome', 'initBuyer', 'initSignals', 'initModern', 'initFooter', 'initSettings'].forEach(function (f) { assert.match(init, new RegExp('KG\\.' + f + '\\(\\)')); });
+    const tabs = ['home-layout', 'hero-slider', 'plus-launch', 'shop-features', 'alerts', 'qa', 'vacations', 'feeds', 'seo-pages', 'analytics', 'shipping-labels', 'delivery', 'checkout-gifting', 'shopping-signals', 'site-theme', 'footer'];
+    const all = ['kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern', 'kg-footer'].map(function (m) { return read('assets/' + m + '.js'); }).join('\n');
     tabs.forEach(function (t) { assert.match(all, new RegExp("addAdminTab\\('" + t + "'")); });
 });
 
@@ -92,4 +92,19 @@ test('site theme defaults to Classic and theme inputs are validated', function (
     assert.deepEqual(JSON.parse(JSON.stringify(s.theme.modern.calmHidden)), ['faq']);
     assert.equal(s.theme.modern.storySteps[0].image, '');
     assert.equal(KG.sanitizeSettings({ theme: { active: 'modern' } }).theme.active, 'modern');
+});
+
+test('footer defaults to Classic, links and socials are validated', function () {
+    const KG = loadSettings();
+    const pub = JSON.parse(read('content/site-settings.json'));
+    assert.equal(pub.footer.style, 'classic');
+    assert.equal(pub.footer.adminLink, false);
+    assert.equal(pub.footer.columns.length, 3);
+    const f = KG.sanitizeSettings({ footer: { style: 'clean', palette: 'neon', columns: [{ title: 'A', links: [{ text: 'x', href: 'javascript:alert(1)' }, { text: 'y', href: 'kg:track' }, { text: 'z', href: 'pages/terms.html' }, { text: 'w', href: 'https://example.com/"><script>' }] }], socials: { instagram: 'javascript:1', facebook: 'https://facebook.com/kalaghar' }, trustItems: [{ icon: 'fa-x" onload="1', text: 'Hi' }] } }).footer;
+    assert.equal(f.style, 'clean');
+    assert.equal(f.palette, 'cream');
+    assert.deepEqual(f.columns[0].links.map(function (l) { return l.href; }), ['#', 'kg:track', 'pages/terms.html', '#']);
+    assert.equal(f.socials.instagram, '');
+    assert.equal(f.socials.facebook, 'https://facebook.com/kalaghar');
+    assert.equal(f.trustItems[0].icon, 'fa-star');
 });

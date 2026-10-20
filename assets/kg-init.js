@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     KG.initShipping();
     KG.initMarketing();
     KG.initModern();
+    KG.initFooter();
     KG.initHome();
     KG.initBuyer();
     KG.initSignals();

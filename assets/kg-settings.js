@@ -83,6 +83,26 @@
             sellerOnCards: true, cardShopName: true, cardRating: true, cardSales: true, cardSince: true,
             badgeOverrides: {}              // { productId: { force: ['bestseller'], hide: ['inCarts'] } }
         },
+        footer: {
+            style: 'classic', palette: 'cream', pattern: true, adminLink: false,
+            newsletter: true, newsletterTitle: 'Stories from the hills, in your inbox', newsletterTitleNe: 'पहाडका कथा, तपाईंको इमेलमा', newsletterText: 'New collections, maker stories and festival offers. No spam.', newsletterTextNe: 'नयाँ संग्रह, शिल्पीका कथा र चाडपर्व अफर।',
+            trust: true,
+            trustItems: [
+                { icon: 'fa-hand-holding-heart', text: 'Handmade in Nepal', ne: 'नेपालमा हस्तनिर्मित' },
+                { icon: 'fa-shield-halved', text: 'Money held until delivery', ne: 'डेलिभरीसम्म रकम सुरक्षित' },
+                { icon: 'fa-earth-asia', text: 'Ships worldwide', ne: 'विश्वभर ढुवानी' }
+            ],
+            about: 'A marketplace for authentic Nepali crafts, bought directly from the artisans who make them.', aboutNe: 'कारीगरबाट सिधै किनिने प्रामाणिक नेपाली हस्तकलाको बजार।',
+            tagline: 'Made with love in Kathmandu 🇳🇵', taglineNe: 'काठमाडौंमा मायाले बनाइएको 🇳🇵',
+            socials: { instagram: '', facebook: '', tiktok: '', youtube: '', whatsapp: 'https://wa.me/9779851022453' },
+            columns: [
+                { title: 'Shop', ne: 'किनमेल', links: [{ text: 'All crafts', ne: 'सबै शिल्प', href: 'kg:all' }, { text: 'Gift Mode', ne: 'उपहार मोड', href: 'kg:giftmode' }, { text: 'Festival gifts', ne: 'चाडपर्व उपहार', href: '#festival' }, { text: 'Shop by region', ne: 'क्षेत्र अनुसार', href: '#regions' }, { text: 'Send a gift home', ne: 'घरमा उपहार पठाउनुहोस्', href: '#send-home' }] },
+                { title: 'Sell on KalaGhar', ne: 'KalaGhar मा बेच्नुहोस्', links: [{ text: 'Open your shop', ne: 'पसल खोल्नुहोस्', href: 'kg:sell' }, { text: 'Seller dashboard', ne: 'विक्रेता ड्यासबोर्ड', href: 'kg:seller-dashboard' }, { text: 'Export Hub', ne: 'निर्यात हब', href: 'pages/export-hub.html' }, { text: 'Wholesale', ne: 'थोक', href: '#wholesale' }] },
+                { title: 'Help & About', ne: 'सहायता र हाम्रोबारे', links: [{ text: 'Help centre', ne: 'सहायता केन्द्र', href: 'kg:support' }, { text: 'Track my order', ne: 'अर्डर ट्र्याक', href: 'kg:track' }, { text: 'Returns & refunds', ne: 'फिर्ता र रिफन्ड', href: 'pages/returns.html' }, { text: 'Meet the makers', ne: 'शिल्पीहरू', href: '#makers' }, { text: 'Our impact', ne: 'हाम्रो प्रभाव', href: '#impact' }] }
+            ],
+            legal: [{ text: 'Terms', ne: 'सर्तहरू', href: 'pages/terms.html' }, { text: 'Privacy', ne: 'गोपनीयता', href: 'pages/privacy.html' }, { text: 'Delivery', ne: 'डेलिभरी', href: 'pages/delivery.html' }, { text: 'Purchase Protection', ne: 'खरिद सुरक्षा', href: 'pages/purchase-protection.html' }, { text: 'File a complaint', ne: 'उजुरी', href: '#complaint' }],
+            payments: true
+        },
         theme: {
             active: 'classic',
             modern: {
@@ -118,6 +138,30 @@
     const date = function (v) { v = str(v, 10); return /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : ''; };
     const id = function (v, fb) { v = str(v, 40).toLowerCase().replace(/[^a-z0-9_-]/g, '-'); return v || fb; };
 
+    const FOOT_ICONS = ['fa-hand-holding-heart', 'fa-shield-halved', 'fa-earth-asia', 'fa-truck-fast', 'fa-gift', 'fa-leaf', 'fa-certificate', 'fa-heart', 'fa-rotate-left', 'fa-headset', 'fa-star', 'fa-lock'];
+    const SOCIALS = ['instagram', 'facebook', 'tiktok', 'youtube', 'whatsapp'];
+    // Footer links: page sections, site pages, https/mailto/tel links, or built-in actions (kg:…)
+    const footHref = function (v) { v = str(v, 300); return /^#[\w-]*$/.test(v) || /^pages\/[\w./#-]+$/.test(v) || /^https:\/\/[^\s"'<>]+$/i.test(v) || /^(mailto|tel):[^\s"'<>]+$/i.test(v) || /^kg:[a-z-]+$/.test(v) ? v : '#'; };
+    const footLink = function (x) { x = x || {}; return { text: str(x.text, 40), ne: str(x.ne, 60), href: footHref(x.href) }; };
+    // Optional text: missing → default, but an admin can clear it on purpose
+    const txt = function (v, max, fb) { return v === undefined ? fb : str(v, max); };
+    function sanitizeFooter(f) {
+        const d = DEFAULTS.footer, so = f.socials || {};
+        const socials = {}; SOCIALS.forEach(function (k) { const v = str(so[k], 300); socials[k] = /^https:\/\/[^\s"'<>]+$/i.test(v) ? v : ''; });
+        return {
+            style: f.style === 'clean' ? 'clean' : 'classic', palette: ['cream', 'charcoal', 'red'].indexOf(f.palette) > -1 ? f.palette : 'cream',
+            pattern: bool(f.pattern, true), adminLink: bool(f.adminLink, false), newsletter: bool(f.newsletter, true),
+            newsletterTitle: str(f.newsletterTitle, 80, d.newsletterTitle), newsletterTitleNe: txt(f.newsletterTitleNe, 100, d.newsletterTitleNe), newsletterText: txt(f.newsletterText, 160, d.newsletterText), newsletterTextNe: txt(f.newsletterTextNe, 200, d.newsletterTextNe),
+            trust: bool(f.trust, true),
+            trustItems: (Array.isArray(f.trustItems) ? f.trustItems : d.trustItems).slice(0, 4).map(function (x) { x = x || {}; return { icon: FOOT_ICONS.indexOf(x.icon) > -1 ? x.icon : 'fa-star', text: str(x.text, 50), ne: str(x.ne, 70) }; }).filter(function (x) { return x.text; }),
+            about: txt(f.about, 300, d.about), aboutNe: txt(f.aboutNe, 400, d.aboutNe), tagline: txt(f.tagline, 80, d.tagline), taglineNe: txt(f.taglineNe, 100, d.taglineNe),
+            socials: socials,
+            columns: (Array.isArray(f.columns) ? f.columns : d.columns).slice(0, 4).map(function (c) { c = c || {}; return { title: str(c.title, 40), ne: str(c.ne, 60), links: (Array.isArray(c.links) ? c.links : []).slice(0, 10).map(footLink).filter(function (l) { return l.text; }) }; }).filter(function (c) { return c.title; }),
+            legal: (Array.isArray(f.legal) ? f.legal : d.legal).slice(0, 8).map(footLink).filter(function (l) { return l.text; }),
+            payments: bool(f.payments, true)
+        };
+    }
+    KG.FOOTER_ICONS = FOOT_ICONS; KG.FOOTER_SOCIALS = SOCIALS;
     const FONTS_H = ['fraunces', 'playfair', 'dm-serif', 'inter'], FONTS_B = ['inter', 'dm-sans', 'manrope'];
     const video = function (v) { v = str(v, 500); return /^https:\/\/[^\s"'<>]+\.(mp4|webm)(\?[^\s"'<>]*)?$/i.test(v) || /^videos\/[\w./-]+\.(mp4|webm)$/i.test(v) ? v : ''; };
     function sanitizeTheme(t) {
@@ -214,6 +258,7 @@
                 sellerOnCards: bool(ds.sellerOnCards, true), cardShopName: bool(ds.cardShopName, true), cardRating: bool(ds.cardRating, true), cardSales: bool(ds.cardSales, true), cardSince: bool(ds.cardSince, true),
                 badgeOverrides: overrides
             },
+            footer: sanitizeFooter(s.footer || {}),
             theme: sanitizeTheme(s.theme || {}),
             courier: {
                 enabled: bool(c.enabled, true), labelSize: c.labelSize === 'a6' ? 'a6' : '4x6', defaultCourier: id(c.defaultCourier, 'ncm'),

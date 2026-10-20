@@ -73,10 +73,10 @@ html.kg-modern.kg-m-patterns { --m-pattern: url("data:image/svg+xml,%3Csvg xmlns
 html.kg-modern.kg-m-patterns[data-mp="mithila"] { --m-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 7c5-6 10-6 15 0s10 6 15 0 7-4 10-2' fill='none' stroke='%23b4361d' stroke-width='1.4'/%3E%3Ccircle cx='15' cy='7' r='1.6' fill='%23d97706'/%3E%3Ccircle cx='35' cy='4' r='1.2' fill='%23d97706'/%3E%3C/svg%3E"); }
 html.kg-modern.kg-m-patterns[data-mp="lokta"] { --m-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='14' viewBox='0 0 24 14'%3E%3Cpath d='M2 9c3-2 5-2 8 0M13 5c3-2 5-2 8 0' fill='none' stroke='%23a8a29e' stroke-width='1' stroke-linecap='round'/%3E%3Ccircle cx='6' cy='4' r='1' fill='%23b4361d'/%3E%3Ccircle cx='18' cy='10' r='1' fill='%23d97706'/%3E%3C/svg%3E"); }
 html.kg-modern.kg-m-patterns body > section:not(#hero-slider):not(.kg-home-off) + section::before,
-html.kg-modern.kg-m-patterns body > footer::before {
+html.kg-modern.kg-m-patterns body > footer:not(.kg-cf)::before {
     content: ""; display: block; height: 14px; max-width: 220px; margin: 0 auto clamp(28px, 4vw, 44px); background: var(--m-pattern) repeat-x center; opacity: .55;
 }
-html.kg-modern.kg-m-patterns body > footer::before { margin: 0 auto 28px; }
+html.kg-modern.kg-m-patterns body > footer:not(.kg-cf)::before { margin: 0 auto 28px; }
 html.kg-modern.kg-m-patterns .kg-m-loader { background: var(--m-pattern) repeat-x; }
 
 /* ---------- 4. Motion ---------- */
