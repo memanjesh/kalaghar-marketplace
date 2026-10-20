@@ -54,7 +54,7 @@
         if (!more) {
             more = document.createElement('li'); more.id = 'kgFeatMore';
             more.innerHTML = '<button type="button" class="kg-feat kg-feat-more"></button>';
-            more.querySelector('button').addEventListener('click', function () { const b = document.getElementById('kgCatBtn'); if (b) { window.scrollTo({ top: 0, behavior: 'smooth' }); b.click(); } });
+            more.querySelector('button').addEventListener('click', function (e) { e.stopPropagation(); const b = document.getElementById('kgCatBtn'); if (b) b.click(); });
             ul.appendChild(more);
         }
         more.querySelector('button').innerHTML = KG.tx('More', 'थप') + ' <i class="fa-solid fa-chevron-right text-[10px]"></i>';
