@@ -396,6 +396,132 @@
         ]
       }
     ],
+    "classicColumns": [
+      {
+        "title": "Shop",
+        "ne": "किनमेल",
+        "links": [
+          {
+            "text": "All Crafts",
+            "ne": "सबै शिल्प",
+            "href": "kg:all"
+          },
+          {
+            "text": "Gift Mode",
+            "ne": "उपहार मोड",
+            "href": "kg:giftmode"
+          },
+          {
+            "text": "Festival Gifts",
+            "ne": "चाडपर्व उपहार",
+            "href": "#festival"
+          },
+          {
+            "text": "Shop by Region",
+            "ne": "क्षेत्र अनुसार",
+            "href": "#regions"
+          },
+          {
+            "text": "Send a Gift Home",
+            "ne": "घरमा उपहार पठाउनुहोस्",
+            "href": "#send-home"
+          }
+        ]
+      },
+      {
+        "title": "Sell",
+        "ne": "बेच्नुहोस्",
+        "links": [
+          {
+            "text": "Sell on KalaGhar",
+            "ne": "KalaGhar मा बेच्नुहोस्",
+            "href": "kg:sell"
+          },
+          {
+            "text": "Seller Dashboard",
+            "ne": "विक्रेता ड्यासबोर्ड",
+            "href": "kg:seller-dashboard"
+          },
+          {
+            "text": "Export Hub",
+            "ne": "निर्यात हब",
+            "href": "pages/export-hub.html"
+          },
+          {
+            "text": "Seller Policies",
+            "ne": "विक्रेता नीति",
+            "href": "pages/terms.html#sellers"
+          },
+          {
+            "text": "Seller Support",
+            "ne": "विक्रेता सहायता",
+            "href": "kg:support"
+          }
+        ]
+      },
+      {
+        "title": "About",
+        "ne": "हाम्रोबारे",
+        "links": [
+          {
+            "text": "Meet the Makers",
+            "ne": "शिल्पीहरू",
+            "href": "#makers"
+          },
+          {
+            "text": "Our Impact",
+            "ne": "हाम्रो प्रभाव",
+            "href": "#impact"
+          },
+          {
+            "text": "Workshops",
+            "ne": "कार्यशाला",
+            "href": "#workshops"
+          },
+          {
+            "text": "Purchase Protection",
+            "ne": "खरिद सुरक्षा",
+            "href": "pages/purchase-protection.html"
+          },
+          {
+            "text": "Wholesale & Corporate",
+            "ne": "थोक र कर्पोरेट",
+            "href": "#wholesale"
+          }
+        ]
+      },
+      {
+        "title": "Help",
+        "ne": "सहायता",
+        "links": [
+          {
+            "text": "Help Centre",
+            "ne": "सहायता केन्द्र",
+            "href": "kg:support"
+          },
+          {
+            "text": "Track My Order",
+            "ne": "अर्डर ट्र्याक",
+            "href": "kg:track"
+          },
+          {
+            "text": "Delivery",
+            "ne": "डेलिभरी",
+            "href": "pages/delivery.html"
+          },
+          {
+            "text": "Returns & Refunds",
+            "ne": "फिर्ता र रिफन्ड",
+            "href": "pages/returns.html"
+          },
+          {
+            "text": "File a Complaint",
+            "ne": "उजुरी दिनुहोस्",
+            "href": "#complaint"
+          }
+        ]
+      }
+    ],
     "legal": [
       {
         "text": "Terms",

@@ -101,6 +101,12 @@
                 { title: 'Sell on KalaGhar', ne: 'KalaGhar मा बेच्नुहोस्', links: [{ text: 'Open your shop', ne: 'पसल खोल्नुहोस्', href: 'kg:sell' }, { text: 'Seller dashboard', ne: 'विक्रेता ड्यासबोर्ड', href: 'kg:seller-dashboard' }, { text: 'Export Hub', ne: 'निर्यात हब', href: 'pages/export-hub.html' }, { text: 'Wholesale', ne: 'थोक', href: '#wholesale' }] },
                 { title: 'Help & About', ne: 'सहायता र हाम्रोबारे', links: [{ text: 'Help centre', ne: 'सहायता केन्द्र', href: 'kg:support' }, { text: 'Track my order', ne: 'अर्डर ट्र्याक', href: 'kg:track' }, { text: 'Returns & refunds', ne: 'फिर्ता र रिफन्ड', href: 'pages/returns.html' }, { text: 'Meet the makers', ne: 'शिल्पीहरू', href: '#makers' }, { text: 'Our impact', ne: 'हाम्रो प्रभाव', href: '#impact' }] }
             ],
+            classicColumns: [
+                { title: 'Shop', ne: 'किनमेल', links: [{ text: 'All Crafts', ne: 'सबै शिल्प', href: 'kg:all' }, { text: 'Gift Mode', ne: 'उपहार मोड', href: 'kg:giftmode' }, { text: 'Festival Gifts', ne: 'चाडपर्व उपहार', href: '#festival' }, { text: 'Shop by Region', ne: 'क्षेत्र अनुसार', href: '#regions' }, { text: 'Send a Gift Home', ne: 'घरमा उपहार पठाउनुहोस्', href: '#send-home' }] },
+                { title: 'Sell', ne: 'बेच्नुहोस्', links: [{ text: 'Sell on KalaGhar', ne: 'KalaGhar मा बेच्नुहोस्', href: 'kg:sell' }, { text: 'Seller Dashboard', ne: 'विक्रेता ड्यासबोर्ड', href: 'kg:seller-dashboard' }, { text: 'Export Hub', ne: 'निर्यात हब', href: 'pages/export-hub.html' }, { text: 'Seller Policies', ne: 'विक्रेता नीति', href: 'pages/terms.html#sellers' }, { text: 'Seller Support', ne: 'विक्रेता सहायता', href: 'kg:support' }] },
+                { title: 'About', ne: 'हाम्रोबारे', links: [{ text: 'Meet the Makers', ne: 'शिल्पीहरू', href: '#makers' }, { text: 'Our Impact', ne: 'हाम्रो प्रभाव', href: '#impact' }, { text: 'Workshops', ne: 'कार्यशाला', href: '#workshops' }, { text: 'Purchase Protection', ne: 'खरिद सुरक्षा', href: 'pages/purchase-protection.html' }, { text: 'Wholesale & Corporate', ne: 'थोक र कर्पोरेट', href: '#wholesale' }] },
+                { title: 'Help', ne: 'सहायता', links: [{ text: 'Help Centre', ne: 'सहायता केन्द्र', href: 'kg:support' }, { text: 'Track My Order', ne: 'अर्डर ट्र्याक', href: 'kg:track' }, { text: 'Delivery', ne: 'डेलिभरी', href: 'pages/delivery.html' }, { text: 'Returns & Refunds', ne: 'फिर्ता र रिफन्ड', href: 'pages/returns.html' }, { text: 'File a Complaint', ne: 'उजुरी दिनुहोस्', href: '#complaint' }] }
+            ],
             legal: [{ text: 'Terms', ne: 'सर्तहरू', href: 'pages/terms.html' }, { text: 'Privacy', ne: 'गोपनीयता', href: 'pages/privacy.html' }, { text: 'Delivery', ne: 'डेलिभरी', href: 'pages/delivery.html' }, { text: 'Purchase Protection', ne: 'खरिद सुरक्षा', href: 'pages/purchase-protection.html' }, { text: 'File a complaint', ne: 'उजुरी', href: '#complaint' }],
             payments: true
         },
@@ -153,6 +159,7 @@
     }
     // Optional text: missing → default, but an admin can clear it on purpose
     const txt = function (v, max, fb) { return v === undefined ? fb : str(v, max); };
+    const cleanCols = function (v, fb) { return (Array.isArray(v) ? v : fb).slice(0, 4).map(function (c) { c = c || {}; return { title: str(c.title, 40), ne: str(c.ne, 60), links: (Array.isArray(c.links) ? c.links : []).slice(0, 10).map(footLink).filter(function (l) { return l.text; }) }; }).filter(function (c) { return c.title; }); };
     function sanitizeFooter(f) {
         const d = DEFAULTS.footer, so = f.socials || {};
         const socials = {}; SOCIALS.forEach(function (k) { const v = str(so[k], 300); socials[k] = /^https:\/\/[^\s"'<>]+$/i.test(v) ? v : ''; });
@@ -164,7 +171,8 @@
             trustItems: (Array.isArray(f.trustItems) ? f.trustItems : d.trustItems).slice(0, 4).map(function (x) { x = x || {}; return { icon: FOOT_ICONS.indexOf(x.icon) > -1 ? x.icon : 'fa-star', text: str(x.text, 50), ne: str(x.ne, 70) }; }).filter(function (x) { return x.text; }),
             about: txt(f.about, 300, d.about), aboutNe: txt(f.aboutNe, 400, d.aboutNe), tagline: txt(f.tagline, 80, d.tagline), taglineNe: txt(f.taglineNe, 100, d.taglineNe),
             socials: socials,
-            columns: (Array.isArray(f.columns) ? f.columns : d.columns).slice(0, 4).map(function (c) { c = c || {}; return { title: str(c.title, 40), ne: str(c.ne, 60), links: (Array.isArray(c.links) ? c.links : []).slice(0, 10).map(footLink).filter(function (l) { return l.text; }) }; }).filter(function (c) { return c.title; }),
+            columns: cleanCols(f.columns, d.columns),
+            classicColumns: cleanCols(f.classicColumns, d.classicColumns),
             legal: (Array.isArray(f.legal) ? f.legal : d.legal).slice(0, 8).map(footLink).filter(function (l) { return l.text; }),
             payments: bool(f.payments, true)
         };

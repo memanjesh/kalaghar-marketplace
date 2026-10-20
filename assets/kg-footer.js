@@ -39,6 +39,7 @@
         root.classList.toggle('kg-hide-admin-link', !f.adminLink);
         const clean = f.style === 'clean';
         root.classList.toggle('kg-footer-clean', clean);
+        classicCols(f);
         if (!clean) { restoreShared(); if (el) el.hidden = true; return; }
         if (!el) {
             el = document.createElement('footer'); el.id = 'kgCleanFooter'; el.className = 'mt-auto';
@@ -75,6 +76,16 @@
                 '<div class="kg-cf-prefs">' + (f.payments ? '<div class="kg-cf-pay" aria-label="Accepted payment methods"></div>' : '') + '<div class="kg-cf-shared"></div></div>' +
             '</div></div>';
         moveShared(); copyPayments();
+    }
+
+    // Classic footer link columns, edited in Admin → Footer
+    function classicCols(f) {
+        const nav = classic && classic.querySelector('nav[aria-label="Footer"]'); if (!nav || !f.classicColumns || !f.classicColumns.length) return;
+        nav.className = 'grid grid-cols-2 sm:grid-cols-' + Math.min(4, f.classicColumns.length) + ' gap-x-6 gap-y-8';
+        nav.innerHTML = f.classicColumns.map(function (c) {
+            return '<div><h4 class="kg-fhead">' + esc(loc(c.title, c.ne)) + '</h4><ul class="kg-footer-links">' + c.links.map(function (l) { return '<li>' + linkHtml(l, 'kg-flink') + '</li>'; }).join('') + '</ul></div>';
+        }).join('');
+        if (!nav.dataset.kgWired) { nav.dataset.kgWired = '1'; nav.addEventListener('click', onClick); }
     }
 
     // The language/currency and dark-mode buttons keep their IDs and handlers: move them in, and back for Classic
@@ -116,9 +127,21 @@
     const ACTION_LABEL = { 'kg:all': 'All crafts', 'kg:giftmode': 'Gift Mode', 'kg:sell': 'Open your shop (seller sign-up)', 'kg:seller-dashboard': 'Seller dashboard', 'kg:support': 'Help centre', 'kg:track': 'Track my order', 'kg:account': 'My account', 'kg:favorites': 'Saved items', 'kg:locale': 'Country, language & currency' };
     function renderFooterAdmin(box) {
         const f = F(), A = KG.adminField;
+        const colEditor = function (set, title, hint) {
+            const cols = f[set] || [];
+            const counts = cols.map(function (c) { return c.links.length; });
+            const even = counts.every(function (n) { return n === counts[0]; });
+            return '<div class="mt-6" data-set="' + set + '"><div class="flex flex-wrap items-end justify-between gap-2 mb-2"><div><p class="font-bold">' + title + '</p><p class="' + ui.muted + '">' + hint + '</p></div>' +
+                (cols.length ? '<span class="text-xs font-semibold ' + (even ? 'text-green-700' : 'text-amber-700') + '">' + (even ? '✓ Even: ' : '⚠ Uneven: ') + counts.join(' · ') + ' links</span>' : '') + '</div>' +
+                '<div class="grid md:grid-cols-2 xl:grid-cols-' + Math.max(1, Math.min(4, cols.length)) + ' gap-4">' + cols.map(function (c, ci) {
+                    return '<div class="' + ui.card + ' p-4" data-col="' + ci + '"><div class="flex gap-1.5 mb-2"><input data-ck="title" value="' + esc(c.title) + '" maxlength="40" class="' + ui.input + ' !py-1 font-bold" aria-label="Column title"><input data-ck="ne" value="' + esc(c.ne) + '" maxlength="60" placeholder="नेपाली" class="' + ui.input + ' !py-1" aria-label="Nepali title"></div>' +
+                        '<div class="space-y-1.5">' + c.links.map(function (l, li) { return linkRow(l, set + ':' + ci + ':' + li); }).join('') + '</div>' +
+                        '<div class="flex flex-wrap gap-3 text-xs mt-2">' + (c.links.length < 10 ? '<button type="button" data-ladd="' + set + ':' + ci + '" class="font-semibold text-red-700">+ Add link</button>' : '') + '<button type="button" data-cmv="' + ci + '" data-d="-1">← Move</button><button type="button" data-cmv="' + ci + '" data-d="1">Move →</button><button type="button" data-cdel="' + ci + '" class="text-red-700 ml-auto">Delete column</button></div></div>';
+                }).join('') + '</div>' + (cols.length < 4 ? '<button type="button" data-cadd="' + set + '" class="' + ui.btn2 + ' !py-1.5 !text-xs mt-2">+ Add column</button>' : '') + '</div>';
+        };
         const linkRow = function (l, path) {
             const isAction = l.href.indexOf('kg:') === 0;
-            return '<div class="grid grid-cols-12 gap-1.5 items-center" data-link="' + path + '"><input data-k="text" value="' + esc(l.text) + '" maxlength="40" placeholder="Text" class="' + ui.input + ' !py-1 !text-xs col-span-3" aria-label="Link text"><input data-k="ne" value="' + esc(l.ne) + '" maxlength="60" placeholder="नेपाली (optional)" class="' + ui.input + ' !py-1 !text-xs col-span-3" aria-label="Nepali text">' +
+            return '<div class="grid grid-cols-12 gap-1.5 items-center border-b border-gray-100 dark:border-gray-800 pb-1.5" data-link="' + path + '"><input data-k="text" value="' + esc(l.text) + '" maxlength="40" placeholder="Text" class="' + ui.input + ' !py-1 !text-xs col-span-3" aria-label="Link text"><input data-k="ne" value="' + esc(l.ne) + '" maxlength="60" placeholder="नेपाली (optional)" class="' + ui.input + ' !py-1 !text-xs col-span-3" aria-label="Nepali text">' +
                 '<select data-k="kind" class="' + ui.input + ' !py-1 !text-xs col-span-2" aria-label="Link type"><option value="url"' + (isAction ? '' : ' selected') + '>Link</option><option value="action"' + (isAction ? ' selected' : '') + '>Opens…</option></select>' +
                 (isAction ? '<select data-k="href" class="' + ui.input + ' !py-1 !text-xs col-span-3" aria-label="Action">' + KG.FOOTER_ACTIONS.map(function (a) { return '<option value="' + a + '"' + (a === l.href ? ' selected' : '') + '>' + esc(ACTION_LABEL[a] || a) + '</option>'; }).join('') + '</select>'
                     : '<input data-k="href" value="' + esc(l.href) + '" placeholder="#section, pages/…, https://…" class="' + ui.input + ' !py-1 !text-xs col-span-3" aria-label="Link">') +
@@ -126,7 +149,7 @@
         };
         const choice = function (key, title, desc) { return '<button type="button" data-fstyle="' + key + '" class="' + ui.card + ' p-5 text-left ' + (f.style === key ? 'ring-2 ring-red-700' : 'hover:shadow-md') + '"><div class="flex justify-between items-center"><span class="font-bold text-lg">' + title + '</span>' + (f.style === key ? '<span class="text-[11px] font-bold uppercase text-green-700 bg-green-50 px-2 py-0.5 rounded-full">In use</span>' : '<span class="text-xs font-semibold text-red-700">Use this</span>') + '</div><p class="' + ui.muted + ' mt-2">' + desc + '</p></button>'; };
         box.innerHTML = '<h3 class="font-bold text-lg mb-1">Footer</h3><p class="' + ui.muted + ' mb-4">Pick a footer style and edit everything in it. Changes preview straight away; publish when you\'re happy.</p>' +
-            '<div class="grid md:grid-cols-2 gap-4 mb-5">' + choice('classic', 'Classic', 'The original footer: newsletter band, brand block, four link columns, contact panel and bottom bar. Its links and bottom bar are edited in Site content.') + choice('clean', 'Clean', 'Etsy-style: a calm newsletter + social band, a trust row, three short link columns that fold up on phones, and one tidy bottom bar with a woven Dhaka edge.') + '</div>' +
+            '<div class="grid md:grid-cols-2 gap-4 mb-5">' + choice('classic', 'Classic', 'The original footer: newsletter band, brand block, four link columns, contact panel and bottom bar. Its columns are edited below; its bottom bar in Site content.') + choice('clean', 'Clean', 'Etsy-style: a calm newsletter + social band, a trust row, three short link columns that fold up on phones, and one tidy bottom bar with a woven Dhaka edge.') + '</div>' +
             '<form id="ft-form" class="grid lg:grid-cols-3 gap-4"><div class="' + ui.card + ' p-4 space-y-3"><p class="font-bold text-sm">Look</p>' +
                 A.select('palette', 'Colours (Clean)', f.palette, [['cream', 'Warm cream (light)'], ['charcoal', 'Charcoal (dark)'], ['red', 'KalaGhar red']]) +
                 A.toggle('pattern', 'Dhaka-pattern edge', f.pattern) + A.toggle('trust', 'Trust row', f.trust) + A.toggle('newsletter', 'Newsletter signup', f.newsletter) + A.toggle('payments', 'Payment logos', f.payments) +
@@ -141,11 +164,8 @@
             '<div class="' + ui.card + ' p-4 mt-4"><p class="font-bold text-sm mb-2">Trust row</p><div class="space-y-1.5">' + f.trustItems.map(function (t, i) {
                 return '<div class="grid grid-cols-12 gap-1.5" data-trust="' + i + '"><select data-k="icon" class="' + ui.input + ' !py-1 !text-xs col-span-3" aria-label="Icon">' + KG.FOOTER_ICONS.map(function (ic) { return '<option value="' + ic + '"' + (ic === t.icon ? ' selected' : '') + '>' + ic.replace('fa-', '').replace(/-/g, ' ') + '</option>'; }).join('') + '</select><input data-k="text" value="' + esc(t.text) + '" maxlength="50" class="' + ui.input + ' !py-1 !text-xs col-span-4" aria-label="Text"><input data-k="ne" value="' + esc(t.ne) + '" maxlength="70" placeholder="नेपाली" class="' + ui.input + ' !py-1 !text-xs col-span-4" aria-label="Nepali text"><button type="button" data-tdel class="text-red-700 text-xs col-span-1" aria-label="Delete">✕</button></div>';
             }).join('') + '</div>' + (f.trustItems.length < 4 ? '<button type="button" id="ft-tadd" class="' + ui.btn2 + ' !py-1 !text-xs mt-2">+ Add item</button>' : '') + '</div>' +
-            '<div class="grid lg:grid-cols-' + Math.max(1, Math.min(3, f.columns.length)) + ' gap-4 mt-4">' + f.columns.map(function (c, ci) {
-                return '<div class="' + ui.card + ' p-4" data-col="' + ci + '"><div class="flex gap-1.5 mb-2"><input data-ck="title" value="' + esc(c.title) + '" maxlength="40" class="' + ui.input + ' !py-1 font-bold" aria-label="Column title"><input data-ck="ne" value="' + esc(c.ne) + '" maxlength="60" placeholder="नेपाली" class="' + ui.input + ' !py-1" aria-label="Nepali title"></div>' +
-                    '<div class="space-y-1.5">' + c.links.map(function (l, li) { return linkRow(l, ci + ':' + li); }).join('') + '</div>' +
-                    '<div class="flex gap-3 text-xs mt-2">' + (c.links.length < 10 ? '<button type="button" data-ladd="' + ci + '" class="font-semibold text-red-700">+ Add link</button>' : '') + '<button type="button" data-cmv="' + ci + '" data-d="-1">← Move</button><button type="button" data-cmv="' + ci + '" data-d="1">Move →</button><button type="button" data-cdel="' + ci + '" class="text-red-700 ml-auto">Delete column</button></div></div>';
-            }).join('') + '</div>' + (f.columns.length < 4 ? '<button type="button" id="ft-cadd" class="' + ui.btn2 + ' !py-1.5 !text-xs mt-2">+ Add column</button>' : '') +
+            colEditor('classicColumns', 'Classic footer columns', 'The four link columns of the Classic footer. Keep the same number of links in each so they line up.') +
+            colEditor('columns', 'Clean footer columns', 'The link columns of the Clean footer (they fold up on phones).') +
             '<div class="' + ui.card + ' p-4 mt-4"><p class="font-bold text-sm mb-1">Bottom bar links</p><p class="' + ui.muted + ' mb-2">Keep Terms, Privacy and the complaint link — Nepal\'s E-Commerce Act expects them to be easy to find.</p><div class="space-y-1.5">' + f.legal.map(function (l, li) { return linkRow(l, 'legal:' + li); }).join('') + '</div><button type="button" data-ladd="legal" class="font-semibold text-red-700 text-xs mt-2">+ Add link</button></div>';
 
         const again = function () { renderFooterAdmin(box); };
@@ -155,7 +175,8 @@
         box.querySelectorAll('[data-trust] [data-k]').forEach(function (i) { i.addEventListener('change', function () { const n = +i.closest('[data-trust]').dataset.trust; upd(function (x) { x.trustItems[n][i.dataset.k] = i.value; }); }); });
         box.querySelectorAll('[data-tdel]').forEach(function (b) { b.addEventListener('click', function () { const n = +b.closest('[data-trust]').dataset.trust; upd(function (x) { x.trustItems.splice(n, 1); }); again(); }); });
         const tadd = box.querySelector('#ft-tadd'); if (tadd) tadd.addEventListener('click', function () { upd(function (x) { x.trustItems.push({ icon: 'fa-star', text: 'New promise', ne: '' }); }); again(); });
-        const listFor = function (x, path) { const p = path.split(':'); return p[0] === 'legal' ? { list: x.legal, i: +p[1] } : { list: x.columns[+p[0]].links, i: +p[1] }; };
+        const listFor = function (x, path) { const p = path.split(':'); return p[0] === 'legal' ? { list: x.legal, i: +p[1] } : { list: x[p[0]][+p[1]].links, i: +p[2] }; };
+        const setOf = function (el) { return el.closest('[data-set]').dataset.set; };
         box.querySelectorAll('[data-link] [data-k]').forEach(function (i) {
             i.addEventListener('change', function () {
                 const path = i.closest('[data-link]').dataset.link, k = i.dataset.k;
@@ -166,11 +187,11 @@
         });
         box.querySelectorAll('[data-lmv]').forEach(function (b) { b.addEventListener('click', function () { const path = b.closest('[data-link]').dataset.link, d = +b.dataset.lmv; upd(function (x) { const r = listFor(x, path), j = r.i + d; if (j < 0 || j >= r.list.length) return; const it = r.list.splice(r.i, 1)[0]; r.list.splice(j, 0, it); }); again(); }); });
         box.querySelectorAll('[data-ldel]').forEach(function (b) { b.addEventListener('click', function () { const path = b.closest('[data-link]').dataset.link; upd(function (x) { const r = listFor(x, path); r.list.splice(r.i, 1); }); again(); }); });
-        box.querySelectorAll('[data-ladd]').forEach(function (b) { b.addEventListener('click', function () { upd(function (x) { (b.dataset.ladd === 'legal' ? x.legal : x.columns[+b.dataset.ladd].links).push({ text: 'New link', ne: '', href: '#' }); }); again(); }); });
-        box.querySelectorAll('[data-ck]').forEach(function (i) { i.addEventListener('change', function () { const ci = +i.closest('[data-col]').dataset.col; upd(function (x) { x.columns[ci][i.dataset.ck] = i.value.trim(); }); }); });
-        box.querySelectorAll('[data-cmv]').forEach(function (b) { b.addEventListener('click', function () { const ci = +b.dataset.cmv, j = ci + +b.dataset.d; upd(function (x) { if (j < 0 || j >= x.columns.length) return; const c = x.columns.splice(ci, 1)[0]; x.columns.splice(j, 0, c); }); again(); }); });
-        box.querySelectorAll('[data-cdel]').forEach(function (b) { b.addEventListener('click', function () { if (!confirm('Delete this whole column?')) return; upd(function (x) { x.columns.splice(+b.dataset.cdel, 1); }); again(); }); });
-        const cadd = box.querySelector('#ft-cadd'); if (cadd) cadd.addEventListener('click', function () { upd(function (x) { x.columns.push({ title: 'New column', ne: '', links: [{ text: 'New link', ne: '', href: '#' }] }); }); again(); });
+        box.querySelectorAll('[data-ladd]').forEach(function (b) { b.addEventListener('click', function () { const p = b.dataset.ladd.split(':'); upd(function (x) { (p[0] === 'legal' ? x.legal : x[p[0]][+p[1]].links).push({ text: 'New link', ne: '', href: '#' }); }); again(); }); });
+        box.querySelectorAll('[data-ck]').forEach(function (i) { i.addEventListener('change', function () { const ci = +i.closest('[data-col]').dataset.col, set = setOf(i); upd(function (x) { x[set][ci][i.dataset.ck] = i.value.trim(); }); }); });
+        box.querySelectorAll('[data-cmv]').forEach(function (b) { b.addEventListener('click', function () { const ci = +b.dataset.cmv, j = ci + +b.dataset.d, set = setOf(b); upd(function (x) { if (j < 0 || j >= x[set].length) return; const c = x[set].splice(ci, 1)[0]; x[set].splice(j, 0, c); }); again(); }); });
+        box.querySelectorAll('[data-cdel]').forEach(function (b) { b.addEventListener('click', function () { if (!confirm('Delete this whole column?')) return; const set = setOf(b); upd(function (x) { x[set].splice(+b.dataset.cdel, 1); }); again(); }); });
+        box.querySelectorAll('[data-cadd]').forEach(function (b) { b.addEventListener('click', function () { upd(function (x) { x[b.dataset.cadd].push({ title: 'New column', ne: '', links: [{ text: 'New link', ne: '', href: '#' }] }); }); again(); }); });
     }
 
     KG.addAdminTab('footer', 'Footer', renderFooterAdmin);
@@ -178,7 +199,7 @@
         if (KG.hasSettingsDraft() || KG.settingsLoaded) render();
         KG.onSettings(render);
         const al = window.applyLang;
-        if (al) window.applyLang = function () { const r = al.apply(this, arguments); if (F().style === 'clean') render(); return r; };
+        if (al) window.applyLang = function () { const r = al.apply(this, arguments); render(); return r; };
         const pay = document.getElementById('kgPaymentMethods');
         if (pay && 'MutationObserver' in window) new MutationObserver(copyPayments).observe(pay, { childList: true, subtree: true, characterData: true });
         window.addEventListener('hashchange', adminFromHash);
