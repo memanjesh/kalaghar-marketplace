@@ -268,7 +268,7 @@
     "underPrice": 2000
   },
   "footer": {
-    "style": "classic",
+    "style": "clean",
     "palette": "cream",
     "pattern": true,
     "adminLink": false,
@@ -339,32 +339,6 @@
         ]
       },
       {
-        "title": "Sell on KalaGhar",
-        "ne": "KalaGhar मा बेच्नुहोस्",
-        "links": [
-          {
-            "text": "Open your shop",
-            "ne": "पसल खोल्नुहोस्",
-            "href": "kg:sell"
-          },
-          {
-            "text": "Seller dashboard",
-            "ne": "विक्रेता ड्यासबोर्ड",
-            "href": "kg:seller-dashboard"
-          },
-          {
-            "text": "Export Hub",
-            "ne": "निर्यात हब",
-            "href": "pages/export-hub.html"
-          },
-          {
-            "text": "Wholesale",
-            "ne": "थोक",
-            "href": "#wholesale"
-          }
-        ]
-      },
-      {
         "title": "Help & About",
         "ne": "सहायता र हाम्रोबारे",
         "links": [
@@ -392,6 +366,32 @@
             "text": "Our impact",
             "ne": "हाम्रो प्रभाव",
             "href": "#impact"
+          }
+        ]
+      },
+      {
+        "title": "Sell on KalaGhar",
+        "ne": "KalaGhar मा बेच्नुहोस्",
+        "links": [
+          {
+            "text": "Open your shop",
+            "ne": "पसल खोल्नुहोस्",
+            "href": "kg:sell"
+          },
+          {
+            "text": "Seller dashboard",
+            "ne": "विक्रेता ड्यासबोर्ड",
+            "href": "kg:seller-dashboard"
+          },
+          {
+            "text": "Export Hub",
+            "ne": "निर्यात हब",
+            "href": "pages/export-hub.html"
+          },
+          {
+            "text": "Wholesale",
+            "ne": "थोक",
+            "href": "#wholesale"
           }
         ]
       }
