@@ -111,8 +111,11 @@ test('footer defaults to Classic, links and socials are validated', function () 
 
 test('layout defaults every area to Classic and only accepts classic/clean', function () {
     const KG = loadSettings();
+    const defaults = KG.sanitizeSettings(KG.SETTINGS_DEFAULTS);
+    KG.LAYOUT_AREAS.forEach(function (a) { assert.equal(defaults.layout[a], 'classic', a); });
+    // The published file may use Clean (the owner chooses in Admin) but must stay valid
     const pub = JSON.parse(read('content/site-settings.json'));
-    KG.LAYOUT_AREAS.forEach(function (a) { assert.equal(pub.layout[a], 'classic', a); });
+    KG.LAYOUT_AREAS.forEach(function (a) { assert.ok(['classic', 'clean'].indexOf(pub.layout[a]) > -1, a); });
     const l = KG.sanitizeSettings({ layout: { home: 'clean', cards: 'weird', perPage: 999, underPrice: -5 } }).layout;
     assert.equal(l.home, 'clean');
     assert.equal(l.cards, 'classic');
