@@ -27,6 +27,12 @@
         "title": ""
       },
       {
+        "key": "kgStory",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
         "key": "marketplace",
         "visible": true,
         "mobile": true,
@@ -64,6 +70,12 @@
       },
       {
         "key": "makers",
+        "visible": true,
+        "mobile": true,
+        "title": ""
+      },
+      {
+        "key": "kgPhotoWall",
         "visible": true,
         "mobile": true,
         "title": ""
@@ -238,6 +250,69 @@
     "cardSales": true,
     "cardSince": true,
     "badgeOverrides": {}
+  },
+  "theme": {
+    "active": "classic",
+    "modern": {
+      "fonts": true,
+      "headingFont": "fraunces",
+      "bodyFont": "inter",
+      "phoneGrid": true,
+      "motion": true,
+      "tabBar": true,
+      "calmHome": true,
+      "calmHidden": [
+        "hero",
+        "spotlight",
+        "craft-of-week",
+        "why-shop",
+        "kgPlusSection",
+        "impact",
+        "shipping-calc",
+        "wholesale"
+      ],
+      "patterns": true,
+      "patternStyle": "dhaka",
+      "story": true,
+      "storyTitle": "From the hills to your home",
+      "storySub": "",
+      "storySteps": [
+        {
+          "title": "It begins at 14,000 ft",
+          "text": "In Mustang, Chyangra goats grow a soft undercoat against the Himalayan winter. Each spring it is combed out by hand.",
+          "image": "https://images.pexels.com/photos/11733651/pexels-photo-11733651.jpeg?auto=compress&cs=tinysrgb&w=1200"
+        },
+        {
+          "title": "Spun and woven by hand",
+          "text": "Weavers in Palpa and Kathmandu spin the fibre and work it on wooden looms, one pattern at a time.",
+          "image": "https://images.pexels.com/photos/6634555/pexels-photo-6634555.jpeg?auto=compress&cs=tinysrgb&w=1200"
+        },
+        {
+          "title": "Checked and wrapped",
+          "text": "Every piece gets a Craft Passport with its maker, place and technique, then is wrapped in lokta paper.",
+          "image": "https://images.pexels.com/photos/18681553/pexels-photo-18681553.jpeg?auto=compress&cs=tinysrgb&w=1200"
+        },
+        {
+          "title": "Delivered to your door",
+          "text": "Your money is held until it arrives safely, then paid straight to the artisan.",
+          "image": "https://images.pexels.com/photos/11404647/pexels-photo-11404647.jpeg?auto=compress&cs=tinysrgb&w=1200"
+        }
+      ],
+      "makerVideos": true,
+      "videos": {},
+      "map": true,
+      "photoWall": true,
+      "photoWallTitle": "Loved in homes everywhere",
+      "includeReviewPhotos": true,
+      "photos": [],
+      "gallery": "premium",
+      "galleryCategories": [
+        "thangka",
+        "metal",
+        "singingbowl",
+        "pashmina"
+      ]
+    }
   },
   "courier": {
     "enabled": true,

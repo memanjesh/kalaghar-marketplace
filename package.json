@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "check": "node --check assets/kg-content.js && node --check assets/kg-admin.js && node --check assets/kg-core.js && node --check assets/kg-shop.js && node --check assets/kg-checkout.js && node --check assets/kg-discover.js && node --check assets/kg-seller.js && node --check assets/kg-growth.js && node --check assets/kg-operations.js && node --check assets/kg-platform.js && node --check assets/kg-settings.js && node --check assets/kg-home.js && node --check assets/kg-commerce.js && node --check assets/kg-marketing.js && node --check assets/kg-shipping.js && node --check assets/kg-buyer.js && node --check assets/kg-signals.js && node --check server/server.js"
+    "check": "node --check assets/kg-content.js && node --check assets/kg-admin.js && node --check assets/kg-core.js && node --check assets/kg-shop.js && node --check assets/kg-checkout.js && node --check assets/kg-discover.js && node --check assets/kg-seller.js && node --check assets/kg-growth.js && node --check assets/kg-operations.js && node --check assets/kg-platform.js && node --check assets/kg-settings.js && node --check assets/kg-home.js && node --check assets/kg-commerce.js && node --check assets/kg-marketing.js && node --check assets/kg-shipping.js && node --check assets/kg-buyer.js && node --check assets/kg-signals.js && node --check assets/kg-modern.js && node --check server/server.js"
   },
   "engines": {
     "node": ">=18"

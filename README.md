@@ -47,6 +47,7 @@ An Etsy-style marketplace for handmade crafts from Nepal: buyers shop by craft o
 - Responsive country, language, and currency preferences with matching regional flags
 
 **Admin-controlled features (publish once, every visitor sees them)**
+- **Site theme** — choose **Classic** (the original look, default) or **Modern**, preview, then publish; switch back any time. Modern can be tuned piece by piece: heading/body fonts, Nepali pattern dividers (Dhaka, Mithila, Lokta), two products per row on phones, motion (fade-in, heart pop, photo flies into the bag), a phone tab bar, an illustrated region map, a calmer homepage (pick sections to hide), the "From the hills to your home" scroll story (edit steps and photos), maker videos per product (link or upload MP4/WebM), a customer photo wall (your photos plus 4–5★ review photos) and a dark gallery look for premium crafts or the whole catalog
 Changes in these tabs preview instantly in your browser; the yellow bar's **Publish to all visitors** button saves them to `content/site-settings.json` on GitHub.
 - **Homepage** — drag sections into any order, hide them, hide them on phones only, rename headings; "short homepage" preset
 - **Hero slider** — Etsy-style top banner: add/duplicate/reorder slides, headline, text, button target, photo (URL or upload), style, start/end dates, auto-play speed, height

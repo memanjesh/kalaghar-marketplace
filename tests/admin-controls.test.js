@@ -67,14 +67,29 @@ test('delivery, checkout and badge settings are clamped and validated', function
 
 test('every new feature module is loaded, started and has admin tabs', function () {
     const html = read('index.html'), init = read('assets/kg-init.js');
-    ['kg-settings', 'kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals'].forEach(function (m) { assert.match(html, new RegExp('assets/' + m + '\\.js\\?v=')); });
-    ['initCommerce', 'initShipping', 'initMarketing', 'initHome', 'initBuyer', 'initSignals', 'initSettings'].forEach(function (f) { assert.match(init, new RegExp('KG\\.' + f + '\\(\\)')); });
-    const tabs = ['home-layout', 'hero-slider', 'plus-launch', 'shop-features', 'alerts', 'qa', 'vacations', 'feeds', 'seo-pages', 'analytics', 'shipping-labels', 'delivery', 'checkout-gifting', 'shopping-signals'];
-    const all = ['kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals'].map(function (m) { return read('assets/' + m + '.js'); }).join('\n');
+    ['kg-settings', 'kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern'].forEach(function (m) { assert.match(html, new RegExp('assets/' + m + '\\.js\\?v=')); });
+    ['initCommerce', 'initShipping', 'initMarketing', 'initHome', 'initBuyer', 'initSignals', 'initModern', 'initSettings'].forEach(function (f) { assert.match(init, new RegExp('KG\\.' + f + '\\(\\)')); });
+    const tabs = ['home-layout', 'hero-slider', 'plus-launch', 'shop-features', 'alerts', 'qa', 'vacations', 'feeds', 'seo-pages', 'analytics', 'shipping-labels', 'delivery', 'checkout-gifting', 'shopping-signals', 'site-theme'];
+    const all = ['kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern'].map(function (m) { return read('assets/' + m + '.js'); }).join('\n');
     tabs.forEach(function (t) { assert.match(all, new RegExp("addAdminTab\\('" + t + "'")); });
 });
 
 test('privacy policy cookie wording follows the analytics settings', function () {
     assert.match(read('pages/privacy.html'), /id="kgTrackerStatement"/);
     assert.match(read('pages/page.js'), /site-settings\.json/);
+});
+
+test('site theme defaults to Classic and theme inputs are validated', function () {
+    const KG = loadSettings();
+    assert.equal(JSON.parse(read('content/site-settings.json')).theme.active, 'classic');
+    const s = KG.sanitizeSettings({ theme: { active: 'evil', modern: { headingFont: '<x>', gallery: 'nope', videos: { 1: 'javascript:alert(1)', 2: 'https://cdn.example.com/clip.mp4', 3: 'https://x.com/a.mp4"onerror=1' }, photos: [{ image: 'javascript:1' }, { image: 'https://x.com/p.jpg', productId: 'abc' }], calmHidden: ['faq', 'not-a-section'], storySteps: [{ title: 'A', image: 'data:text/html,x' }] } } });
+    assert.equal(s.theme.active, 'classic');
+    assert.equal(s.theme.modern.headingFont, 'fraunces');
+    assert.equal(s.theme.modern.gallery, 'premium');
+    assert.deepEqual(JSON.parse(JSON.stringify(s.theme.modern.videos)), { 2: 'https://cdn.example.com/clip.mp4' });
+    assert.equal(s.theme.modern.photos.length, 1);
+    assert.equal(s.theme.modern.photos[0].productId, null);
+    assert.deepEqual(JSON.parse(JSON.stringify(s.theme.modern.calmHidden)), ['faq']);
+    assert.equal(s.theme.modern.storySteps[0].image, '');
+    assert.equal(KG.sanitizeSettings({ theme: { active: 'modern' } }).theme.active, 'modern');
 });

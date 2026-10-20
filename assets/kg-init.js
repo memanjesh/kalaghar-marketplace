@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     KG.initCommerce();
     KG.initShipping();
     KG.initMarketing();
+    KG.initModern();
     KG.initHome();
     KG.initBuyer();
     KG.initSignals();

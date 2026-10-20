@@ -18,6 +18,7 @@
         { key: 'festival', label: 'Festival storefront' },
         { key: 'hero', label: 'Heritage banner' },
         { key: 'popular-categories', label: 'Shop Popular Categories' },
+        { key: 'kgStory', label: 'Scroll story “From the hills to your home” (Modern theme)' },
         { key: 'marketplace', label: 'Product catalog' },
         { key: 'kgDiscoveryShelf', label: 'Personal picks (recently viewed)' },
         { key: 'kgBuyAgain', label: 'Buy it again (signed-in shoppers)' },
@@ -25,6 +26,7 @@
         { key: 'craft-of-week', label: 'Craft of the week' },
         { key: 'regions', label: 'Shop by Region map' },
         { key: 'makers', label: 'Meet the Makers' },
+        { key: 'kgPhotoWall', label: 'Customer photo wall (Modern theme)' },
         { key: 'send-home', label: 'Send a gift home' },
         { key: 'why-shop', label: 'Why shop with us' },
         { key: 'artisan-stories', label: 'Stories behind the craft' },
@@ -81,6 +83,26 @@
             sellerOnCards: true, cardShopName: true, cardRating: true, cardSales: true, cardSince: true,
             badgeOverrides: {}              // { productId: { force: ['bestseller'], hide: ['inCarts'] } }
         },
+        theme: {
+            active: 'classic',
+            modern: {
+                fonts: true, headingFont: 'fraunces', bodyFont: 'inter',
+                phoneGrid: true, motion: true, tabBar: true,
+                calmHome: true, calmHidden: ['hero', 'spotlight', 'craft-of-week', 'why-shop', 'kgPlusSection', 'impact', 'shipping-calc', 'wholesale'],
+                patterns: true, patternStyle: 'dhaka',
+                story: true, storyTitle: 'From the hills to your home', storySub: 'Every piece on KalaGhar starts in a Nepali village. Scroll to follow its journey.',
+                storySteps: [
+                    { title: 'It begins at 14,000 ft', text: 'In Mustang, Chyangra goats grow a soft undercoat against the Himalayan winter. Each spring it is combed out by hand.', image: p('11733651') },
+                    { title: 'Spun and woven by hand', text: 'Weavers in Palpa and Kathmandu spin the fibre and work it on wooden looms, one pattern at a time.', image: p('6634555') },
+                    { title: 'Checked and wrapped', text: 'Every piece gets a Craft Passport with its maker, place and technique, then is wrapped in lokta paper.', image: p('18681553') },
+                    { title: 'Delivered to your door', text: 'Your money is held until it arrives safely, then paid straight to the artisan.', image: p('11404647') }
+                ],
+                makerVideos: true, videos: {},
+                map: true,
+                photoWall: true, photoWallTitle: 'Loved in homes everywhere', includeReviewPhotos: true, photos: [],
+                gallery: 'premium', galleryCategories: ['thangka', 'metal', 'singingbowl', 'pashmina']
+            }
+        },
         courier: {
             enabled: true, labelSize: '4x6', defaultCourier: 'ncm', defaultWeightG: 500,
             sender: { name: 'KalaGhar Marketplace', phone: '+977 9851022453', address: 'Kathmandu-14', city: 'Kathmandu' },
@@ -95,6 +117,34 @@
     const url = function (v) { v = str(v, 500); return /^https:\/\//i.test(v) || /^(assets|content|images)\/[\w./-]+$/i.test(v) ? v : ''; };
     const date = function (v) { v = str(v, 10); return /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : ''; };
     const id = function (v, fb) { v = str(v, 40).toLowerCase().replace(/[^a-z0-9_-]/g, '-'); return v || fb; };
+
+    const FONTS_H = ['fraunces', 'playfair', 'dm-serif', 'inter'], FONTS_B = ['inter', 'dm-sans', 'manrope'];
+    const video = function (v) { v = str(v, 500); return /^https:\/\/[^\s"'<>]+\.(mp4|webm)(\?[^\s"'<>]*)?$/i.test(v) || /^videos\/[\w./-]+\.(mp4|webm)$/i.test(v) ? v : ''; };
+    function sanitizeTheme(t) {
+        const d = DEFAULTS.theme.modern, m = t.modern || {};
+        const sectionKeys = HOME_SECTIONS.map(function (x) { return x.key; });
+        const videos = {};
+        Object.keys(m.videos || {}).slice(0, 2000).forEach(function (k) { const v = video(m.videos[k]); if (/^\d{1,9}$/.test(k) && v) videos[k] = v; });
+        return {
+            active: t.active === 'modern' ? 'modern' : 'classic',
+            modern: {
+                fonts: bool(m.fonts, d.fonts), headingFont: FONTS_H.indexOf(m.headingFont) > -1 ? m.headingFont : d.headingFont, bodyFont: FONTS_B.indexOf(m.bodyFont) > -1 ? m.bodyFont : d.bodyFont,
+                phoneGrid: bool(m.phoneGrid, true), motion: bool(m.motion, true), tabBar: bool(m.tabBar, true),
+                calmHome: bool(m.calmHome, true),
+                calmHidden: (Array.isArray(m.calmHidden) ? m.calmHidden : d.calmHidden).filter(function (k, i, a) { return sectionKeys.indexOf(k) > -1 && a.indexOf(k) === i; }),
+                patterns: bool(m.patterns, true), patternStyle: ['dhaka', 'mithila', 'lokta'].indexOf(m.patternStyle) > -1 ? m.patternStyle : 'dhaka',
+                story: bool(m.story, true), storyTitle: str(m.storyTitle, 80, d.storyTitle), storySub: str(m.storySub, 200),
+                storySteps: (Array.isArray(m.storySteps) ? m.storySteps : d.storySteps).slice(0, 8).map(function (x) { x = x || {}; return { title: str(x.title, 80), text: str(x.text, 300), image: url(x.image) }; }).filter(function (x) { return x.title || x.text; }),
+                makerVideos: bool(m.makerVideos, true), videos: videos,
+                map: bool(m.map, true),
+                photoWall: bool(m.photoWall, true), photoWallTitle: str(m.photoWallTitle, 80, d.photoWallTitle), includeReviewPhotos: bool(m.includeReviewPhotos, true),
+                photos: (Array.isArray(m.photos) ? m.photos : []).slice(0, 60).map(function (x, i) { x = x || {}; return { id: id(x.id, 'ph-' + (i + 1)), image: url(x.image), caption: str(x.caption, 140), name: str(x.name, 60), productId: /^\d{1,9}$/.test(String(x.productId)) ? +x.productId : null, visible: x.visible !== false }; }).filter(function (x) { return x.image; }),
+                gallery: ['off', 'premium', 'all'].indexOf(m.gallery) > -1 ? m.gallery : 'premium',
+                galleryCategories: (Array.isArray(m.galleryCategories) ? m.galleryCategories : d.galleryCategories).map(function (c) { return id(c, ''); }).filter(Boolean).slice(0, 40)
+            }
+        };
+    }
+    KG.sanitizeTheme = sanitizeTheme;
 
     function sanitize(raw) {
         const s = raw && typeof raw === 'object' ? raw : {}, d = DEFAULTS;
@@ -164,6 +214,7 @@
                 sellerOnCards: bool(ds.sellerOnCards, true), cardShopName: bool(ds.cardShopName, true), cardRating: bool(ds.cardRating, true), cardSales: bool(ds.cardSales, true), cardSince: bool(ds.cardSince, true),
                 badgeOverrides: overrides
             },
+            theme: sanitizeTheme(s.theme || {}),
             courier: {
                 enabled: bool(c.enabled, true), labelSize: c.labelSize === 'a6' ? 'a6' : '4x6', defaultCourier: id(c.defaultCourier, 'ncm'),
                 defaultWeightG: num(c.defaultWeightG, 50, 50000, 500),
@@ -264,7 +315,7 @@
         mountAdminTabs();
         fetch(PATH, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
             .then(function (j) { published = sanitize(j); }).catch(function () { /* first run: defaults */ })
-            .then(function () { apply(); refreshPublishBar(); });
+            .then(function () { KG.settingsLoaded = true; apply(); refreshPublishBar(); });
     };
     KG.SETTINGS_DEFAULTS = DEFAULTS;
     KG.sanitizeSettings = sanitize;
