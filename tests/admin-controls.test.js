@@ -67,10 +67,10 @@ test('delivery, checkout and badge settings are clamped and validated', function
 
 test('every new feature module is loaded, started and has admin tabs', function () {
     const html = read('index.html'), init = read('assets/kg-init.js');
-    ['kg-settings', 'kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern', 'kg-footer'].forEach(function (m) { assert.match(html, new RegExp('assets/' + m + '\\.js\\?v=')); });
-    ['initCommerce', 'initShipping', 'initMarketing', 'initHome', 'initBuyer', 'initSignals', 'initModern', 'initFooter', 'initSettings'].forEach(function (f) { assert.match(init, new RegExp('KG\\.' + f + '\\(\\)')); });
-    const tabs = ['home-layout', 'hero-slider', 'plus-launch', 'shop-features', 'alerts', 'qa', 'vacations', 'feeds', 'seo-pages', 'analytics', 'shipping-labels', 'delivery', 'checkout-gifting', 'shopping-signals', 'site-theme', 'footer'];
-    const all = ['kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern', 'kg-footer'].map(function (m) { return read('assets/' + m + '.js'); }).join('\n');
+    ['kg-settings', 'kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern', 'kg-footer', 'kg-layout', 'kg-i18n'].forEach(function (m) { assert.match(html, new RegExp('assets/' + m + '\\.js\\?v=')); });
+    ['initCommerce', 'initShipping', 'initMarketing', 'initHome', 'initBuyer', 'initSignals', 'initModern', 'initFooter', 'initLayout', 'initI18n', 'initSettings'].forEach(function (f) { assert.match(init, new RegExp('KG\\.' + f + '\\(\\)')); });
+    const tabs = ['home-layout', 'hero-slider', 'plus-launch', 'shop-features', 'alerts', 'qa', 'vacations', 'feeds', 'seo-pages', 'analytics', 'shipping-labels', 'delivery', 'checkout-gifting', 'shopping-signals', 'site-theme', 'footer', 'layout'];
+    const all = ['kg-home', 'kg-commerce', 'kg-marketing', 'kg-shipping', 'kg-buyer', 'kg-signals', 'kg-modern', 'kg-footer', 'kg-layout'].map(function (m) { return read('assets/' + m + '.js'); }).join('\n');
     tabs.forEach(function (t) { assert.match(all, new RegExp("addAdminTab\\('" + t + "'")); });
 });
 
@@ -107,4 +107,15 @@ test('footer defaults to Classic, links and socials are validated', function () 
     assert.equal(f.socials.instagram, '');
     assert.equal(f.socials.facebook, 'https://facebook.com/kalaghar');
     assert.equal(f.trustItems[0].icon, 'fa-star');
+});
+
+test('layout defaults every area to Classic and only accepts classic/clean', function () {
+    const KG = loadSettings();
+    const pub = JSON.parse(read('content/site-settings.json'));
+    KG.LAYOUT_AREAS.forEach(function (a) { assert.equal(pub.layout[a], 'classic', a); });
+    const l = KG.sanitizeSettings({ layout: { home: 'clean', cards: 'weird', perPage: 999, underPrice: -5 } }).layout;
+    assert.equal(l.home, 'clean');
+    assert.equal(l.cards, 'classic');
+    assert.equal(l.perPage, 48);
+    assert.equal(l.underPrice, 100);
 });

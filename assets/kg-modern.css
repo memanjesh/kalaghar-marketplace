@@ -189,3 +189,5 @@ html.kg-modern .kg-gallery-modal .kg-packaging-choice strong, html.kg-modern .kg
 html.kg-modern .kg-gallery-modal .kg-packaging-choice small { color: #a8a29e; }
 html.kg-modern .kg-gallery-modal .kg-packaging-choice:has(input:checked) { background: rgba(185,28,28,.18); }
 html.kg-modern.kg-gallery-on #marketplace .text-gray-700, html.kg-modern.kg-gallery-on #marketplace label { color: #d6d3d1 !important; }
+html.kg-modern .kg-gallery-modal .kg-mobile-buybar { background: rgba(18,16,14,.96); border-color: #2e2a26; }
+html.kg-modern .kg-gallery-modal .kg-mobile-buybar small { color: #a8a29e; }

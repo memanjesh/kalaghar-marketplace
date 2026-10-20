@@ -83,6 +83,7 @@
             sellerOnCards: true, cardShopName: true, cardRating: true, cardSales: true, cardSince: true,
             badgeOverrides: {}              // { productId: { force: ['bestseller'], hide: ['inCarts'] } }
         },
+        layout: { header: 'classic', home: 'classic', catalog: 'classic', cards: 'classic', product: 'classic', checkout: 'classic', account: 'classic', seller: 'classic', admin: 'classic', buttons: 'classic', darkmode: 'classic', nepali: 'classic', perPage: 8, underPrice: 2000 },
         footer: {
             style: 'classic', palette: 'cream', pattern: true, adminLink: false,
             newsletter: true, newsletterTitle: 'Stories from the hills, in your inbox', newsletterTitleNe: 'पहाडका कथा, तपाईंको इमेलमा', newsletterText: 'New collections, maker stories and festival offers. No spam.', newsletterTextNe: 'नयाँ संग्रह, शिल्पीका कथा र चाडपर्व अफर।',
@@ -143,6 +144,13 @@
     // Footer links: page sections, site pages, https/mailto/tel links, or built-in actions (kg:…)
     const footHref = function (v) { v = str(v, 300); return /^#[\w-]*$/.test(v) || /^pages\/[\w./#-]+$/.test(v) || /^https:\/\/[^\s"'<>]+$/i.test(v) || /^(mailto|tel):[^\s"'<>]+$/i.test(v) || /^kg:[a-z-]+$/.test(v) ? v : '#'; };
     const footLink = function (x) { x = x || {}; return { text: str(x.text, 40), ne: str(x.ne, 60), href: footHref(x.href) }; };
+    const LAYOUT_AREAS = ['header', 'home', 'catalog', 'cards', 'product', 'checkout', 'account', 'seller', 'admin', 'buttons', 'darkmode', 'nepali'];
+    KG.LAYOUT_AREAS = LAYOUT_AREAS;
+    function sanitizeLayout(l) {
+        const out = {}; LAYOUT_AREAS.forEach(function (k) { out[k] = l[k] === 'clean' ? 'clean' : 'classic'; });
+        out.perPage = num(l.perPage, 4, 48, 8); out.underPrice = num(l.underPrice, 100, 1000000, 2000);
+        return out;
+    }
     // Optional text: missing → default, but an admin can clear it on purpose
     const txt = function (v, max, fb) { return v === undefined ? fb : str(v, max); };
     function sanitizeFooter(f) {
@@ -258,6 +266,7 @@
                 sellerOnCards: bool(ds.sellerOnCards, true), cardShopName: bool(ds.cardShopName, true), cardRating: bool(ds.cardRating, true), cardSales: bool(ds.cardSales, true), cardSince: bool(ds.cardSince, true),
                 badgeOverrides: overrides
             },
+            layout: sanitizeLayout(s.layout || {}),
             footer: sanitizeFooter(s.footer || {}),
             theme: sanitizeTheme(s.theme || {}),
             courier: {
@@ -276,6 +285,17 @@
     KG.siteSettings = function () { return JSON.parse(JSON.stringify(draft() || published)); };
     KG.setting = function (path) { return path.split('.').reduce(function (o, k) { return o == null ? undefined : o[k]; }, KG.siteSettings()); };
     KG.hasSettingsDraft = function () { return !!draft(); };
+    // How many individual settings differ between the draft and what visitors see
+    KG.settingsChangeCount = function () {
+        const d = draft(); if (!d) return 0;
+        let n = 0;
+        (function walk(a, b) {
+            if (a && b && typeof a === 'object' && typeof b === 'object' && !Array.isArray(a) && !Array.isArray(b)) {
+                Object.keys(Object.assign({}, a, b)).forEach(function (k) { walk(a[k], b[k]); });
+            } else if (JSON.stringify(a) !== JSON.stringify(b)) n++;
+        })(d, published);
+        return n;
+    };
     // Change one area of the settings (draft) and re-apply everywhere
     KG.updateSettings = function (mutator) {
         const next = KG.siteSettings(); mutator(next);

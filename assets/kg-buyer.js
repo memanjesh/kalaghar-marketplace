@@ -29,7 +29,9 @@
         if (start.getHours() >= D('cutoffHour') || !isWorking(start)) { start = addWorkingDays(start, 1); start.setHours(9); }
         return { min: addWorkingDays(start, proc[0] + ship[0]), max: addWorkingDays(start, proc[1] + ship[1]), zone: zone };
     };
-    function fmt(d) { return d.toLocaleDateString(KG.lang() === 'ne' ? 'ne-NP' : undefined, { month: 'short', day: 'numeric' }); }
+    const NE_MONTHS = ['जनवरी', 'फेब्रुअरी', 'मार्च', 'अप्रिल', 'मे', 'जुन', 'जुलाई', 'अगस्ट', 'सेप्टेम्बर', 'अक्टोबर', 'नोभेम्बर', 'डिसेम्बर'];
+    const neNum = function (n) { return String(n).replace(/\d/g, function (x) { return '०१२३४५६७८९'[x]; }); };
+    function fmt(d) { return KG.lang() === 'ne' ? NE_MONTHS[d.getMonth()] + ' ' + neNum(d.getDate()) : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); }
     KG.etaText = function (eta) {
         if (!eta) return '';
         const a = fmt(eta.min), b = fmt(eta.max);

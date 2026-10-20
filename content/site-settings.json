@@ -251,6 +251,22 @@
     "cardSince": true,
     "badgeOverrides": {}
   },
+  "layout": {
+    "header": "classic",
+    "home": "classic",
+    "catalog": "classic",
+    "cards": "classic",
+    "product": "classic",
+    "checkout": "classic",
+    "account": "classic",
+    "seller": "classic",
+    "admin": "classic",
+    "buttons": "classic",
+    "darkmode": "classic",
+    "nepali": "classic",
+    "perPage": 8,
+    "underPrice": 2000
+  },
   "footer": {
     "style": "classic",
     "palette": "cream",
